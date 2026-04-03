@@ -1,0 +1,116 @@
+---
+title: "하네스 엔지니어링 학습 커리큘럼"
+description: "AI 에이전트 하네스 엔지니어링을 체계적으로 학습하기 위한 5단계 커리큘럼과 핵심 역량, 필수 자료를 정리합니다."
+date: "2026-04-04"
+tags: ["harness-engineering", "ai-agent", "curriculum"]
+published: true
+---
+
+<div className="space-y-0 flex flex-col items-center my-8">
+
+  <div className="w-full max-w-2xl rounded-lg bg-[#4a4a4a] text-white p-6 text-center">
+    <h3 className="text-lg font-bold mb-1">Phase 1: Foundation (2-3주)</h3>
+    <p className="text-sm text-gray-300">LLM API 직접 호출 + 프롬프트 → 컨텍스트 엔지니어링</p>
+  </div>
+
+  <div className="text-2xl text-muted-foreground">↓</div>
+
+  <div className="w-full max-w-2xl rounded-lg bg-[#1a6b5a] text-white p-6 text-center">
+    <h3 className="text-lg font-bold mb-1">Phase 2: Agent 기초 (3-4주)</h3>
+    <p className="text-sm text-emerald-200">Tool use + 간단한 에이전트 루프 직접 구현</p>
+  </div>
+
+  <div className="text-2xl text-muted-foreground">↓</div>
+
+  <div className="w-full max-w-2xl rounded-lg bg-[#3b3080] text-white p-6 text-center">
+    <h3 className="text-lg font-bold mb-1">Phase 3: Harness 핵심 설계 (4-6주)</h3>
+    <p className="text-sm text-purple-200">가드레일 + 피드백 루프 + 검증 시스템</p>
+  </div>
+
+  <div className="text-2xl text-muted-foreground">↓</div>
+
+  <div className="w-full max-w-2xl rounded-lg bg-[#8b5e2f] text-white p-6 text-center">
+    <h3 className="text-lg font-bold mb-1">Phase 4: 개발 워크플로우 자동화 (4-6주)</h3>
+    <p className="text-sm text-amber-200">CI/CD 연동 + 코드 생성/리뷰/테스트 파이프라인</p>
+  </div>
+
+  <div className="text-2xl text-muted-foreground">↓</div>
+
+  <div className="w-full max-w-2xl rounded-lg bg-[#6b8e23] text-white p-6 text-center">
+    <h3 className="text-lg font-bold mb-1">Phase 5: 프로덕션 운영 (지속)</h3>
+    <p className="text-sm text-lime-200">관찰성 + 자기 수복 + 지속적 하네스 개선</p>
+  </div>
+
+</div>
+
+---
+
+<h2 className="text-center text-xl font-bold my-8">핵심 역량 4가지</h2>
+
+<div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+
+  <div className="rounded-lg bg-[#8b2020] text-white p-5 text-center">
+    <h4 className="font-bold text-lg mb-2">Context</h4>
+    <p className="text-sm text-red-200">에이전트가 보는 정보 설계</p>
+  </div>
+
+  <div className="rounded-lg bg-[#1a6b5a] text-white p-5 text-center">
+    <h4 className="font-bold text-lg mb-2">Constraint</h4>
+    <p className="text-sm text-emerald-200">행동 경계와 권한 설계</p>
+  </div>
+
+  <div className="rounded-lg bg-[#3b3080] text-white p-5 text-center">
+    <h4 className="font-bold text-lg mb-2">Verification</h4>
+    <p className="text-sm text-purple-200">린터 + 테스트 + CI 검증</p>
+  </div>
+
+  <div className="rounded-lg bg-[#8b6914] text-white p-5 text-center">
+    <h4 className="font-bold text-lg mb-2">Feedback</h4>
+    <p className="text-sm text-amber-200">에러 감지 + 자동 수정 루프</p>
+  </div>
+
+</div>
+
+---
+
+<h2 className="text-center text-xl font-bold my-8">필수 학습 자료</h2>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+
+  <div className="rounded-lg bg-[#1a3a5c] text-white p-5 text-center">
+    <p className="font-semibold">OpenAI: Harness Engineering</p>
+  </div>
+
+  <div className="rounded-lg bg-[#1a3a5c] text-white p-5 text-center">
+    <p className="font-semibold">Fowler: Harness for agents</p>
+  </div>
+
+  <div className="rounded-lg bg-[#1a3a5c] text-white p-5 text-center">
+    <p className="font-semibold">swyx: IMPACT framework</p>
+  </div>
+
+  <div className="rounded-lg bg-[#1a3a5c] text-white p-5 text-center">
+    <p className="font-semibold">Anthropic: Agent harness guide</p>
+  </div>
+
+</div>
+
+---
+
+<h2 className="text-center text-xl font-bold my-8">실습 도구</h2>
+
+<div className="grid grid-cols-3 gap-4 my-8">
+
+  <div className="rounded-lg bg-[#2a4a2a] text-white p-5 text-center">
+    <p className="font-semibold">Claude Code</p>
+  </div>
+
+  <div className="rounded-lg bg-[#2a4a2a] text-white p-5 text-center">
+    <p className="font-semibold">LangGraph</p>
+  </div>
+
+  <div className="rounded-lg bg-[#2a4a2a] text-white p-5 text-center">
+    <p className="font-semibold">MCP (Model Context)</p>
+  </div>
+
+</div>
