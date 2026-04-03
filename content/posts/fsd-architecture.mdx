@@ -1,0 +1,45 @@
+---
+title: "FSD 아키텍처 적용기"
+description: "Feature-Sliced Design을 Next.js 블로그 프로젝트에 적용한 경험을 공유합니다."
+date: "2026-04-03"
+tags: ["architecture", "fsd", "next.js"]
+published: true
+---
+
+## FSD란?
+
+**Feature-Sliced Design(FSD)**은 프론트엔드 프로젝트를 체계적으로 구조화하는 아키텍처 방법론입니다.
+
+### 레이어 구조
+
+```
+app → pages → widgets → features → entities → shared
+```
+
+각 레이어는 **상위에서 하위로만** import할 수 있습니다.
+
+| 레이어 | 역할 |
+|--------|------|
+| `app` | 라우팅, 글로벌 설정 |
+| `pages` | 페이지 단위 컴포지션 |
+| `widgets` | 독립적 UI 블록 |
+| `features` | 사용자 인터랙션 |
+| `entities` | 비즈니스 모델 |
+| `shared` | 공통 유틸, UI |
+
+### 블로그에 적용한 방식
+
+이 블로그에서는 다음과 같이 매핑했습니다:
+
+- **entities/post**: 포스트 타입, MDX 파싱 로직, PostCard 컴포넌트
+- **widgets**: Header, Footer, PostList
+- **pages**: HomePage, PostDetailPage (위젯 조합)
+- **app**: Next.js App Router 연결
+
+### 장점
+
+1. **관심사 분리**가 명확합니다
+2. **import 방향**이 일정하여 의존성 파악이 쉽습니다
+3. 기능 추가 시 **영향 범위**를 예측할 수 있습니다
+
+소규모 프로젝트에서는 과할 수 있지만, 일관된 구조를 익히는 연습으로는 좋은 선택입니다.

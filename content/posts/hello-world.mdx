@@ -1,0 +1,31 @@
+---
+title: "블로그를 시작합니다"
+description: "Next.js와 GitHub Pages로 만든 개발 블로그의 첫 포스트입니다."
+date: "2026-04-04"
+tags: ["blog", "next.js"]
+published: true
+---
+
+## 환영합니다
+
+이 블로그는 **Next.js 14**와 **GitHub Pages**를 사용하여 만들어졌습니다.
+
+### 기술 스택
+
+- **프레임워크**: Next.js 14 (App Router)
+- **스타일링**: Tailwind CSS + shadcn/ui
+- **아키텍처**: FSD (Feature-Sliced Design)
+- **배포**: GitHub Actions → GitHub Pages
+
+### 왜 이 조합인가?
+
+정적 블로그에 Next.js는 과할 수 있지만, MDX 지원과 컴포넌트 기반 콘텐츠 작성이 가능하다는 점이 매력적입니다.
+
+```tsx
+// MDX 안에서 React 컴포넌트를 사용할 수 있습니다
+export function Highlight({ children }) {
+  return <mark>{children}</mark>;
+}
+```
+
+앞으로 개발하면서 배운 것들을 이곳에 기록하겠습니다.
