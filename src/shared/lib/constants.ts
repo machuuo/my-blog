@@ -5,7 +5,7 @@ export const BLOG_AUTHOR = "Author";
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "GitHub", href: "https://github.com/username" },
+  { label: "Login", href: "/login" },
 ] as const;
 
 export const POSTS_PER_PAGE = 10;
