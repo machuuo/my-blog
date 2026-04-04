@@ -10,13 +10,21 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { slug, title, description, content, tags, published, series_id, display_order } = body;
+    const { category_id, title, description, thumbnail_url, slug, display_order, published } = body;
 
     const supabase = createServerSupabaseClient();
 
     const { data, error } = await supabase
-      .from("posts")
-      .insert({ slug, title, description, content, tags, published, series_id: series_id || null, display_order: display_order ?? null })
+      .from("series")
+      .insert({
+        category_id,
+        title,
+        description: description ?? "",
+        thumbnail_url: thumbnail_url ?? null,
+        slug,
+        display_order: display_order ?? 0,
+        published: published ?? false,
+      })
       .select()
       .single();
 
@@ -25,9 +33,8 @@ export async function POST(request: NextRequest) {
     }
 
     revalidatePath("/");
-    revalidatePath(`/posts/${slug}`);
-
-    return NextResponse.json({ post: data }, { status: 201 });
+    revalidatePath(`/series/${slug}`);
+    return NextResponse.json({ series: data }, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
@@ -40,14 +47,22 @@ export async function PUT(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { post_id, slug, title, description, content, tags, published, series_id, display_order } = body;
+    const { series_id, category_id, title, description, thumbnail_url, slug, display_order, published } = body;
 
     const supabase = createServerSupabaseClient();
 
     const { data, error } = await supabase
-      .from("posts")
-      .update({ slug, title, description, content, tags, published, series_id: series_id || null, display_order: display_order ?? null })
-      .eq("post_id", post_id)
+      .from("series")
+      .update({
+        category_id,
+        title,
+        description,
+        thumbnail_url,
+        slug,
+        display_order,
+        published,
+      })
+      .eq("series_id", series_id)
       .select()
       .single();
 
@@ -56,9 +71,8 @@ export async function PUT(request: NextRequest) {
     }
 
     revalidatePath("/");
-    revalidatePath(`/posts/${slug}`);
-
-    return NextResponse.json({ post: data });
+    revalidatePath(`/series/${slug}`);
+    return NextResponse.json({ series: data });
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
@@ -70,18 +84,20 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const { post_id } = await request.json();
+    const { series_id } = await request.json();
 
     const supabase = createServerSupabaseClient();
 
-    const { error } = await supabase.from("posts").delete().eq("post_id", post_id);
+    const { error } = await supabase
+      .from("series")
+      .delete()
+      .eq("series_id", series_id);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     revalidatePath("/");
-
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });

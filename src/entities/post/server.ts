@@ -1,1 +1,1 @@
-export { getAllPosts, getPostBySlug, getAllSlugs } from "./model/posts";
+export { getAllPosts, getPostBySlug, getPostsBySeries, getUncategorizedPosts, getAllSlugs } from "./api/posts";

@@ -10,13 +10,13 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { slug, title, description, content, tags, published, series_id, display_order } = body;
+    const { name, slug, display_order } = body;
 
     const supabase = createServerSupabaseClient();
 
     const { data, error } = await supabase
-      .from("posts")
-      .insert({ slug, title, description, content, tags, published, series_id: series_id || null, display_order: display_order ?? null })
+      .from("categories")
+      .insert({ name, slug, display_order: display_order ?? 0 })
       .select()
       .single();
 
@@ -25,9 +25,7 @@ export async function POST(request: NextRequest) {
     }
 
     revalidatePath("/");
-    revalidatePath(`/posts/${slug}`);
-
-    return NextResponse.json({ post: data }, { status: 201 });
+    return NextResponse.json({ category: data }, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
@@ -40,14 +38,14 @@ export async function PUT(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { post_id, slug, title, description, content, tags, published, series_id, display_order } = body;
+    const { category_id, name, slug, display_order } = body;
 
     const supabase = createServerSupabaseClient();
 
     const { data, error } = await supabase
-      .from("posts")
-      .update({ slug, title, description, content, tags, published, series_id: series_id || null, display_order: display_order ?? null })
-      .eq("post_id", post_id)
+      .from("categories")
+      .update({ name, slug, display_order })
+      .eq("category_id", category_id)
       .select()
       .single();
 
@@ -56,9 +54,7 @@ export async function PUT(request: NextRequest) {
     }
 
     revalidatePath("/");
-    revalidatePath(`/posts/${slug}`);
-
-    return NextResponse.json({ post: data });
+    return NextResponse.json({ category: data });
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
@@ -70,18 +66,20 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const { post_id } = await request.json();
+    const { category_id } = await request.json();
 
     const supabase = createServerSupabaseClient();
 
-    const { error } = await supabase.from("posts").delete().eq("post_id", post_id);
+    const { error } = await supabase
+      .from("categories")
+      .delete()
+      .eq("category_id", category_id);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     revalidatePath("/");
-
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });

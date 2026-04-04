@@ -1,3 +1,4 @@
 export { PostCard } from "./ui/PostCard";
 export { PostMeta } from "./ui/PostMeta";
-export type { Post, PostFrontmatter } from "./model/types";
+export { toPost } from "./model/mappers";
+export type { Post, PostFrontmatter, PostWithSeries } from "./model/types";

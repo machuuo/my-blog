@@ -5,7 +5,9 @@
       "WebSearch",
       "Bash(pnpm add:*)",
       "Bash(pnpm approve-builds:*)",
-      "Bash(npx --yes esbuild --version)"
+      "Bash(npx --yes esbuild --version)",
+      "Bash(grep -r \"series\\\\|category\\\\|categories\" /c/dev/git-blog/src --include=*.ts --include=*.tsx)",
+      "mcp__supabase__apply_migration"
     ]
   }
 }
