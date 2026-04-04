@@ -1,8 +1,10 @@
 import { getAllPosts } from "@/entities/post/server";
 import { HomePage } from "@/views/home";
 
-export default function Home() {
-  const posts = getAllPosts();
+export const revalidate = 60;
+
+export default async function Home() {
+  const posts = await getAllPosts();
 
   return <HomePage posts={posts} />;
 }

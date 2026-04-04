@@ -1,0 +1,100 @@
+---
+title: "Phase 1: Foundation — LLM API부터 컨텍스트 엔지니어링까지"
+description: "하네스 엔지니어링 커리큘럼 Phase 1의 3주 학습 계획. LLM API 직접 호출, 컨텍스트 엔지니어링 핵심, 실전 프로젝트까지."
+date: "2026-04-04"
+tags: ["harness-engineering", "ai-agent", "phase-1", "llm-api"]
+published: true
+---
+
+<div className="space-y-0 flex flex-col items-center my-8">
+
+  {/* Week 1 */}
+  <div className="w-full max-w-2xl rounded-lg bg-[#4a4a4a] text-white p-5 text-center">
+    <h3 className="text-lg font-bold">Week 1: LLM API 직접 다루기</h3>
+  </div>
+
+  <div className="w-full max-w-2xl grid grid-cols-2 gap-4 mt-4">
+    <div className="rounded-lg bg-[#1a6b5a] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">API 직접 호출 실습</h4>
+      <p className="text-sm text-emerald-200">프레임워크 없이 raw HTTP</p>
+    </div>
+    <div className="rounded-lg bg-[#1a6b5a] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">메시지 구조 이해</h4>
+      <p className="text-sm text-emerald-200">system / user / assistant</p>
+    </div>
+    <div className="rounded-lg bg-[#3b3080] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">Tool use 기초</h4>
+      <p className="text-sm text-purple-200">function calling 직접 구현</p>
+    </div>
+    <div className="rounded-lg bg-[#3b3080] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">파라미터 튜닝</h4>
+      <p className="text-sm text-purple-200">temperature, token 제어</p>
+    </div>
+  </div>
+
+  <div className="text-2xl text-muted-foreground my-2">↓</div>
+
+  {/* Week 2 */}
+  <div className="w-full max-w-2xl rounded-lg bg-[#4a4a4a] text-white p-5 text-center">
+    <h3 className="text-lg font-bold">Week 2: 컨텍스트 엔지니어링 핵심</h3>
+  </div>
+
+  <div className="w-full max-w-2xl grid grid-cols-2 gap-4 mt-4">
+    <div className="rounded-lg bg-[#1a6b5a] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">컨텍스트 윈도우 관리</h4>
+      <p className="text-sm text-emerald-200">토큰 예산 + 요약 전략</p>
+    </div>
+    <div className="rounded-lg bg-[#1a6b5a] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">KV-cache 최적화</h4>
+      <p className="text-sm text-emerald-200">프리픽스 캐싱 활용</p>
+    </div>
+    <div className="rounded-lg bg-[#3b3080] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">시스템 프롬프트 설계</h4>
+      <p className="text-sm text-purple-200">역할 + 규칙 + 예시 구조화</p>
+    </div>
+    <div className="rounded-lg bg-[#3b3080] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">동적 컨텍스트 주입</h4>
+      <p className="text-sm text-purple-200">필요한 정보만 적시 전달</p>
+    </div>
+  </div>
+
+  <div className="text-2xl text-muted-foreground my-2">↓</div>
+
+  {/* Week 3 */}
+  <div className="w-full max-w-2xl rounded-lg bg-[#4a4a4a] text-white p-5 text-center">
+    <h3 className="text-lg font-bold">Week 3: 실전 프로젝트 + 사고방식 전환</h3>
+  </div>
+
+  <div className="w-full max-w-2xl grid grid-cols-2 gap-4 mt-4">
+    <div className="rounded-lg bg-[#8b5e2f] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">미니 프로젝트 구현</h4>
+      <p className="text-sm text-amber-200">파일 요약 에이전트 만들기</p>
+    </div>
+    <div className="rounded-lg bg-[#8b5e2f] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">실패 관찰 일지</h4>
+      <p className="text-sm text-amber-200">어디서 왜 실패하는지 기록</p>
+    </div>
+    <div className="rounded-lg bg-[#8b5e2f] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">AGENTS.md 작성</h4>
+      <p className="text-sm text-amber-200">에이전트용 프로젝트 문서</p>
+    </div>
+    <div className="rounded-lg bg-[#8b5e2f] text-white p-5 text-center">
+      <h4 className="font-bold mb-1">마인드셋 전환</h4>
+      <p className="text-sm text-amber-200">프롬프트 → 시스템 설계</p>
+    </div>
+  </div>
+
+</div>
+
+---
+
+<div className="flex flex-col items-center my-8 space-y-4">
+  <div className="w-full max-w-2xl rounded-lg bg-[#6b6b00] text-white p-6 text-center">
+    <h3 className="text-lg font-bold mb-1">Phase 1 완료 기준</h3>
+    <p className="text-sm text-yellow-200">프레임워크 없이 tool-calling 에이전트 구현 가능</p>
+  </div>
+
+  <div className="rounded-lg border border-muted-foreground/30 px-6 py-3 text-center text-muted-foreground">
+    Phase 2로 진행하기 →
+  </div>
+</div>

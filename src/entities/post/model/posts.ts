@@ -1,56 +1,66 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 import readingTime from "reading-time";
-import type { Post, PostFrontmatter } from "./types";
+import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
+import type { Post } from "./types";
 
-const POSTS_DIR = path.join(process.cwd(), "content/posts");
+export async function getAllPosts(): Promise<Post[]> {
+  const supabase = createServerSupabaseClient();
 
-export function getAllPosts(): Post[] {
-  if (!fs.existsSync(POSTS_DIR)) {
-    return [];
-  }
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("published", true)
+    .order("created_at", { ascending: false });
 
-  const files = fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith(".mdx"));
+  if (error || !data) return [];
 
-  const posts = files
-    .map((filename) => {
-      const slug = filename.replace(/\.mdx$/, "");
-      return getPostBySlug(slug);
-    })
-    .filter((post): post is Post => post !== null && post.published)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  return posts;
+  return data.map((row) => ({
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    description: row.description ?? "",
+    date: row.created_at,
+    tags: row.tags ?? [],
+    published: row.published,
+    content: row.content ?? "",
+    readingTime: readingTime(row.content ?? "").text,
+    updated_at: row.updated_at,
+  }));
 }
 
-export function getPostBySlug(slug: string): Post | null {
-  const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  const supabase = createServerSupabaseClient();
 
-  if (!fs.existsSync(filePath)) {
-    return null;
-  }
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("slug", slug)
+    .single();
 
-  const fileContent = fs.readFileSync(filePath, "utf-8");
-  const { data, content } = matter(fileContent);
-  const frontmatter = data as PostFrontmatter;
-  const stats = readingTime(content);
+  if (error || !data) return null;
 
   return {
-    slug,
-    content,
-    readingTime: stats.text,
-    ...frontmatter,
+    id: data.id,
+    slug: data.slug,
+    title: data.title,
+    description: data.description ?? "",
+    date: data.created_at,
+    tags: data.tags ?? [],
+    published: data.published,
+    content: data.content ?? "",
+    readingTime: readingTime(data.content ?? "").text,
+    updated_at: data.updated_at,
   };
 }
 
-export function getAllSlugs(): string[] {
-  if (!fs.existsSync(POSTS_DIR)) {
-    return [];
-  }
+export async function getAllSlugs(): Promise<string[]> {
+  const supabase = createServerSupabaseClient();
 
-  return fs
-    .readdirSync(POSTS_DIR)
-    .filter((f) => f.endsWith(".mdx"))
-    .map((f) => f.replace(/\.mdx$/, ""));
+  const { data, error } = await supabase
+    .from("posts")
+    .select("slug")
+    .eq("published", true);
+
+  if (error || !data) return [];
+
+  return data.map((row) => row.slug);
 }

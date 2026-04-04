@@ -7,7 +7,9 @@ export interface PostFrontmatter {
 }
 
 export interface Post extends PostFrontmatter {
+  id: string;
   slug: string;
   content: string;
   readingTime: string;
+  updated_at: string;
 }
