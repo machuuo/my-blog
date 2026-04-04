@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getSeriesBySlug } from "@/entities/series/server";
 import { getPostsBySeries } from "@/entities/post/server";
-import { getAllCategories } from "@/entities/category/server";
 import { SeriesDetailPage } from "@/views/series-detail";
 import { BLOG_NAME } from "@/shared/lib/constants";
 
@@ -36,20 +35,12 @@ export default async function SeriesPage({ params }: PageProps) {
     notFound();
   }
 
-  const [posts, categories] = await Promise.all([
-    getPostsBySeries(series.series_id),
-    getAllCategories(),
-  ]);
-
-  const category = categories.find(
-    (c) => c.category_id === series.category_id
-  );
+  const posts = await getPostsBySeries(series.series_id);
 
   return (
     <SeriesDetailPage
       series={series}
       posts={posts}
-      categoryName={category?.name}
     />
   );
 }

@@ -6,17 +6,15 @@ import type { Post } from "@/entities/post";
 interface SeriesDetailPageProps {
   series: Series;
   posts: Post[];
-  categoryName?: string;
 }
 
 export function SeriesDetailPage({
   series,
   posts,
-  categoryName,
 }: SeriesDetailPageProps) {
   const breadcrumbItems = [
     { label: "홈", href: "/" },
-    ...(categoryName ? [{ label: categoryName }] : []),
+    { label: "Series", href: "/series" },
     { label: series.title },
   ];
 

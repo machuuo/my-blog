@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Library } from "lucide-react";
 import { CategorySection } from "@/widgets/category-section";
 import { PostList } from "@/widgets/post-list";
@@ -22,9 +23,17 @@ export function HomePage({ categories, uncategorizedPosts }: HomePageProps) {
 
       {hasCategories && (
         <section className="mb-10 rounded-lg border border-border bg-card p-6">
-          <div className="flex items-center gap-2 mb-6">
-            <Library className="h-5 w-5 text-foreground" />
-            <h2 className="text-lg font-semibold tracking-tight">Series</h2>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <Library className="h-5 w-5 text-foreground" />
+              <h2 className="text-lg font-semibold tracking-tight">Series</h2>
+            </div>
+            <Link
+              href="/series"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              더보기
+            </Link>
           </div>
           <div className="flex flex-col gap-8">
             {categories.map((category) => (
