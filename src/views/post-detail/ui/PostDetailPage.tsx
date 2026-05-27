@@ -1,7 +1,5 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { Badge } from "@/shared/ui/badge";
 import { Breadcrumb, type BreadcrumbItem } from "@/shared/ui/breadcrumb";
-import { Separator } from "@/shared/ui/separator";
 import { PostMeta } from "@/entities/post";
 import type { PostWithSeries } from "@/entities/post";
 
@@ -10,9 +8,7 @@ interface PostDetailPageProps {
 }
 
 export function PostDetailPage({ post }: PostDetailPageProps) {
-  const breadcrumbItems: BreadcrumbItem[] = [
-    { label: "홈", href: "/" },
-  ];
+  const breadcrumbItems: BreadcrumbItem[] = [{ label: "홈", href: "/" }];
 
   if (post.category_name) {
     breadcrumbItems.push({ label: post.category_name });
@@ -28,26 +24,50 @@ export function PostDetailPage({ post }: PostDetailPageProps) {
   breadcrumbItems.push({ label: post.title });
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-10">
+    <main className="max-w-3xl mx-auto px-6 lg:px-10 pt-10 pb-8">
       <Breadcrumb items={breadcrumbItems} />
 
-      <article className="mt-6">
-        <header className="mb-8">
-          <div className="flex flex-wrap gap-2 mb-3">
-            {post.tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
-                {tag}
-              </Badge>
-            ))}
+      <article className="mt-8">
+        <header className="mb-10">
+          <div className="flex flex-wrap items-baseline gap-2 font-hand2 text-base text-nb-ink-soft">
+            {post.category_name && (
+              <>
+                <span className="text-nb-pink">●</span>
+                <span>{post.category_name}</span>
+                <span>·</span>
+              </>
+            )}
+            <span>essay no. {(post.post_id ?? "").toString().slice(-2) || "01"}</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">{post.title}</h1>
-          <p className="text-muted-foreground mt-2">{post.description}</p>
-          <PostMeta date={post.date} readingTime={post.readingTime} />
+
+          <h1 className="font-hand font-normal text-nb-ink leading-[0.96] my-4 text-5xl sm:text-6xl lg:text-7xl">
+            {post.title}
+          </h1>
+
+          {post.description && (
+            <p className="font-serif italic text-xl lg:text-2xl text-nb-ink-soft leading-relaxed m-0">
+              {post.description}
+            </p>
+          )}
+
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <PostMeta date={post.date} readingTime={post.readingTime} />
+            {post.tags.length > 0 && (
+              <>
+                <span className="text-nb-pink font-hand2">·</span>
+                <div className="flex flex-wrap gap-2 font-hand2 text-sm text-nb-ink-soft">
+                  {post.tags.map((tag) => (
+                    <span key={tag}>#{tag}</span>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="border-b-2 border-dashed border-nb-rule mt-8" />
         </header>
 
-        <Separator className="mb-8" />
-
-        <div className="prose prose-neutral dark:prose-invert max-w-none">
+        <div className="prose prose-nb max-w-none">
           <MDXRemote source={post.content} />
         </div>
       </article>

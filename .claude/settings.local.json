@@ -7,7 +7,14 @@
       "Bash(pnpm approve-builds:*)",
       "Bash(npx --yes esbuild --version)",
       "Bash(grep -r \"series\\\\|category\\\\|categories\" /c/dev/git-blog/src --include=*.ts --include=*.tsx)",
-      "mcp__supabase__apply_migration"
+      "mcp__supabase__apply_migration",
+      "WebFetch(domain:api.anthropic.com)",
+      "Skill(browse)",
+      "Bash(mkdir -p .tmp/design)",
+      "Bash(curl -sL \"https://api.anthropic.com/v1/design/h/CaeVnyPXZcKWGtXkfbozbg?open_file=index.html\" -o .tmp/design/page.html)"
     ]
-  }
+  },
+  "disabledMcpjsonServers": [
+    "supabase"
+  ]
 }

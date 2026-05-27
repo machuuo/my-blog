@@ -13,10 +13,10 @@ export function PostMeta({ date, readingTime, className }: PostMetaProps) {
 
   return (
     <div
-      className={`flex items-center gap-2 text-sm text-muted-foreground mt-2 ${className ?? ""}`}
+      className={`flex items-center gap-2 font-hand2 text-sm text-nb-ink-soft ${className ?? ""}`}
     >
       <time dateTime={date}>{formattedDate}</time>
-      <span>·</span>
+      <span className="text-nb-pink">·</span>
       <span>{readingTime}</span>
     </div>
   );

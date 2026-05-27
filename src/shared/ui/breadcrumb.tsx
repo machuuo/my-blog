@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 
@@ -15,23 +14,27 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items, className }: BreadcrumbProps) {
   return (
-    <nav aria-label="breadcrumb" className={cn("flex items-center gap-1 text-sm", className)}>
+    <nav
+      aria-label="breadcrumb"
+      className={cn(
+        "flex items-center gap-1 font-hand2 text-base text-nb-ink-soft",
+        className,
+      )}
+    >
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
 
         return (
-          <span key={index} className="flex items-center gap-1">
-            {index > 0 && (
-              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
-            )}
+          <span key={index} className="flex items-center gap-1.5">
+            {index > 0 && <span className="text-nb-pink">→</span>}
             {isLast || !item.href ? (
-              <span className="text-foreground font-medium truncate max-w-[200px]">
+              <span className="font-hand text-lg text-nb-ink truncate max-w-[240px]">
                 {item.label}
               </span>
             ) : (
               <Link
                 href={item.href}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="hover:text-nb-pink transition-colors"
               >
                 {item.label}
               </Link>
