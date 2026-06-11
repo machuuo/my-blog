@@ -1,468 +1,380 @@
 import Link from "next/link";
-import { PostMeta } from "@/entities/post";
-import { BLOG_DESCRIPTION } from "@/shared/lib/constants";
-import type { CategoryWithSeries, SeriesWithCount } from "@/entities/series";
-import type { Post } from "@/entities/post";
+import {
+  HOBBY_POSTS,
+  TECH_POSTS,
+  NB_BODY,
+  NB_HAND,
+  NB_HAND2,
+  accentTint,
+  type NbPost,
+} from "@/shared/lib/design-data";
+import { HandArrow } from "@/shared/ui/notebook/HandArrow";
+import { StickyNote } from "@/shared/ui/notebook/StickyNote";
+import { StripePlaceholder } from "@/shared/ui/notebook/StripePlaceholder";
+import { WashiTape } from "@/shared/ui/notebook/WashiTape";
 
-interface HomePageProps {
-  categories: CategoryWithSeries[];
-  uncategorizedPosts: Post[];
+function postHref(p: NbPost, group: "tech" | "hobby") {
+  return `/${group}/${p.slug}`;
 }
 
-const TAPES = ["pink", "sage", "sky", "butter"] as const;
-type Tape = (typeof TAPES)[number];
-
-function tapeColor(tape: Tape): string {
-  return `hsl(var(--nb-${tape}))`;
-}
-
-function pickTape(idx: number): Tape {
-  return TAPES[idx % TAPES.length];
-}
-
-function HandArrow({
-  width = 70,
-  height = 30,
-  color = "currentColor",
-  flip = false,
-}: {
-  width?: number;
-  height?: number;
-  color?: string;
-  flip?: boolean;
-}) {
-  return (
-    <svg
-      width={width}
-      height={height}
-      viewBox="0 0 70 30"
-      style={{ transform: flip ? "scaleX(-1)" : undefined }}
-      aria-hidden
-    >
-      <path
-        d="M3 18 Q 25 2, 50 14 T 64 18"
-        stroke={color}
-        strokeWidth="1.8"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <path
-        d="M55 10 L 64 18 L 53 22"
-        stroke={color}
-        strokeWidth="1.8"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function WashiTape({
-  color,
-  width = 110,
-  rotate = -8,
-  className,
-  style,
-}: {
-  color: string;
-  width?: number;
-  rotate?: number;
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <div
-      aria-hidden
-      className={`nb-washi rounded-sm ${className ?? ""}`}
-      style={{
-        width,
-        height: 26,
-        backgroundColor: color,
-        transform: `rotate(${rotate}deg)`,
-        ...style,
-      }}
-    />
-  );
-}
-
-function StickyNote({
-  color,
-  rotate = -2,
-  width = 200,
-  className,
-  children,
-}: {
-  color: string;
-  rotate?: number;
-  width?: number;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      className={`font-hand text-xl leading-snug text-nb-ink p-4 shadow-lg ${className ?? ""}`}
-      style={{
-        width,
-        backgroundColor: color,
-        transform: `rotate(${rotate}deg)`,
-        boxShadow: "4px 6px 14px rgba(0,0,0,0.12)",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-export function HomePage({ categories, uncategorizedPosts }: HomePageProps) {
-  const totalSeries = categories.reduce(
-    (acc, c) => acc + c.series_list.length,
-    0,
-  );
-  const totalPosts =
-    categories.reduce(
-      (acc, c) => acc + c.series_list.reduce((s, x) => s + x.post_count, 0),
-      0,
-    ) + uncategorizedPosts.length;
-
-  const featuredCategories = categories.filter((c) => c.series_list.length > 0);
-  const leftColumn = featuredCategories[0];
-  const rightColumn = featuredCategories[1];
-  const leadSeries = leftColumn?.series_list[0];
-
-  return (
-    <main className="max-w-6xl mx-auto px-6 lg:px-12 pt-12 pb-8">
-      {/* Hero — handwriting masthead */}
-      <section className="relative pb-8">
-        <div className="hidden md:block absolute top-6 right-6 lg:right-16">
-          <StickyNote color="hsl(var(--nb-butter))" rotate={6} width={200}>
-            오늘의 메모
-            <br />
-            <span className="font-hand2 text-sm text-nb-ink-soft">
-              2026년 5월, 비가 많이 오는 주말
-            </span>
-          </StickyNote>
-        </div>
-
-        <div className="font-sans text-sm text-nb-ink-soft tracking-wide">
-          ✦ 오늘의 한 페이지 ✦
-        </div>
-        <h1 className="font-hand font-normal text-nb-ink leading-[0.92] my-4 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl">
-          공부하고,
-          <span className="text-nb-pink">축구 보고,</span>
-          <br />
-          가끔 책 읽는 사람의
-          <br />
-          작은 노트.
-        </h1>
-
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-6">
-          <p className="font-serif italic text-lg lg:text-xl leading-relaxed text-nb-ink-soft max-w-xl m-0">
-            {BLOG_DESCRIPTION}. 코드를 쓰던 손으로 다시 칠판을 그리고, 다 못
-            읽은 책을 또 한 권 펼치는 사람의 매주 한 페이지.
-          </p>
-          <div className="hidden sm:flex items-center gap-3 shrink-0">
-            <HandArrow width={80} color="hsl(var(--nb-ink-soft))" />
-            <span className="font-sans text-sm text-nb-ink-soft whitespace-nowrap">
-              아래로 →
-            </span>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap gap-3 mt-6 font-sans text-sm">
-          <span className="px-3 py-1 rounded-full border-2 border-nb-ink text-nb-ink">
-            시리즈 {totalSeries}편
-          </span>
-          <span className="px-3 py-1 rounded-full border-2 border-nb-ink text-nb-ink">
-            글 {totalPosts}편
-          </span>
-        </div>
-      </section>
-
-      {/* Today's picks — lead series */}
-      {leadSeries && leftColumn && (
-        <section className="pt-8">
-          <div className="flex items-baseline gap-3 flex-wrap">
-            <h2 className="font-hand text-4xl lg:text-5xl m-0 text-nb-ink">
-              오늘 꺼낸 페이지
-            </h2>
-            <span className="font-hand2 text-lg text-nb-ink-soft">
-              · today&apos;s reads
-            </span>
-            <HandArrow width={56} color="hsl(var(--nb-pink))" />
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr_1fr] gap-8 lg:gap-10 mt-10 items-start">
-            <FeatureCard
-              series={leadSeries}
-              category={leftColumn.name}
-              big
-              tape="sage"
-            />
-            {leftColumn.series_list.slice(1, 3).map((s, idx) => (
-              <FeatureCard
-                key={s.series_id}
-                series={s}
-                category={leftColumn.name}
-                tape={pickTape(idx + 1)}
-              />
-            ))}
-            {leftColumn.series_list.length < 2 && rightColumn && (
-              <>
-                {rightColumn.series_list.slice(0, 2).map((s, idx) => (
-                  <FeatureCard
-                    key={s.series_id}
-                    series={s}
-                    category={rightColumn.name}
-                    tape={pickTape(idx + 1)}
-                  />
-                ))}
-              </>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* Two columns: categories */}
-      {(leftColumn || rightColumn || uncategorizedPosts.length > 0) && (
-        <section className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-14 mt-20">
-          {leftColumn && (
-            <CategoryColumn
-              title={leftColumn.name}
-              subtitle="study notes"
-              arrow="pink"
-              category={leftColumn}
-            />
-          )}
-          {rightColumn ? (
-            <CategoryColumn
-              title={rightColumn.name}
-              subtitle="weekend notes"
-              arrow="sage"
-              category={rightColumn}
-            />
-          ) : uncategorizedPosts.length > 0 ? (
-            <UncategorizedColumn
-              posts={uncategorizedPosts.slice(0, 4)}
-              arrow="sage"
-            />
-          ) : null}
-
-          <div className="hidden lg:block absolute -top-6 right-0">
-            <StickyNote color="hsl(var(--nb-sage))" rotate={4} width={170}>
-              축구도 결국
-              <br />
-              <em className="not-italic font-serif italic">그림 그리기</em>예요
-            </StickyNote>
-          </div>
-        </section>
-      )}
-
-      {/* Pull quote with highlighter */}
-      {/* <section className="text-center py-16 mt-12">
-        <div className="font-sans text-xl sm:text-2xl lg:text-3xl leading-relaxed max-w-3xl mx-auto text-nb-ink">
-          잘 정돈된 메모를 좋아하다 보니,
-          <br />
-          <span className="nb-highlight">정돈된 척하는 메모도</span>
-          <br />
-          좋아하게 되었어요.
-        </div>
-      </section> */}
-
-      {!leftColumn && uncategorizedPosts.length === 0 && (
-        <div className="text-center py-20">
-          <p className="font-sans text-lg text-nb-ink-soft">
-            아직 페이지가 비어있어요.
-          </p>
-        </div>
-      )}
-    </main>
-  );
-}
-
-function FeatureCard({
-  series,
-  category,
-  big = false,
+function NbFeatureCard({
+  p,
+  big,
   tape,
+  group,
 }: {
-  series: SeriesWithCount;
-  category: string;
+  p: NbPost;
   big?: boolean;
-  tape: Tape;
+  tape: "sage" | "pink" | "sky";
+  group: "tech" | "hobby";
 }) {
+  const tapeColor =
+    tape === "sage"
+      ? "var(--nb-sage)"
+      : tape === "pink"
+        ? "var(--nb-pink)"
+        : "var(--nb-sky)";
   return (
-    <Link href={`/series/${series.slug}`} className="group block relative">
-      <WashiTape
-        color={tapeColor(tape)}
-        width={big ? 140 : 100}
-        rotate={big ? -4 : 5}
-        className="absolute -top-3 z-10"
-        style={{ left: big ? 30 : 20 }}
-      />
-      <article>
+    <Link
+      href={postHref(p, group)}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
+      <article style={{ position: "relative" }}>
+        <WashiTape
+          color={tapeColor}
+          rotate={big ? -4 : 5}
+          width={big ? 140 : 100}
+          style={{ position: "absolute", top: -14, left: big ? 30 : 20 }}
+        />
         <div
-          className="nb-paper-card mb-4 p-2 aspect-[4/3] overflow-hidden"
           style={{
-            backgroundImage: series.thumbnail_url
-              ? `url(${series.thumbnail_url})`
-              : undefined,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            aspectRatio: "4/3",
+            marginBottom: 14,
+            background: "#FCF8EE",
+            padding: 10,
+            boxShadow: "4px 6px 14px rgba(40,28,18,0.10)",
           }}
         >
-          {!series.thumbnail_url && (
-            <div
-              className="w-full h-full flex items-center justify-center font-sans text-2xl text-nb-ink-soft"
-              style={{ backgroundColor: tapeColor(tape), opacity: 0.6 }}
-            >
-              {category}
-            </div>
-          )}
+          <StripePlaceholder
+            label={`photo · ${p.cover}`}
+            family="notebook"
+            tint={accentTint(p.accent)}
+            ink="#3a2c1e"
+          />
         </div>
-        <div className="font-sans text-xs text-nb-ink-soft uppercase tracking-wide">
-          {category} · {series.post_count}편
+        <div
+          style={{
+            fontFamily: NB_HAND2,
+            fontSize: 16,
+            color: "var(--nb-ink-soft)",
+          }}
+        >
+          {p.cat} · {p.date}
         </div>
         <h3
-          className={`font-sans ${big ? "text-2xl" : "text-xl"} leading-snug m-0 my-2 text-nb-ink group-hover:text-nb-pink transition-colors`}
+          style={{
+            fontFamily: NB_HAND,
+            fontSize: big ? 42 : 32,
+            lineHeight: 1.05,
+            margin: "6px 0 8px",
+            color: "var(--nb-ink)",
+          }}
         >
-          {series.title}
+          {p.title}
         </h3>
-        <p className="font-serif text-base leading-relaxed text-nb-ink-soft m-0">
-          {series.description}
+        <p
+          style={{
+            fontFamily: NB_BODY,
+            fontSize: 16,
+            lineHeight: 1.55,
+            color: "var(--nb-ink-soft)",
+            margin: 0,
+          }}
+        >
+          {p.excerpt}
         </p>
+        <div
+          style={{
+            display: "flex",
+            gap: 10,
+            marginTop: 12,
+            fontFamily: NB_HAND2,
+            fontSize: 16,
+          }}
+        >
+          {p.tags.map((t) => (
+            <span key={t} style={{ color: "var(--nb-ink-soft)" }}>
+              #{t}
+            </span>
+          ))}
+        </div>
       </article>
     </Link>
   );
 }
 
-function CategoryColumn({
+function NbColumn({
   title,
   subtitle,
+  posts,
   arrow,
-  category,
+  group,
 }: {
   title: string;
   subtitle: string;
-  arrow: "pink" | "sage";
-  category: CategoryWithSeries;
+  posts: NbPost[];
+  arrow: "sage" | "pink";
+  group: "tech" | "hobby";
 }) {
-  const arrowColor =
-    arrow === "sage" ? "hsl(var(--nb-sage))" : "hsl(var(--nb-pink))";
-
+  const arrowColor = arrow === "sage" ? "var(--nb-sage)" : "var(--nb-pink)";
   return (
     <div>
-      <div className="flex items-baseline gap-3 border-b-2 border-dashed border-nb-rule pb-3">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          gap: 12,
+          borderBottom: "2px dashed var(--nb-rule)",
+          paddingBottom: 10,
+        }}
+      >
         <HandArrow width={50} color={arrowColor} />
-        <h2 className="font-sans text-xl lg:text-2xl m-0 text-nb-ink">
+        <h2 style={{ fontFamily: NB_HAND, fontSize: 40, margin: 0, color: "var(--nb-ink)" }}>
           {title}
         </h2>
-        <span className="font-sans text-xs text-nb-ink-soft uppercase tracking-wide">
+        <span
+          style={{
+            fontFamily: NB_HAND2,
+            fontSize: 18,
+            color: "var(--nb-ink-soft)",
+          }}
+        >
           {subtitle}
         </span>
       </div>
-      <div className="flex flex-col gap-6 mt-6">
-        {category.series_list.slice(0, 3).map((s, i) => (
-          <SeriesRow
-            key={s.series_id}
-            href={`/series/${s.slug}`}
-            index={i + 1}
-            arrowColor={arrowColor}
-            title={s.title}
-            excerpt={s.description}
-            meta={`${s.post_count}편`}
-          />
-        ))}
-        {category.series_list.length > 3 && (
-          <Link
-            href="/series"
-            className="font-sans text-sm text-nb-pink hover:text-nb-ink transition-colors self-end"
-          >
-            더 보기 →
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function UncategorizedColumn({
-  posts,
-  arrow,
-}: {
-  posts: Post[];
-  arrow: "pink" | "sage";
-}) {
-  const arrowColor =
-    arrow === "sage" ? "hsl(var(--nb-sage))" : "hsl(var(--nb-pink))";
-
-  return (
-    <div>
-      <div className="flex items-baseline gap-3 border-b-2 border-dashed border-nb-rule pb-3">
-        <HandArrow width={50} color={arrowColor} />
-        <h2 className="font-sans text-xl lg:text-2xl m-0 text-nb-ink">
-          최근 글
-        </h2>
-        <span className="font-sans text-xs text-nb-ink-soft uppercase tracking-wide">
-          recent notes
-        </span>
-      </div>
-      <div className="flex flex-col gap-6 mt-6">
+      <div style={{ display: "flex", flexDirection: "column", gap: 22, marginTop: 18 }}>
         {posts.map((p, i) => (
-          <SeriesRow
-            key={p.post_id}
-            href={`/posts/${p.slug}`}
-            index={i + 1}
-            arrowColor={arrowColor}
-            title={p.title}
-            excerpt={p.description}
-            metaNode={<PostMeta date={p.date} readingTime={p.readingTime} />}
-          />
+          <Link
+            key={p.id}
+            href={postHref(p, group)}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <article
+              style={{
+                display: "grid",
+                gridTemplateColumns: "44px 1fr",
+                gap: 12,
+                alignItems: "start",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: NB_HAND,
+                  fontSize: 36,
+                  color: arrowColor,
+                  lineHeight: 1,
+                }}
+              >
+                ·{String(i + 1).padStart(2, "0")}
+              </div>
+              <div>
+                <h3
+                  style={{
+                    fontFamily: NB_HAND,
+                    fontSize: 28,
+                    margin: 0,
+                    lineHeight: 1.1,
+                    color: "var(--nb-ink)",
+                  }}
+                >
+                  {p.title}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: NB_BODY,
+                    fontSize: 15,
+                    lineHeight: 1.5,
+                    color: "var(--nb-ink-soft)",
+                    margin: "4px 0 6px",
+                  }}
+                >
+                  {p.excerpt}
+                </p>
+                <div
+                  style={{
+                    fontFamily: NB_HAND2,
+                    fontSize: 15,
+                    color: "var(--nb-ink-soft)",
+                  }}
+                >
+                  {p.date} · {p.readTime}
+                </div>
+              </div>
+            </article>
+          </Link>
         ))}
       </div>
     </div>
   );
 }
 
-function SeriesRow({
-  href,
-  index,
-  arrowColor,
-  title,
-  excerpt,
-  meta,
-  metaNode,
-}: {
-  href: string;
-  index: number;
-  arrowColor: string;
-  title: string;
-  excerpt: string;
-  meta?: string;
-  metaNode?: React.ReactNode;
-}) {
+export function HomePage() {
   return (
-    <Link
-      href={href}
-      className="group grid grid-cols-[3rem_1fr] gap-3 items-start"
-    >
-      <div
-        className="font-sans text-xl leading-none tabular-nums"
-        style={{ color: arrowColor }}
-      >
-        ·{String(index).padStart(2, "0")}
-      </div>
-      <div>
-        <h3 className="font-sans text-base lg:text-lg leading-snug m-0 text-nb-ink group-hover:text-nb-pink transition-colors">
-          {title}
-        </h3>
-        <p className="font-serif text-sm leading-relaxed text-nb-ink-soft m-0 mt-1 mb-1.5">
-          {excerpt}
-        </p>
-        <div className="font-sans text-xs text-nb-ink-soft">
-          {metaNode ?? meta}
+    <>
+      <section style={{ padding: "48px 48px 24px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 40, right: 80 }}>
+          <StickyNote color="var(--nb-butter)" rotate={6} w={200}>
+            오늘의 메모
+            <br />
+            <span style={{ fontFamily: NB_HAND2, fontSize: 16 }}>
+              2026년 5월, 비가 많이 오는 주말
+            </span>
+          </StickyNote>
         </div>
-      </div>
-    </Link>
+        <div
+          style={{
+            fontFamily: NB_HAND2,
+            fontSize: 20,
+            color: "var(--nb-ink-soft)",
+            letterSpacing: 1,
+          }}
+        >
+          ✦ 오늘의 한 페이지 ✦
+        </div>
+        <h1
+          style={{
+            fontFamily: NB_HAND,
+            fontWeight: 400,
+            fontSize: 156,
+            lineHeight: 0.92,
+            margin: "8px 0 12px",
+            color: "var(--nb-ink)",
+          }}
+        >
+          공부하고,
+          <br />
+          <span style={{ color: "var(--nb-pink)" }}>축구 보고,</span>
+          <br />
+          가끔 책 읽는 사람의
+          <br />
+          작은 노트.
+        </h1>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 16 }}>
+          <p
+            style={{
+              fontFamily: NB_BODY,
+              fontStyle: "italic",
+              fontSize: 22,
+              color: "var(--nb-ink-soft)",
+              maxWidth: 480,
+              margin: 0,
+              lineHeight: 1.45,
+            }}
+          >
+            FE와 AI를 공부하다가, 갑자기 축구 칠판을 펴고, 끝까지 못 읽은 책을 또 한 권 펼치는 사람의 매주 한 페이지.
+          </p>
+          <HandArrow width={90} color="var(--nb-ink-soft)" />
+          <span style={{ fontFamily: NB_HAND, fontSize: 22, color: "var(--nb-ink-soft)" }}>
+            왼쪽 페이지부터 →
+          </span>
+        </div>
+      </section>
+
+      <section style={{ padding: "32px 48px 0", position: "relative" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
+          <h2
+            style={{
+              fontFamily: NB_HAND,
+              fontSize: 48,
+              margin: 0,
+              color: "var(--nb-ink)",
+              position: "relative",
+            }}
+          >
+            오늘 꺼낸 페이지들
+          </h2>
+          <span style={{ fontFamily: NB_HAND2, fontSize: 20, color: "var(--nb-ink-soft)" }}>
+            · today&apos;s reads
+          </span>
+          <HandArrow width={60} color="var(--nb-pink)" />
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.2fr 1fr 1fr",
+            gap: 36,
+            marginTop: 36,
+            alignItems: "start",
+          }}
+        >
+          <NbFeatureCard p={TECH_POSTS[1]} big tape="sage" group="tech" />
+          <NbFeatureCard p={HOBBY_POSTS[0]} tape="pink" group="hobby" />
+          <NbFeatureCard p={HOBBY_POSTS[1]} tape="sky" group="hobby" />
+        </div>
+      </section>
+
+      <section
+        style={{
+          padding: "56px 48px 0",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 56,
+          position: "relative",
+        }}
+      >
+        <NbColumn
+          title="공부 페이지"
+          subtitle="tech notes"
+          arrow="pink"
+          posts={TECH_POSTS.slice(0, 3)}
+          group="tech"
+        />
+        <NbColumn
+          title="주말 페이지"
+          subtitle="off-pitch notes"
+          arrow="sage"
+          posts={HOBBY_POSTS.slice(0, 3)}
+          group="hobby"
+        />
+        <div style={{ position: "absolute", top: 32, right: 48 }}>
+          <StickyNote color="var(--nb-sage)" rotate={4} w={170}>
+            축구도 결국
+            <br />
+            <em>그림 그리기</em>예요
+          </StickyNote>
+        </div>
+      </section>
+
+      <section style={{ padding: "64px 48px 24px", textAlign: "center", position: "relative" }}>
+        <div
+          style={{
+            fontFamily: NB_HAND,
+            fontSize: 64,
+            lineHeight: 1.1,
+            maxWidth: 880,
+            margin: "0 auto",
+            color: "var(--nb-ink)",
+          }}
+        >
+          &ldquo;잘 정돈된 메모를 좋아하다 보니,
+          <br />
+          <span style={{ background: "var(--nb-highlight)", padding: "0 8px" }}>
+            정돈된 척하는 메모도
+          </span>
+          <br />
+          좋아하게 되었어요.&rdquo;
+        </div>
+        <div
+          style={{
+            fontFamily: NB_HAND2,
+            fontSize: 18,
+            color: "var(--nb-ink-soft)",
+            marginTop: 16,
+          }}
+        >
+          — from the about page
+        </div>
+      </section>
+    </>
   );
 }

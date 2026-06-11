@@ -3,7 +3,10 @@ import typography from "@tailwindcss/typography";
 
 const config: Config = {
   darkMode: "class",
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}", "./content/**/*.mdx"],
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./content/**/*.mdx",
+  ],
   theme: {
     extend: {
       colors: {
@@ -40,48 +43,11 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        nb: {
-          paper: "hsl(var(--nb-paper))",
-          edge: "hsl(var(--nb-edge))",
-          ink: "hsl(var(--nb-ink))",
-          "ink-soft": "hsl(var(--nb-ink-soft))",
-          rule: "hsl(var(--nb-rule) / 0.5)",
-          sage: "hsl(var(--nb-sage))",
-          pink: "hsl(var(--nb-pink))",
-          sky: "hsl(var(--nb-sky))",
-          butter: "hsl(var(--nb-butter))",
-          highlight: "hsl(var(--nb-butter) / 0.6)",
-        },
-      },
-      fontFamily: {
-        sans: ["var(--font-sans)", "Gowun Dodum", "system-ui", "sans-serif"],
-        serif: [
-          "var(--font-serif)",
-          "var(--font-serif-kr)",
-          "Gaegu",
-          "Georgia",
-          "serif",
-        ],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
-        hand: [
-          "var(--font-hand)",
-          "Architects Daughter",
-          "var(--font-serif-kr)",
-          "Gaegu",
-          "cursive",
-        ],
-        hand2: [
-          "var(--font-hand2)",
-          "Indie Flower",
-          "var(--font-serif-kr)",
-          "Gaegu",
-          "cursive",
-        ],
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 1px)",
-        sm: "0",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },

@@ -57,10 +57,9 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
     if (!isEditing) {
       const autoSlug = value
         .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/[^a-z0-9가-힣\s-]/g, "")
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-")
-        .replace(/^-+|-+$/g, "")
         .trim();
       setSlug(autoSlug);
     }

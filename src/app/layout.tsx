@@ -1,58 +1,19 @@
 import type { Metadata } from "next";
-import {
-  Architects_Daughter,
-  Indie_Flower,
-  Gaegu,
-  Gowun_Dodum,
-  Lora,
-  Fira_Code,
-} from "next/font/google";
-import { Header } from "@/widgets/header";
-import { Footer } from "@/widgets/footer";
+import localFont from "next/font/local";
+import { NbFrame } from "@/widgets/nb-frame";
 import { BLOG_NAME, BLOG_DESCRIPTION } from "@/shared/lib/constants";
 import "./globals.css";
 
-const architectsDaughter = Architects_Daughter({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-hand",
-  display: "swap",
-});
-
-const indieFlower = Indie_Flower({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-hand2",
-  display: "swap",
-});
-
-const lora = Lora({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
-const gaegu = Gaegu({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-serif-kr",
-  display: "swap",
-});
-
-const gowunDodum = Gowun_Dodum({
-  subsets: ["latin"],
-  weight: "400",
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
   variable: "--font-sans",
-  display: "swap",
+  weight: "100 900",
 });
 
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-  display: "swap",
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
 });
 
 export const metadata: Metadata = {
@@ -70,12 +31,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&family=Gaegu:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body
-        className={`${architectsDaughter.variable} ${indieFlower.variable} ${lora.variable} ${gaegu.variable} ${gowunDodum.variable} ${firaCode.variable} antialiased min-h-screen flex flex-col bg-nb-paper text-nb-ink`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+        style={{ background: "var(--nb-paper)" }}
       >
-        <Header />
-        <div className="flex-1">{children}</div>
-        <Footer />
+        <NbFrame>{children}</NbFrame>
       </body>
     </html>
   );
