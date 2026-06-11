@@ -1,0 +1,43 @@
+{
+  "designDoc": "docs/design-system-pr1-semantic-tokens.md",
+  "branch": "feat/semantic-tokens",
+  "implementationNote": "제3안 (c) 채택 — semantic 별칭을 CSS(globals.css)에 둔다(정석). globals.css :root의 중립 6종(--background/--foreground/--card/--card-foreground/--muted-foreground/--border)을 var(--nb-*) 별칭으로 정의하고, tailwind.config.ts는 var(--semantic)으로 노출. nb primitive는 라이트(:root)/다크([data-nb-theme=dark]) 양쪽 정의돼 별칭이 자동 추종. .dark(shadcn)는 dead라 미변경. probe 컴파일로 bg-background→var(--background)→var(--nb-paper)→#F9F1DE 체인 검증 완료.",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "css",
+      "title": "globals.css :root 중립 6종을 nb primitive 별칭(semantic)으로 정의",
+      "files": [
+        {
+          "path": "src/app/globals.css",
+          "action": "modify",
+          "changes": ":root에서 --background→var(--nb-paper), --foreground→var(--nb-ink), --card→var(--nb-paper), --card-foreground→var(--nb-ink), --muted-foreground→var(--nb-ink-soft), --border→var(--nb-rule)로 교체. .dark 블록·nb primitive 정의·기타 shadcn 토큰(primary/secondary/input/ring 등)은 미변경."
+        }
+      ],
+      "barrel": null,
+      "passes": true
+    },
+    {
+      "id": 2,
+      "layer": "config",
+      "title": "tailwind.config.ts에서 중립색을 var(--semantic) 노출 + nb 전용색 등록",
+      "files": [
+        {
+          "path": "tailwind.config.ts",
+          "action": "modify",
+          "changes": "(중립색) background→var(--background), foreground→var(--foreground), border→var(--border), muted.foreground→var(--muted-foreground), card.DEFAULT→var(--card)·card.foreground→var(--card-foreground). (nb 확장) colors.nb에 paper/ink/ink-soft/rule/sage/pink/sky/butter/highlight를 var(--nb-*) 직접 참조로 등록. edge는 노출 제외. primary/secondary/accent/input/ring 미변경."
+        }
+      ],
+      "barrel": null,
+      "passes": true
+    }
+  ],
+  "acceptanceCriteria": [
+    "shadcn 중립 토큰 6종이 라이트/다크 모두 nb 색으로 렌더",
+    "semantic 별칭이 CSS(globals.css)에 존재 → 런타임 var(--background) 접근 가능",
+    "text-nb-sage / bg-nb-highlight / border-nb-rule 등 nb 유틸 빌드·렌더",
+    "기존 var(--nb-*) 인라인 169곳 시각 회귀 없음 (비파괴)",
+    "alpha 포함 토큰(rule/highlight) 반투명 렌더",
+    "pnpm build 통과"
+  ]
+}

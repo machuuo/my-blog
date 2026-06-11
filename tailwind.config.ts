@@ -10,11 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
+        // 중립색: semantic 별칭 참조 (globals.css에서 --nb-* primitive를 가리킴, light/dark 자동 추종)
+        border: "var(--border)",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        // 강조색: shadcn 기본 유지 (향후 확장 PR 범위)
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -29,7 +31,7 @@ const config: Config = {
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          foreground: "var(--muted-foreground)",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -40,8 +42,20 @@ const config: Config = {
           foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
+        },
+        // notebook 전용 액센트/장식 토큰 (text-nb-sage, bg-nb-highlight, border-nb-rule …)
+        nb: {
+          paper: "var(--nb-paper)",
+          ink: "var(--nb-ink)",
+          "ink-soft": "var(--nb-ink-soft)",
+          rule: "var(--nb-rule)",
+          sage: "var(--nb-sage)",
+          pink: "var(--nb-pink)",
+          sky: "var(--nb-sky)",
+          butter: "var(--nb-butter)",
+          highlight: "var(--nb-highlight)",
         },
       },
       borderRadius: {

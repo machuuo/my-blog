@@ -5,10 +5,11 @@
 @layer base {
   :root {
     /* shadcn baseline (legacy admin/auth pages) */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    /* 중립 5역할: notebook primitive 별칭 — 값 SoT는 --nb-*, light/dark 자동 추종 */
+    --background: var(--nb-paper);
+    --foreground: var(--nb-ink);
+    --card: var(--nb-paper);
+    --card-foreground: var(--nb-ink);
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
     --primary: 0 0% 9%;
@@ -16,12 +17,12 @@
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --muted-foreground: var(--nb-ink-soft);
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
+    --border: var(--nb-rule);
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --radius: 0.625rem;
