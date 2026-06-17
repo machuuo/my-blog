@@ -1,0 +1,110 @@
+{
+  "design": "shared-components.md",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "component",
+      "title": "SectionHeader.tsx 신규 생성",
+      "files": [
+        {
+          "path": "src/shared/ui/notebook/SectionHeader.tsx",
+          "action": "create",
+          "changes": [
+            "title(필수), subtitle(선택) props 정의",
+            "점선 구분선 var(--nb-rule) 적용",
+            "NB_HAND(42px) + NB_HAND2(18px, ink-soft) 폰트"
+          ]
+        },
+        {
+          "path": "src/shared/ui/notebook/index.ts",
+          "action": "modify",
+          "changes": ["SectionHeader barrel export 추가"]
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "title prop 필수, subtitle prop 선택적으로 렌더링된다",
+        "subtitle 없을 때 subtitle 영역이 렌더링되지 않는다",
+        "하단에 점선 구분선(var(--nb-rule))이 표시된다",
+        "하드코딩 hex 없음"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "component",
+      "title": "NbChip.tsx 신규 생성",
+      "files": [
+        {
+          "path": "src/shared/ui/notebook/NbChip.tsx",
+          "action": "create",
+          "changes": [
+            "active, onClick, children props 정의",
+            "active=true: 배경 var(--nb-ink), 텍스트 var(--nb-paper)",
+            "active=false: 배경 투명, border var(--nb-ink), 텍스트 var(--nb-ink)",
+            "<button> 태그, aria-pressed={active}"
+          ]
+        },
+        {
+          "path": "src/shared/ui/notebook/index.ts",
+          "action": "modify",
+          "changes": ["NbChip barrel export 추가"]
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "active=true일 때 배경 var(--nb-ink) / 텍스트 var(--nb-paper)로 반전된다",
+        "active=false일 때 배경 투명 / 텍스트 var(--nb-ink) / border var(--nb-ink)",
+        "onClick prop이 클릭 시 호출된다",
+        "<button> 태그 사용, aria-pressed={active} 적용"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "component",
+      "title": "Spinner.tsx 신규 생성",
+      "files": [
+        {
+          "path": "src/shared/ui/notebook/Spinner.tsx",
+          "action": "create",
+          "changes": [
+            "size: 'sm'|'md'|'lg' prop (기본값 'md')",
+            "sm=16px, md=32px, lg=48px",
+            "role='status', aria-label='로딩 중'"
+          ]
+        },
+        {
+          "path": "src/shared/ui/notebook/index.ts",
+          "action": "modify",
+          "changes": ["Spinner barrel export 추가"]
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "size sm(16px) / md(32px) / lg(48px) variant를 지원한다",
+        "기본 size는 md이다",
+        "role='status', aria-label='로딩 중' 적용"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "infra",
+      "title": "sonner 설치 + layout.tsx <Toaster /> 추가",
+      "files": [
+        {
+          "path": "src/app/layout.tsx",
+          "action": "modify",
+          "changes": [
+            "<Toaster /> 추가",
+            "노트북 테마 CSS 변수로 스타일링 (--nb-paper, --nb-ink, --nb-rule)"
+          ]
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "sonner 패키지가 설치된다",
+        "루트 레이아웃에 <Toaster />가 추가된다",
+        "toast() 호출 시 노트북 스타일 토스트가 표시된다"
+      ]
+    }
+  ]
+}

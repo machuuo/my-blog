@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
 import { NbFrame } from "@/widgets/nb-frame";
 import { BLOG_NAME, BLOG_DESCRIPTION } from "@/shared/lib/constants";
 import "./globals.css";
@@ -48,6 +49,19 @@ export default function RootLayout({
         style={{ background: "var(--nb-paper)" }}
       >
         <NbFrame>{children}</NbFrame>
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: "var(--nb-paper)",
+              color: "var(--nb-ink)",
+              border: "1.5px solid var(--nb-rule)",
+              fontFamily: "var(--nb-font-hand2)",
+              fontSize: 16,
+              boxShadow: "var(--nb-shadow-md)",
+            },
+          }}
+        />
       </body>
     </html>
   );
