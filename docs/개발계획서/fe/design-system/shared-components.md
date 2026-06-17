@@ -46,7 +46,7 @@
 해당 없음 — 신규 컴포넌트 파일 생성만. 기존 페이지 동작 변경 없음.
 
 **컴포넌트 사용 흐름 (향후 치환 시)**:
-```
+```tsx
 부모 페이지
   └── <SectionHeader title="테크 노트" subtitle="tech notes" />
   └── <NbChip active={filter === "react"} onClick={() => setFilter("react")}>리액트</NbChip>
@@ -63,7 +63,7 @@ toast.error("실패")
 
 ### SectionHeader
 
-```
+```text
 // subtitle 있을 때
 ┌─────────────────────────────────────────────────────
 │ 테크 노트  tech notes                               ← NB_HAND(42px) + NB_HAND2(18px, ink-soft)
@@ -77,7 +77,7 @@ toast.error("실패")
 
 ### NbChip
 
-```
+```text
 // inactive (기본)
 ┌──────────────┐
 │  리액트       │  ← 배경 투명, border 2px solid var(--nb-ink), 텍스트 var(--nb-ink)
@@ -91,7 +91,7 @@ toast.error("실패")
 
 ### Spinner
 
-```
+```text
 // sm (16px)     md (32px)      lg (48px)
    ◌              ◌              ◌
    ↺              ↺              ↺
@@ -100,7 +100,7 @@ toast.error("실패")
 
 ### Toast (sonner)
 
-```
+```text
 // 기본 (우측 하단)
 ┌──────────────────────────────┐
 │  복사됨                       │  ← bg: var(--nb-paper), border: var(--nb-rule)
@@ -119,7 +119,7 @@ toast.error("실패")
 
 ### Component Tree
 
-```
+```text
 shared/ui/notebook/
   SectionHeader.tsx     ← 신규
   NbChip.tsx            ← 신규
@@ -133,7 +133,7 @@ src/app/
 ### Accessibility
 
 - `NbChip`: `<button>` 태그, `aria-pressed={active}`
-- `Spinner`: `role="status"`, `aria-label="로딩 중"`, 애니메이션 텍스트는 `aria-hidden`
+- `Spinner`: `role="status"`, `aria-label="로딩 중"` (텍스트 노드 없음 — SVG 단독 렌더)
 
 ## 6. Technical Design
 
@@ -150,7 +150,7 @@ src/app/
 
 ### 타입 인터페이스
 
-```
+```ts
 SectionHeaderProps
   title: string
   subtitle?: string

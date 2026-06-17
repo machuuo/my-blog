@@ -21,7 +21,7 @@ export function NbChip({ active, onClick, children }: NbChipProps) {
   };
 
   return (
-    <button style={style} onClick={onClick} aria-pressed={active}>
+    <button type="button" style={style} onClick={onClick} aria-pressed={active}>
       {children}
     </button>
   );
