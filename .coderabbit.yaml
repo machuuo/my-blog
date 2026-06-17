@@ -9,8 +9,11 @@ reviews:
   path_filters:
     - "!content/**"
     - "!public/**"
+  review_status: true
   path_instructions:
+    - path: "**"
+      instructions: "모든 리뷰 코멘트는 한국어로 작성해주세요."
     - path: "src/**"
-      instructions: "Next.js App Router 기반 블로그입니다. 타입 안전성과 성능을 중점적으로 리뷰해주세요."
+      instructions: "Next.js App Router 기반 블로그입니다. 타입 안전성과 성능을 중점적으로 리뷰해주세요. 한국어로 작성해주세요."
     - path: "src/app/globals.css"
-      instructions: "CSS 커스텀 프로퍼티 기반 디자인 토큰 파일입니다. primitive → semantic 계층 구조를 유지하는지 확인해주세요."
+      instructions: "CSS 커스텀 프로퍼티 기반 디자인 토큰 파일입니다. primitive → semantic 계층 구조를 유지하는지 확인해주세요. 한국어로 작성해주세요."
