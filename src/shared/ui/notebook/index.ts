@@ -1,3 +1,6 @@
+export { SectionHeader } from "./SectionHeader";
+export { NbChip } from "./NbChip";
+export { Spinner } from "./Spinner";
 export { StripePlaceholder } from "./StripePlaceholder";
 export { WashiTape } from "./WashiTape";
 export { StickyNote } from "./StickyNote";
