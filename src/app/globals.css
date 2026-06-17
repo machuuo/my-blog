@@ -4,8 +4,80 @@
 
 @layer base {
   :root {
-    /* shadcn baseline (legacy admin/auth pages) */
-    /* 중립 5역할: notebook primitive 별칭 — 값 SoT는 --nb-*, light/dark 자동 추종 */
+    /* ── Primitive: Color ── */
+    /* Sand — 종이/배경 계열 */
+    --sand-1: #FCF8EE;
+    --sand-2: #F9F1DE;
+    --sand-3: #F1E7D6;
+    --sand-4: #EFE4C9;
+    --sand-5: #C7B89A;
+    /* Brown — 잉크/텍스트 계열 */
+    --brown-1: #6E5A45;
+    --brown-2: #3A2C1E;
+    --brown-3: #2D2117;
+    --brown-4: #1F1813;
+    --brown-5: #1F1410;
+    /* Green — 와시테이프/식물 계열 */
+    --green-1: #CFDDB6;
+    --green-2: #BCCFA4;
+    --green-3: #8FA678;
+    /* Pink — 메모/스티커 계열 */
+    --pink-1: #F1C8B9;
+    --pink-2: #E6BAA9;
+    --pink-3: #C58C7A;
+    /* Sky — 사진/하늘 계열 */
+    --sky-1: #C7DCE6;
+    --sky-2: #8FAFBE;
+    /* Yellow — 형광펜/버터 계열 */
+    --yellow-1: #F1E1A3;
+    --yellow-2: #E3CB87;
+    --yellow-3: #C9B47A;
+
+    /* ── Primitive: Composition (alpha 합성용 RGB) ── */
+    --shadow-ink-rgb: 45 33 23;
+    --yellow-1-rgb:   241 225 163;
+
+    /* ── Primitive: Typography ── */
+    --font-hand:  'Caveat', 'Gowun Dodum', cursive;
+    --font-hand2: 'Kalam', 'Gaegu', cursive;
+    --font-body:  'Lora', 'Gowun Batang', Georgia, serif;
+    --font-sans:  'Gowun Dodum', system-ui, sans-serif;
+    --font-mono:  'IBM Plex Mono', ui-monospace, monospace;
+
+    /* ── Semantic: Surface ── */
+    --nb-paper:    var(--sand-2);
+    --nb-paper-hi: var(--sand-1);
+    --nb-edge:     var(--sand-4);
+
+    /* ── Semantic: Text ── */
+    --nb-ink:      var(--brown-3);
+    --nb-ink-soft: var(--brown-1);
+
+    /* ── Semantic: Border ── */
+    --nb-rule: rgb(var(--shadow-ink-rgb) / 0.16);
+
+    /* ── Semantic: Accent ── */
+    --nb-tape:      var(--green-1);
+    --nb-memo:      var(--pink-1);
+    --nb-photo:     var(--sky-1);
+    --nb-highlight: rgb(var(--yellow-1-rgb) / 0.6);
+    /* backward-compat — PR B에서 새 semantic 이름으로 치환 후 제거 */
+    --nb-sage:   var(--green-1);
+    --nb-pink:   var(--pink-1);
+    --nb-sky:    var(--sky-1);
+    --nb-butter: var(--yellow-1);
+
+    /* ── Semantic: Elevation ── */
+    --nb-shadow-sm: 3px 5px 12px rgb(var(--shadow-ink-rgb) / 0.10);
+    --nb-shadow-md: 4px 6px 14px rgb(var(--shadow-ink-rgb) / 0.12);
+    --nb-shadow-lg: 6px 10px 22px rgb(var(--shadow-ink-rgb) / 0.18);
+
+    /* ── Semantic: Typography ── */
+    --nb-font-hand:  var(--font-hand);
+    --nb-font-hand2: var(--font-hand2);
+    --nb-font-body:  var(--font-body);
+
+    /* ── shadcn bridge (legacy admin/auth pages) ── */
     --background: var(--nb-paper);
     --foreground: var(--nb-ink);
     --card: var(--nb-paper);
@@ -26,21 +98,10 @@
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --radius: 0.625rem;
-
-    /* Notebook / Journal — light */
-    --nb-paper: #F9F1DE;
-    --nb-edge: #EFE4C9;
-    --nb-ink: #2D2117;
-    --nb-ink-soft: #6E5A45;
-    --nb-rule: rgba(45, 33, 23, 0.16);
-    --nb-sage: #CFDDB6;
-    --nb-pink: #F1C8B9;
-    --nb-sky: #C7DCE6;
-    --nb-butter: #F1E1A3;
-    --nb-highlight: rgba(241, 225, 163, 0.6);
   }
 
   .dark {
+    /* shadcn dark (legacy admin/auth pages) */
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -62,18 +123,35 @@
     --ring: 0 0% 83.1%;
   }
 
-  /* Notebook dark — scoped via [data-nb-theme="dark"] on the frame */
+  /* Notebook dark — primitive 재정의 (semantic은 cascade로 자동 추종) */
   [data-nb-theme="dark"] {
-    --nb-paper: #22201A;
-    --nb-edge: #171612;
-    --nb-ink: #F3E9D2;
-    --nb-ink-soft: #B9A682;
-    --nb-rule: rgba(243, 233, 210, 0.18);
-    --nb-sage: #8FA678;
-    --nb-pink: #C58C7A;
-    --nb-sky: #8FAFBE;
-    --nb-butter: #C9B47A;
-    --nb-highlight: rgba(201, 180, 122, 0.32);
+    /* Primitive: Color */
+    --sand-1: #2B2823;
+    --sand-2: #22201A;
+    --sand-3: #1D1B16;
+    --sand-4: #171612;
+    --sand-5: #0F0E0C;
+    --brown-1: #B9A682;
+    --brown-2: #CFC0A0;
+    --brown-3: #F3E9D2;
+    --brown-4: #F7F1E3;
+    --brown-5: #FCF8EE;
+    --green-1: #8FA678;
+    --green-2: #6B8B5A;
+    --green-3: #4D6640;
+    --pink-1: #C58C7A;
+    --pink-2: #A87060;
+    --pink-3: #8A5548;
+    --sky-1: #8FAFBE;
+    --sky-2: #6B92A5;
+    --yellow-1: #C9B47A;
+    --yellow-2: #A89058;
+    --yellow-3: #8A7040;
+    /* Primitive: Composition */
+    --shadow-ink-rgb: 243 233 210;
+    --yellow-1-rgb:   201 180 122;
+    /* Semantic: alpha 변경 항목만 재정의 */
+    --nb-highlight: rgb(var(--yellow-1-rgb) / 0.32);
   }
 }
 

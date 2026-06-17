@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // 중립색: semantic 별칭 참조 (globals.css에서 --nb-* primitive를 가리킴, light/dark 자동 추종)
+        // shadcn bridge: nb semantic 토큰 참조 (globals.css --nb-* → primitive cascade)
         border: "var(--border)",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -45,17 +45,36 @@ const config: Config = {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
         },
-        // notebook 전용 액센트/장식 토큰 (text-nb-sage, bg-nb-highlight, border-nb-rule …)
+        // notebook semantic 토큰 (bg-nb-paper, text-nb-ink, bg-nb-tape …)
+        // primitive (sand/brown/green/…)는 CSS 변수 전용 — Tailwind 미노출
         nb: {
-          paper: "var(--nb-paper)",
-          ink: "var(--nb-ink)",
-          "ink-soft": "var(--nb-ink-soft)",
-          rule: "var(--nb-rule)",
-          sage: "var(--nb-sage)",
-          pink: "var(--nb-pink)",
-          sky: "var(--nb-sky)",
-          butter: "var(--nb-butter)",
-          highlight: "var(--nb-highlight)",
+          // Surface
+          paper:       "var(--nb-paper)",
+          "paper-hi":  "var(--nb-paper-hi)",
+          edge:        "var(--nb-edge)",
+          // Text
+          ink:         "var(--nb-ink)",
+          "ink-soft":  "var(--nb-ink-soft)",
+          // Border
+          rule:        "var(--nb-rule)",
+          // Accent
+          tape:        "var(--nb-tape)",
+          memo:        "var(--nb-memo)",
+          photo:       "var(--nb-photo)",
+          highlight:   "var(--nb-highlight)",
+          // backward-compat — PR B에서 새 semantic 이름으로 치환 후 제거
+          sage:        "var(--nb-sage)",
+          pink:        "var(--nb-pink)",
+          sky:         "var(--nb-sky)",
+          butter:      "var(--nb-butter)",
+          // Elevation
+          "shadow-sm": "var(--nb-shadow-sm)",
+          "shadow-md": "var(--nb-shadow-md)",
+          "shadow-lg": "var(--nb-shadow-lg)",
+          // Typography
+          "font-hand":  "var(--nb-font-hand)",
+          "font-hand2": "var(--nb-font-hand2)",
+          "font-body":  "var(--nb-font-body)",
         },
       },
       borderRadius: {
