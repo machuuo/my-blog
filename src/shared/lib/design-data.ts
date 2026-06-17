@@ -209,15 +209,15 @@ export const ALL_TAGS: NbTag[] = [
 ];
 
 export function accentVar(accent: NbAccent): string {
-  if (accent === "sage") return "var(--nb-sage)";
-  if (accent === "plum") return "var(--nb-pink)";
-  return "var(--nb-butter)";
+  if (accent === "sage") return "var(--nb-tape)";
+  if (accent === "plum") return "var(--nb-memo)";
+  return "var(--nb-note)";
 }
 
 export function accentTint(accent: NbAccent): string {
-  if (accent === "sage") return "#BCCFA4";
-  if (accent === "plum") return "#E6BAA9";
-  return "#E3CB87";
+  if (accent === "sage") return "var(--green-2)";
+  if (accent === "plum") return "var(--pink-2)";
+  return "var(--yellow-2)";
 }
 
 // Font stacks
