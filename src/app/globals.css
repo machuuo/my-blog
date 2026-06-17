@@ -4,361 +4,184 @@
 
 @layer base {
   :root {
-    /* Notebook / Journal — light */
-    --nb-paper: 41 65% 92%;          /* #F9F1DE cream paper */
-    --nb-edge: 41 45% 86%;            /* #EFE4C9 page edge */
-    --nb-ink: 28 33% 13%;             /* #2D2117 */
-    --nb-ink-soft: 28 23% 35%;        /* #6E5A45 */
-    --nb-rule: 28 33% 13%;            /* alpha applied via /N */
-    --nb-sage: 80 33% 79%;            /* #CFDDB6 */
-    --nb-pink: 16 70% 84%;            /* #F1C8B9 */
-    --nb-sky: 198 35% 84%;            /* #C7DCE6 */
-    --nb-butter: 48 78% 79%;          /* #F1E1A3 */
+    /* ── Primitive: Color ── */
+    /* Sand — 종이/배경 계열 */
+    --sand-1: #FCF8EE;
+    --sand-2: #F9F1DE;
+    --sand-3: #F1E7D6;
+    --sand-4: #EFE4C9;
+    --sand-5: #C7B89A;
+    /* Brown — 잉크/텍스트 계열 */
+    --brown-1: #6E5A45;
+    --brown-2: #3A2C1E;
+    --brown-3: #2D2117;
+    --brown-4: #1F1813;
+    --brown-5: #1F1410;
+    /* Green — 와시테이프/식물 계열 */
+    --green-1: #CFDDB6;
+    --green-2: #BCCFA4;
+    --green-3: #8FA678;
+    /* Pink — 메모/스티커 계열 */
+    --pink-1: #F1C8B9;
+    --pink-2: #E6BAA9;
+    --pink-3: #C58C7A;
+    /* Sky — 사진/하늘 계열 */
+    --sky-1: #C7DCE6;
+    --sky-2: #8FAFBE;
+    /* Yellow — 형광펜/버터 계열 */
+    --yellow-1: #F1E1A3;
+    --yellow-2: #E3CB87;
+    --yellow-3: #C9B47A;
 
-    /* Map shadcn-style tokens to notebook palette */
+    /* ── Primitive: Composition (alpha 합성용 RGB) ── */
+    --shadow-ink-rgb: 45 33 23;
+    --yellow-1-rgb:   241 225 163;
+
+    /* ── Primitive: Typography ── */
+    --font-hand:  'Caveat', 'Gowun Dodum', cursive;
+    --font-hand2: 'Kalam', 'Gaegu', cursive;
+    --font-body:  'Lora', 'Gowun Batang', Georgia, serif;
+    --font-sans:  'Gowun Dodum', system-ui, sans-serif;
+    --font-mono:  'IBM Plex Mono', ui-monospace, monospace;
+
+    /* ── Semantic: Surface ── */
+    --nb-paper:    var(--sand-2);
+    --nb-paper-hi: var(--sand-1);
+    --nb-edge:     var(--sand-4);
+
+    /* ── Semantic: Text ── */
+    --nb-ink:      var(--brown-3);
+    --nb-ink-soft: var(--brown-1);
+
+    /* ── Semantic: Border ── */
+    --nb-rule: rgb(var(--shadow-ink-rgb) / 0.16);
+
+    /* ── Semantic: Accent ── */
+    --nb-tape:      var(--green-1);
+    --nb-memo:      var(--pink-1);
+    --nb-photo:     var(--sky-1);
+    --nb-highlight: rgb(var(--yellow-1-rgb) / 0.6);
+    /* backward-compat — PR B에서 새 semantic 이름으로 치환 후 제거 */
+    --nb-sage:   var(--green-1);
+    --nb-pink:   var(--pink-1);
+    --nb-sky:    var(--sky-1);
+    --nb-butter: var(--yellow-1);
+
+    /* ── Semantic: Elevation ── */
+    --nb-shadow-sm: 3px 5px 12px rgb(var(--shadow-ink-rgb) / 0.10);
+    --nb-shadow-md: 4px 6px 14px rgb(var(--shadow-ink-rgb) / 0.12);
+    --nb-shadow-lg: 6px 10px 22px rgb(var(--shadow-ink-rgb) / 0.18);
+
+    /* ── Semantic: Typography ── */
+    --nb-font-hand:  var(--font-hand);
+    --nb-font-hand2: var(--font-hand2);
+    --nb-font-body:  var(--font-body);
+
+    /* ── shadcn bridge (legacy admin/auth pages) ── */
     --background: var(--nb-paper);
     --foreground: var(--nb-ink);
-    --card: 41 70% 95%;
+    --card: var(--nb-paper);
     --card-foreground: var(--nb-ink);
-    --popover: 41 70% 95%;
-    --popover-foreground: var(--nb-ink);
-    --primary: var(--nb-ink);
-    --primary-foreground: var(--nb-paper);
-    --secondary: var(--nb-butter);
-    --secondary-foreground: var(--nb-ink);
-    --muted: 41 45% 88%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
     --muted-foreground: var(--nb-ink-soft);
-    --accent: var(--nb-pink);
-    --accent-foreground: var(--nb-ink);
-    --destructive: 0 70% 50%;
-    --destructive-foreground: var(--nb-paper);
-    --border: 28 33% 13%;
-    --input: var(--border);
-    --ring: var(--nb-pink);
-    --radius: 0.5rem;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: var(--nb-rule);
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.625rem;
   }
 
   .dark {
-    /* Notebook / Journal — dark */
-    --nb-paper: 36 11% 12%;           /* #22201A */
-    --nb-edge: 30 12% 8%;             /* #171612 */
-    --nb-ink: 41 60% 89%;             /* #F3E9D2 */
-    --nb-ink-soft: 36 30% 62%;        /* #B9A682 */
-    --nb-rule: 41 60% 89%;
-    --nb-sage: 90 19% 56%;            /* #8FA678 */
-    --nb-pink: 14 39% 63%;            /* #C58C7A */
-    --nb-sky: 200 22% 65%;            /* #8FAFBE */
-    --nb-butter: 42 41% 64%;          /* #C9B47A */
+    /* shadcn dark (legacy admin/auth pages) */
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
 
-    --background: var(--nb-paper);
-    --foreground: var(--nb-ink);
-    --card: 36 13% 15%;
-    --card-foreground: var(--nb-ink);
-    --popover: 36 13% 15%;
-    --popover-foreground: var(--nb-ink);
-    --primary: var(--nb-ink);
-    --primary-foreground: var(--nb-paper);
-    --secondary: var(--nb-butter);
-    --secondary-foreground: var(--nb-ink);
-    --muted: 36 11% 18%;
-    --muted-foreground: var(--nb-ink-soft);
-    --accent: var(--nb-pink);
-    --accent-foreground: var(--nb-paper);
-    --border: 41 60% 89%;
-    --input: var(--border);
-    --ring: var(--nb-pink);
+  /* Notebook dark — primitive 재정의 (semantic은 cascade로 자동 추종) */
+  [data-nb-theme="dark"] {
+    /* Primitive: Color */
+    --sand-1: #2B2823;
+    --sand-2: #22201A;
+    --sand-3: #1D1B16;
+    --sand-4: #171612;
+    --sand-5: #0F0E0C;
+    --brown-1: #B9A682;
+    --brown-2: #CFC0A0;
+    --brown-3: #F3E9D2;
+    --brown-4: #F7F1E3;
+    --brown-5: #FCF8EE;
+    --green-1: #8FA678;
+    --green-2: #6B8B5A;
+    --green-3: #4D6640;
+    --pink-1: #C58C7A;
+    --pink-2: #A87060;
+    --pink-3: #8A5548;
+    --sky-1: #8FAFBE;
+    --sky-2: #6B92A5;
+    --yellow-1: #C9B47A;
+    --yellow-2: #A89058;
+    --yellow-3: #8A7040;
+    /* Primitive: Composition */
+    --shadow-ink-rgb: 243 233 210;
+    --yellow-1-rgb:   201 180 122;
+    /* Semantic: alpha 변경 항목만 재정의 */
+    --nb-highlight: rgb(var(--yellow-1-rgb) / 0.32);
   }
 }
 
 @layer base {
   * {
-    border-color: hsl(var(--nb-rule) / 0.3);
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: var(--font-serif), var(--font-serif-kr), "Gaegu", Georgia, serif;
-    background-color: hsl(var(--nb-paper));
-    background-image:
-      radial-gradient(circle at 0.5px 0.5px, hsl(var(--nb-rule) / 0.18) 0.6px, transparent 0.7px);
-    background-size: 18px 18px;
-    background-attachment: fixed;
-  }
-  ::selection {
-    background: hsl(var(--nb-butter) / 0.7);
-    color: hsl(var(--nb-ink));
-  }
-
-  /* Default heading scale — notebook tone.
-     Tailwind classes (e.g. text-6xl, font-hand) on a heading will override these. */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-hand), "Architects Daughter",
-      var(--font-serif-kr), "Gaegu", cursive;
-    font-weight: 400;
-    color: hsl(var(--nb-ink));
-    line-height: 1.1;
-  }
-  h1 {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    letter-spacing: -0.01em;
-  }
-  h2 {
-    font-size: clamp(2rem, 4.5vw, 3rem);
-  }
-  h3 {
-    font-size: clamp(1.625rem, 3vw, 2.25rem);
-  }
-  h4 {
-    font-size: 1.5rem;
-  }
-  h5 {
-    font-size: 1.25rem;
-  }
-  h6 {
-    font-size: 1.125rem;
-    color: hsl(var(--nb-ink-soft));
+    @apply bg-background text-foreground;
   }
 }
 
-@layer utilities {
-  /* dashed rule between sections */
-  .nb-rule {
-    border-color: hsl(var(--nb-rule) / 0.3);
-    border-style: dashed;
-  }
-
-  /* handwritten meta caption */
-  .nb-meta {
-    font-family: var(--font-hand2), "Kalam", "Gaegu", cursive;
-    font-size: 1rem;
-    color: hsl(var(--nb-ink-soft));
-  }
-
-  /* highlight marker effect */
-  .nb-highlight {
-    background-color: hsl(var(--nb-butter) / 0.6);
-    padding: 0 0.4rem;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-  }
-
-  /* paper card — slight shadow, off-white */
-  .nb-paper-card {
-    background: #FCF8EE;
-    box-shadow: 4px 6px 14px rgba(40, 28, 18, 0.10);
-  }
-  .dark .nb-paper-card {
-    background: hsl(36 13% 15%);
-    box-shadow: 4px 6px 14px rgba(0, 0, 0, 0.3);
-  }
-
-  /* washi tape — small decorative band */
-  .nb-washi {
-    background-image: repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.18) 0 6px,
-      transparent 6px 12px
-    );
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    opacity: 0.85;
-  }
-
-  /* hand-drawn chip */
-  .nb-chip {
-    font-family: var(--font-hand), "Caveat", "Gowun Dodum", cursive;
-    font-size: 1.25rem;
-    padding: 0.25rem 0.875rem;
-    border: 2px solid hsl(var(--nb-ink));
-    border-radius: 9999px;
-    background: transparent;
-    color: hsl(var(--nb-ink));
-    cursor: pointer;
-    transform: rotate(-1deg);
-    display: inline-block;
-    line-height: 1.2;
-    transition: all 0.15s ease;
-  }
-  .nb-chip:hover {
-    background: hsl(var(--nb-butter) / 0.5);
-  }
-  .nb-chip-active {
-    background: hsl(var(--nb-ink));
-    color: hsl(var(--nb-paper));
-    transform: rotate(0deg);
-  }
-
-  /* prose theme for MDX content */
-  .prose-nb {
-    font-family: var(--font-serif), var(--font-serif-kr), "Gaegu", Georgia, serif;
-    font-size: 1.125rem;
-    line-height: 1.75;
-    color: hsl(var(--nb-ink));
-  }
-  .prose-nb h1,
-  .prose-nb h2,
-  .prose-nb h3,
-  .prose-nb h4 {
-    font-family: var(--font-hand), "Architects Daughter", var(--font-serif-kr), "Gaegu", cursive;
-    font-weight: 400;
-    color: hsl(var(--nb-ink));
-    line-height: 1.15;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-  }
-  .prose-nb h2 {
-    font-size: 2.5rem;
-    border-bottom: 2px dashed hsl(var(--nb-rule) / 0.4);
-    padding-bottom: 0.5rem;
-  }
-  .prose-nb h3 {
-    font-size: 2rem;
-  }
-  .prose-nb h4 {
-    font-size: 1.5rem;
-  }
-  .prose-nb p {
-    margin: 1.25rem 0;
-  }
-  .prose-nb > p:first-of-type::first-letter {
-    font-family: var(--font-hand), "Caveat", cursive;
-    font-size: 5rem;
-    float: left;
-    line-height: 0.85;
-    padding: 0.25rem 0.75rem 0 0;
-    color: hsl(var(--nb-pink));
-  }
-  .prose-nb a {
-    color: hsl(var(--nb-ink));
-    background-image: linear-gradient(
-      hsl(var(--nb-butter) / 0.6),
-      hsl(var(--nb-butter) / 0.6)
-    );
-    background-position: 0 88%;
-    background-size: 100% 0.4em;
-    background-repeat: no-repeat;
-    text-decoration: none;
-    transition: background-size 0.15s ease;
-  }
-  .prose-nb a:hover {
-    background-size: 100% 100%;
-  }
-  .prose-nb strong {
-    font-weight: 700;
-    color: hsl(var(--nb-ink));
-  }
-  .prose-nb em {
-    font-style: italic;
-    color: hsl(var(--nb-pink));
-  }
-  .prose-nb blockquote {
-    margin: 2rem 0;
-    padding: 1rem 1.5rem;
-    border-left: 4px solid hsl(var(--nb-pink));
-    font-family: var(--font-hand), "Caveat", "Gowun Dodum", cursive;
-    font-size: 1.625rem;
-    line-height: 1.4;
-    color: hsl(var(--nb-ink));
-    background: hsl(var(--nb-butter) / 0.2);
-  }
-  .prose-nb blockquote p {
-    margin: 0;
-  }
-  .prose-nb ul,
-  .prose-nb ol {
-    padding-left: 1.5rem;
-    margin: 1.25rem 0;
-  }
-  .prose-nb li {
-    margin: 0.5rem 0;
-  }
-  .prose-nb ul li::marker {
-    color: hsl(var(--nb-pink));
-  }
-  .prose-nb ol li::marker {
-    color: hsl(var(--nb-pink));
-    font-family: var(--font-hand), cursive;
-  }
-  .prose-nb hr {
-    border: none;
-    text-align: center;
-    margin: 2.5rem 0;
-    color: hsl(var(--nb-ink-soft));
-    font-family: var(--font-hand), cursive;
-  }
-  .prose-nb hr::before {
-    content: "✦ ✦ ✦";
-    letter-spacing: 0.5em;
-    font-size: 1.5rem;
-  }
-  .prose-nb code {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.9em;
-    background: hsl(var(--nb-butter) / 0.4);
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-    color: hsl(var(--nb-ink));
-  }
-  .prose-nb pre {
-    background: #FCF8EE;
-    border: 1px solid hsl(var(--nb-rule) / 0.3);
-    border-radius: 0.5rem;
-    padding: 1.25rem 1.5rem;
-    overflow-x: auto;
-    margin: 1.5rem 0;
-    box-shadow: 4px 6px 14px rgba(40, 28, 18, 0.08);
-    font-size: 0.875rem;
-    line-height: 1.7;
-  }
-  .dark .prose-nb pre {
-    background: hsl(36 13% 15%);
-  }
-  .prose-nb pre code {
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    font-size: inherit;
-  }
-  .prose-nb img {
-    border-radius: 0.5rem;
-    box-shadow: 5px 7px 16px rgba(40, 28, 18, 0.15);
-    margin: 1.5rem 0;
-  }
-  .prose-nb table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-family: var(--font-serif), serif;
-  }
-  .prose-nb th,
-  .prose-nb td {
-    border-bottom: 1px dashed hsl(var(--nb-rule) / 0.3);
-    padding: 0.75rem 1rem;
-    text-align: left;
-  }
-  .prose-nb th {
-    font-family: var(--font-hand), cursive;
-    font-size: 1.25rem;
-    font-weight: 400;
-    color: hsl(var(--nb-pink));
-  }
-
-  /* ruled card (index card with red margin line) */
-  .nb-index-card {
-    background-color: #FCF8EE;
-    background-image:
-      repeating-linear-gradient(
-        to bottom,
-        transparent 0 31px,
-        rgba(45, 33, 23, 0.10) 31px 32px
-      ),
-      linear-gradient(
-        to right,
-        hsl(var(--nb-pink)) 0 2px,
-        transparent 2px 30px
-      );
-    box-shadow: 5px 7px 16px rgba(40, 28, 18, 0.10);
-    padding-left: 2.5rem;
-  }
-  .dark .nb-index-card {
-    background-color: hsl(36 13% 15%);
-  }
+/* Notebook helper utilities */
+.nb-paper-bg {
+  background:
+    radial-gradient(circle at 0.5px 0.5px, var(--nb-rule) 0.6px, transparent 0.7px)
+      0 0 / 18px 18px,
+    var(--nb-paper);
+}
+.nb-paper-ruled {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 35px,
+      var(--nb-rule) 35px,
+      var(--nb-rule) 36px
+    ),
+    var(--nb-paper);
+}
+.nb-paper-edge {
+  box-shadow: inset 0 0 80px var(--nb-edge);
 }

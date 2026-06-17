@@ -1,0 +1,16 @@
+language: "ko-KR"
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!content/**"
+    - "!public/**"
+  path_instructions:
+    - path: "src/**"
+      instructions: "Next.js App Router 기반 블로그입니다. 타입 안전성과 성능을 중점적으로 리뷰해주세요."
+    - path: "src/app/globals.css"
+      instructions: "CSS 커스텀 프로퍼티 기반 디자인 토큰 파일입니다. primitive → semantic 계층 구조를 유지하는지 확인해주세요."

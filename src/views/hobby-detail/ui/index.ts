@@ -1,0 +1,1 @@
+export { HobbyDetailPage } from "./HobbyDetailPage";

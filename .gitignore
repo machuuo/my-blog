@@ -25,8 +25,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
+# local env files (모든 .env 무시, 단 예시 템플릿은 허용)
+.env
+.env.*
+!.env.example
 
 # mcp config (contains tokens)
 .mcp.json
@@ -37,7 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.gstack/
 
-# scratch / design bundle artifacts
-.tmp/
+# claude code (개인 로컬 설정만 무시)
+.claude/settings.local.json
+
+# omc (로컬 state)
+.omc/
