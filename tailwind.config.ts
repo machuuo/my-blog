@@ -61,12 +61,16 @@ const config: Config = {
           tape:        "var(--nb-tape)",
           memo:        "var(--nb-memo)",
           photo:       "var(--nb-photo)",
+          note:        "var(--nb-note)",
           highlight:   "var(--nb-highlight)",
-          // backward-compat — PR B에서 새 semantic 이름으로 치환 후 제거
+          // backward-compat — PR C에서 컴포넌트 치환 후 제거
           sage:        "var(--nb-sage)",
           pink:        "var(--nb-pink)",
           sky:         "var(--nb-sky)",
-          butter:      "var(--nb-butter)",
+          // Code Block
+          "code-bg":    "var(--nb-code-bg)",
+          "code-fg":    "var(--nb-code-fg)",
+          "code-muted": "var(--nb-code-muted)",
           // Elevation
           "shadow-sm": "var(--nb-shadow-sm)",
           "shadow-md": "var(--nb-shadow-md)",

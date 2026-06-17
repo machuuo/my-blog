@@ -13,13 +13,12 @@ interface PolaroidProps {
 
 export function Polaroid({
   label,
-  tint = "#CFDDB6",
+  tint = "var(--green-1)",
   rotate = -3,
   w = 280,
   caption,
   style = {},
 }: PolaroidProps) {
-  const resolvedTint = tint.startsWith("var") ? "#CFDDB6" : tint;
   return (
     <div
       style={{
@@ -35,7 +34,7 @@ export function Polaroid({
         <StripePlaceholder
           label={label}
           family="notebook"
-          tint={resolvedTint}
+          tint={tint}
           ink="#3a2c1e"
         />
       </div>

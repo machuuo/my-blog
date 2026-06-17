@@ -1,0 +1,75 @@
+{
+  "design": "semantic-token-complete.md",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "css",
+      "title": "globals.css — 신규 semantic 토큰 추가 및 backward-compat 제거",
+      "files": [
+        {
+          "path": "src/app/globals.css",
+          "action": "modify",
+          "changes": [
+            "--nb-note: var(--yellow-1) 추가",
+            "--nb-code-bg: var(--brown-4) 추가",
+            "--nb-code-fg: var(--sand-3) 추가",
+            "--nb-code-muted: var(--sand-5) 추가",
+            "--nb-butter backward-compat 제거"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "--nb-note: var(--yellow-1) 가 :root에 정의되어 있다",
+        "--nb-butter backward-compat alias가 globals.css에서 제거되어 있다",
+        "--nb-code-bg, --nb-code-fg, --nb-code-muted가 :root에 정의되어 있다"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "config",
+      "title": "tailwind.config.ts — 신규 토큰 노출 및 backward-compat 제거",
+      "files": [
+        {
+          "path": "tailwind.config.ts",
+          "action": "modify",
+          "changes": [
+            "nb.note 추가",
+            "nb.code-bg 추가",
+            "nb.code-fg 추가",
+            "nb.code-muted 추가",
+            "nb.butter 제거"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "tailwind.config.ts에서 nb.butter가 제거되고 nb.note가 추가되어 있다"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "lib",
+      "title": "design-data.ts — accentVar(), accentTint() 반환값 교체",
+      "files": [
+        {
+          "path": "src/shared/lib/design-data.ts",
+          "action": "modify",
+          "changes": [
+            "accentVar(): sage→var(--nb-tape), plum→var(--nb-memo), terracotta→var(--nb-note)",
+            "accentTint(): hex→var(--green-2/pink-2/yellow-2)"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "accentVar(\"sage\")가 var(--nb-tape)를 반환한다",
+        "accentVar(\"plum\")이 var(--nb-memo)를 반환한다",
+        "accentVar(\"terracotta\")가 var(--nb-note)를 반환한다",
+        "accentTint(\"sage\")가 var(--green-2)를 반환한다",
+        "accentTint(\"plum\")이 var(--pink-2)를 반환한다",
+        "accentTint(\"terracotta\")가 var(--yellow-2)를 반환한다"
+      ]
+    }
+  ]
+}
