@@ -9,25 +9,12 @@ import {
   NB_HAND2,
   type NbPost,
 } from "@/shared/lib/design-data";
+import { NbChip } from "@/shared/ui/notebook/NbChip";
 import { StickyNote } from "@/shared/ui/notebook/StickyNote";
 import { WashiTape } from "@/shared/ui/notebook/WashiTape";
 
-function tagChipStyle(active: boolean): React.CSSProperties {
-  return {
-    fontFamily: NB_HAND,
-    fontSize: 22,
-    padding: "4px 14px",
-    background: active ? "var(--nb-ink)" : "transparent",
-    color: active ? "var(--nb-paper)" : "var(--nb-ink)",
-    border: "2px solid var(--nb-ink)",
-    borderRadius: 999,
-    cursor: "pointer",
-    transform: `rotate(${active ? 0 : -1}deg)`,
-  };
-}
-
 function NbIndexCard({ p, index }: { p: NbPost; index: number }) {
-  const tapeColor = ["var(--nb-pink)", "var(--nb-sage)", "var(--nb-sky)", "var(--nb-butter)"][
+  const tapeColor = ["var(--nb-memo)", "var(--nb-tape)", "var(--sky-1)", "var(--nb-note)"][
     index % 4
   ];
   return (
@@ -42,7 +29,7 @@ function NbIndexCard({ p, index }: { p: NbPost; index: number }) {
           padding: "22px 26px",
           boxShadow: "5px 7px 16px rgba(40,28,18,0.10)",
           transform: `rotate(${index % 2 === 0 ? -0.5 : 0.4}deg)`,
-          backgroundImage: `repeating-linear-gradient(to bottom, transparent 0 31px, rgba(45,33,23,0.10) 31px 32px), linear-gradient(to right, var(--nb-pink) 0 2px, transparent 2px 30px, transparent 30px), linear-gradient(#FCF8EE, #FCF8EE)`,
+          backgroundImage: `repeating-linear-gradient(to bottom, transparent 0 31px, rgba(45,33,23,0.10) 31px 32px), linear-gradient(to right, var(--nb-memo) 0 2px, transparent 2px 30px, transparent 30px), linear-gradient(#FCF8EE, #FCF8EE)`,
           backgroundSize: "100% 100%, 30px 100%, 100% 100%",
           paddingLeft: 42,
         }}
@@ -104,7 +91,7 @@ function NbIndexCard({ p, index }: { p: NbPost; index: number }) {
               marginLeft: "auto",
               fontFamily: NB_HAND,
               fontSize: 20,
-              color: "var(--nb-pink)",
+              color: "var(--nb-memo)",
             }}
           >
             읽어보기 →
@@ -139,7 +126,7 @@ export function TechListPage() {
     <>
       <section style={{ padding: "48px 48px 16px", position: "relative" }}>
         <div style={{ position: "absolute", top: 24, right: 60 }}>
-          <StickyNote color="var(--nb-sky)" rotate={5} w={210}>
+          <StickyNote color="var(--sky-1)" rotate={5} w={210}>
             여기는 공부 공책 ✏️
             <br />
             FE와 AI가 섞여 있어요
@@ -157,7 +144,7 @@ export function TechListPage() {
             color: "var(--nb-ink)",
           }}
         >
-          공부 공책 <span style={{ color: "var(--nb-pink)" }}>22편</span>
+          공부 공책 <span style={{ color: "var(--nb-memo)" }}>22편</span>
         </h1>
         <p
           style={{
@@ -202,22 +189,17 @@ export function TechListPage() {
             padding: "2px 4px",
           }}
         />
-        <button
-          type="button"
-          onClick={() => setActiveTag(null)}
-          style={tagChipStyle(activeTag === null)}
-        >
+        <NbChip active={activeTag === null} onClick={() => setActiveTag(null)}>
           전부
-        </button>
+        </NbChip>
         {allTags.map((t) => (
-          <button
+          <NbChip
             key={t}
-            type="button"
+            active={activeTag === t}
             onClick={() => setActiveTag(activeTag === t ? null : t)}
-            style={tagChipStyle(activeTag === t)}
           >
             #{t}
-          </button>
+          </NbChip>
         ))}
       </section>
 

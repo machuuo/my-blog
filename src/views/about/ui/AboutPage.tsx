@@ -1,5 +1,6 @@
 import { NB_BODY, NB_HAND, NB_HAND2 } from "@/shared/lib/design-data";
 import { Polaroid } from "@/shared/ui/notebook/Polaroid";
+import { SectionHeader } from "@/shared/ui/notebook/SectionHeader";
 import { StickyNote } from "@/shared/ui/notebook/StickyNote";
 import { WashiTape } from "@/shared/ui/notebook/WashiTape";
 
@@ -28,7 +29,7 @@ export function AboutPage() {
         >
           안녕하세요,
           <br />
-          저는 <span style={{ color: "var(--nb-pink)" }}>여백</span>이에요.
+          저는 <span style={{ color: "var(--nb-memo)" }}>여백</span>이에요.
         </h1>
         <p
           style={{
@@ -62,7 +63,7 @@ export function AboutPage() {
             caption="자화상 대신, 책상 위"
           />
           <div style={{ position: "absolute", top: 280, left: -10 }}>
-            <StickyNote color="var(--nb-sky)" rotate={5} w={170}>
+            <StickyNote color="var(--sky-1)" rotate={5} w={170}>
               가운데가 비어있는
               <br />
               <em>공책</em>이 가장
@@ -80,7 +81,7 @@ export function AboutPage() {
                 float: "left",
                 lineHeight: 0.85,
                 padding: "4px 12px 0 0",
-                color: "var(--nb-pink)",
+                color: "var(--nb-memo)",
               }}
             >
               안
@@ -148,20 +149,7 @@ export function AboutPage() {
       </section>
 
       <section style={{ padding: "56px 48px 48px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-            borderBottom: "2px dashed var(--nb-rule)",
-            paddingBottom: 10,
-          }}
-        >
-          <h2 style={{ fontFamily: NB_HAND, fontSize: 42, margin: 0 }}>이 노트를 만든 것들</h2>
-          <span style={{ fontFamily: NB_HAND2, fontSize: 18, color: "var(--nb-ink-soft)" }}>
-            · colophon
-          </span>
-        </div>
+        <SectionHeader title="이 노트를 만든 것들" subtitle="· colophon" />
         <div
           style={{
             display: "grid",
@@ -181,7 +169,7 @@ export function AboutPage() {
               }}
             >
               <WashiTape
-                color="var(--nb-pink)"
+                color="var(--nb-memo)"
                 rotate={-6}
                 width={70}
                 style={{ position: "absolute", top: -10, left: 20 }}

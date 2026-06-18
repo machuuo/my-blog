@@ -1,0 +1,180 @@
+{
+  "design": "shared-component-adoption.md",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "component",
+      "title": "SectionHeader.tsx — titleColor prop 추가",
+      "files": [
+        {
+          "path": "src/shared/ui/notebook/SectionHeader.tsx",
+          "action": "modify",
+          "changes": [
+            "titleColor?: string prop 추가, 기본값 var(--nb-ink)"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "titleColor prop 없을 때 h2가 var(--nb-ink)로 렌더된다",
+        "titleColor 전달 시 h2가 해당 색상으로 렌더된다"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "infra",
+      "title": "globals.css — backward-compat alias 삭제",
+      "files": [
+        {
+          "path": "src/app/globals.css",
+          "action": "modify",
+          "changes": [
+            "--nb-sage, --nb-pink, --nb-sky 정의 삭제"
+          ]
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "globals.css에서 --nb-sage, --nb-pink, --nb-sky 정의가 삭제된다"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "view",
+      "title": "TechListPage.tsx — NbChip 치환",
+      "files": [
+        {
+          "path": "src/views/tech-list/ui/TechListPage.tsx",
+          "action": "modify",
+          "changes": [
+            "tagChipStyle 함수 제거, <NbChip> import 추가, button 태그를 NbChip으로 교체"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "tagChipStyle 함수가 제거된다",
+        "<NbChip>으로 대체된다",
+        "필터 동작이 동일하게 작동한다"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "view",
+      "title": "HobbyListPage.tsx — NbChip 치환",
+      "files": [
+        {
+          "path": "src/views/hobby-list/ui/HobbyListPage.tsx",
+          "action": "modify",
+          "changes": [
+            "chipStyle 함수 제거, <NbChip> import 추가, button 태그를 NbChip으로 교체"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "chipStyle 함수가 제거된다",
+        "<NbChip>으로 대체된다",
+        "필터 동작이 동일하게 작동한다"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "view",
+      "title": "TagsPage.tsx — SectionHeader 치환 3곳 + alias 교체",
+      "files": [
+        {
+          "path": "src/views/tags/ui/TagsPage.tsx",
+          "action": "modify",
+          "changes": [
+            "공부 태그 헤더 → <SectionHeader title='공부 태그' subtitle='· tech' titleColor='var(--nb-memo)' />",
+            "취미 태그 헤더 → <SectionHeader title='취미 태그' subtitle='· hobby' titleColor='var(--nb-tape)' />",
+            "달력으로 보기 헤더 → <SectionHeader title='달력으로 보기' subtitle='· archive · 2026' />",
+            "var(--nb-pink) → var(--nb-memo), var(--nb-sage) → var(--nb-tape), var(--nb-sky) → var(--sky-1)"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "공부 태그 헤더가 SectionHeader로 교체된다 (titleColor=var(--nb-memo))",
+        "취미 태그 헤더가 SectionHeader로 교체된다 (titleColor=var(--nb-tape))",
+        "달력으로 보기 헤더가 SectionHeader로 교체된다",
+        "alias 사용처가 모두 교체된다"
+      ]
+    },
+    {
+      "id": 6,
+      "layer": "view",
+      "title": "AboutPage.tsx — SectionHeader 치환",
+      "files": [
+        {
+          "path": "src/views/about/ui/AboutPage.tsx",
+          "action": "modify",
+          "changes": [
+            "'이 노트를 만든 것들' 헤더 → <SectionHeader title='이 노트를 만든 것들' subtitle='· colophon' />"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "'이 노트를 만든 것들' 헤더가 SectionHeader로 교체된다"
+      ]
+    },
+    {
+      "id": 7,
+      "layer": "view",
+      "title": "TechDetailPage.tsx — SectionHeader 치환 + alias 교체",
+      "files": [
+        {
+          "path": "src/views/tech-detail/ui/TechDetailPage.tsx",
+          "action": "modify",
+          "changes": [
+            "'이어 읽기' 헤더 → <SectionHeader title='이어 읽기' subtitle='· next pages' />",
+            "var(--nb-pink) → var(--nb-memo), var(--nb-sage) → var(--nb-tape), var(--nb-sky) → var(--sky-1)"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "'이어 읽기' 헤더가 SectionHeader로 교체된다",
+        "alias 사용처가 모두 교체된다"
+      ]
+    },
+    {
+      "id": 8,
+      "layer": "view",
+      "title": "HomePage.tsx — alias 교체",
+      "files": [
+        {
+          "path": "src/views/home/ui/HomePage.tsx",
+          "action": "modify",
+          "changes": [
+            "var(--nb-pink) → var(--nb-memo), var(--nb-sage) → var(--nb-tape)"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "alias 사용처가 모두 교체된다"
+      ]
+    },
+    {
+      "id": 9,
+      "layer": "view",
+      "title": "HobbyDetailPage.tsx — alias 교체",
+      "files": [
+        {
+          "path": "src/views/hobby-detail/ui/HobbyDetailPage.tsx",
+          "action": "modify",
+          "changes": [
+            "var(--nb-pink) → var(--nb-memo), var(--nb-sage) → var(--nb-tape)"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "alias 사용처가 모두 교체된다"
+      ]
+    }
+  ]
+}

@@ -10,7 +10,7 @@ interface HandCircleProps {
 export function HandCircle({
   width = 140,
   height = 50,
-  color = "var(--nb-pink)",
+  color = "var(--nb-memo)",
   style = {},
 }: HandCircleProps) {
   return (

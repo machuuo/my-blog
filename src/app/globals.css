@@ -62,10 +62,6 @@
     --nb-photo:     var(--sky-1);
     --nb-note:      var(--yellow-1);
     --nb-highlight: rgb(var(--yellow-1-rgb) / 0.6);
-    /* backward-compat — PR C에서 컴포넌트 치환 후 제거 */
-    --nb-sage:   var(--green-1);
-    --nb-pink:   var(--pink-1);
-    --nb-sky:    var(--sky-1);
 
     /* ── Semantic: Code Block ── */
     --nb-code-bg:    var(--brown-4);
