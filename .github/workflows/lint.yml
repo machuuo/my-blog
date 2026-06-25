@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # CodeRabbit 권고: 토큰 git config에 잔존 방지
 
       # pnpm 버전은 package.json의 packageManager 필드를 단일 진실 원천으로 사용.
       # version을 명시하면 packageManager 필드와 충돌해 ERR_PNPM_BAD_PM_VERSION 발생.

@@ -7,7 +7,7 @@
       "layer": "phase-A-next-upgrade",
       "title": "peer dependency 사전 점검",
       "files": [],
-      "command": "pnpm up --dry-run next@^15.5 react@^19 react-dom@^19",
+      "command": "pnpm up --dry-run next@^16 react@^19 react-dom@^19",
       "passes": true,
       "acceptanceCriteria": [
         "peer dependency 충돌 없음 확인",
@@ -23,18 +23,18 @@
           "path": "package.json",
           "action": "수정",
           "changes": [
-            "next ^14.2 → ^15.5",
+            "next ^14.2 → ^16.2",
             "react ^18 → ^19",
             "react-dom ^18 → ^19",
             "@types/react ^18 → ^19",
             "@types/react-dom ^18 → ^19",
-            "eslint-config-next 14.2.35 → ^15.5"
+            "eslint-config-next 14.2.35 → ^16.2"
           ]
         }
       ],
       "passes": true,
       "acceptanceCriteria": [
-        "next 버전 15.5 이상",
+        "next 버전 16.2 이상",
         "react, react-dom 19.x"
       ]
     },
@@ -164,20 +164,21 @@
     {
       "id": "B-3",
       "layer": "phase-B-eslint-flat",
-      "title": "eslint.config.js 생성 (FSD boundaries)",
+      "title": "eslint.config.mjs 생성 (FSD boundaries)",
       "files": [
         {
-          "path": "eslint.config.js",
+          "path": "eslint.config.mjs",
           "action": "신규",
           "changes": [
-            "eslint-config-next/flat의 coreWebVitals 적용",
+            "eslint-config-next/core-web-vitals + /typescript native flat 적용 (Next 16)",
             "boundaries/elements FSD 6계층 정의",
-            "boundaries/element-types 상→하 의존만 허용",
+            "boundaries/dependencies v6 API 상→하 의존만 허용",
             "src/{entities,features}/*/api/** AST 가드",
             "src/shared/lib/** no-restricted-imports",
-            "explicit-function-return-type warn",
+            ".ts: explicit-function-return-type error / .tsx: off",
+            "max-lines-per-function warn 80 (.tsx)",
             "no-console warn, sonarjs/cognitive-complexity warn 15",
-            "ignores: .next/**, scripts/**, *.test.*, *.stories.tsx"
+            "ignores: .next/**, scripts/**, *.config.{js,mjs,ts}, *.test.*, *.stories.tsx"
           ]
         }
       ],
