@@ -21,7 +21,7 @@ export function StripePlaceholder({
   ink = "#2b1f18",
   radius = 0,
 }: StripePlaceholderProps) {
-  const id = useId().replace(/:/g, "");
+  const id = useId().replaceAll(':', "");
   return (
     <svg
       viewBox={`0 0 ${w} ${h}`}
@@ -47,14 +47,12 @@ export function StripePlaceholder({
             strokeWidth="2"
           />
         </pattern>
-        {family === "notebook" && (
-          <pattern id={`dots-${id}`} width="14" height="14" patternUnits="userSpaceOnUse">
+        {family === "notebook" ? <pattern id={`dots-${id}`} width="14" height="14" patternUnits="userSpaceOnUse">
             <circle cx="2" cy="2" r="0.9" fill={ink} fillOpacity="0.18" />
-          </pattern>
-        )}
+          </pattern> : null}
       </defs>
       <rect width={w} height={h} fill={`url(#stripes-${id})`} />
-      {family === "notebook" && <rect width={w} height={h} fill={`url(#dots-${id})`} />}
+      {family === "notebook" ? <rect width={w} height={h} fill={`url(#dots-${id})`} /> : null}
       <rect
         x="1"
         y="1"

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/shared/lib/auth";
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   if (!(await isAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
     // 파일명 생성: 원본명-랜덤6자.확장자
     const ext = file.name.split(".").pop() ?? "png";
-    const baseName = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9가-힣-_]/g, "_");
+    const baseName = file.name.replace(/\.[^.]+$/, "").replaceAll(/[^a-zA-Z0-9가-힣-_]/g, "_");
     const random = Math.random().toString(36).substring(2, 8);
     const now = new Date();
     const year = now.getFullYear();

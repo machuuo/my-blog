@@ -143,11 +143,9 @@ export function NbFrame({ children }: { children: ReactNode }) {
                   >
                     {it.kr}
                   </span>
-                  {on && (
-                    <div style={{ position: "absolute", left: -2, right: -2, bottom: -4 }}>
+                  {on ? <div style={{ position: "absolute", left: -2, right: -2, bottom: -4 }}>
                       <Squiggle width={64} color="var(--nb-memo)" />
-                    </div>
-                  )}
+                    </div> : null}
                 </Link>
               );
             })}

@@ -1,5 +1,15 @@
 import { cookies } from "next/headers";
 
+export interface SessionCookieConfig {
+  name: string;
+  value: string;
+  httpOnly: true;
+  secure: boolean;
+  sameSite: "strict";
+  maxAge: number;
+  path: string;
+}
+
 const SESSION_COOKIE_NAME = "blog_session";
 const SESSION_MAX_AGE = 60 * 60 * 24; // 24시간
 
@@ -36,13 +46,13 @@ export async function isAuthenticated(): Promise<boolean> {
   return verifySessionToken(token);
 }
 
-export function getSessionCookieConfig(token: string) {
+export function getSessionCookieConfig(token: string): SessionCookieConfig {
   return {
     name: SESSION_COOKIE_NAME,
     value: token,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict" as const,
+    sameSite: "strict",
     maxAge: SESSION_MAX_AGE,
     path: "/",
   };

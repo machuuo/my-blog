@@ -16,11 +16,9 @@ export function SeriesCard({ series, className }: SeriesCardProps) {
       >
         <CardHeader>
           <CardTitle className="text-lg">{series.title}</CardTitle>
-          {series.description && (
-            <CardDescription className="mt-1">
+          {series.description ? <CardDescription className="mt-1">
               {series.description}
-            </CardDescription>
-          )}
+            </CardDescription> : null}
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-2">
             <BookOpen className="h-3.5 w-3.5" />
             <span>{series.post_count}개의 포스트</span>

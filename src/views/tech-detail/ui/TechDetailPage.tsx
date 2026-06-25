@@ -94,7 +94,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
   const post = TECH_POSTS.find((p) => p.slug === slug) ?? TECH_POSTS[0];
   const [copied, setCopied] = useState(false);
   const copy = () => {
-    navigator.clipboard?.writeText(CODE_SNIPPET).catch(() => undefined);
+    navigator.clipboard?.writeText(CODE_SNIPPET).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1400);
   };
@@ -125,16 +125,14 @@ export function TechDetailPage({ slug }: { slug: string }) {
           }}
         >
           {post.title.split(",")[0]}
-          {post.slug === "react-19-use-hook" && (
-            <span style={{ position: "relative", display: "inline-block" }}>
+          {post.slug === "react-19-use-hook" ? <span style={{ position: "relative", display: "inline-block" }}>
               <HandCircle
                 width={170}
                 height={70}
                 color="var(--nb-memo)"
                 style={{ left: -14, top: -12 }}
               />
-            </span>
-          )}
+            </span> : null}
         </h1>
         <p
           style={{
@@ -258,11 +256,9 @@ export function TechDetailPage({ slug }: { slug: string }) {
                       0{i + 1}
                     </span>
                     {t}
-                    {i === 2 && (
-                      <span style={{ position: "absolute", right: -6, top: 2 }}>
+                    {i === 2 ? <span style={{ position: "absolute", right: -6, top: 2 }}>
                         <HandArrow width={26} height={22} color="var(--nb-memo)" />
-                      </span>
-                    )}
+                      </span> : null}
                   </li>
                 ),
               )}

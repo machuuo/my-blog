@@ -38,8 +38,7 @@ export function Polaroid({
           ink="#3a2c1e"
         />
       </div>
-      {caption && (
-        <div
+      {caption ? <div
           style={{
             fontFamily: NB_HAND,
             fontSize: 18,
@@ -49,8 +48,7 @@ export function Polaroid({
           }}
         >
           {caption}
-        </div>
-      )}
+        </div> : null}
     </div>
   );
 }

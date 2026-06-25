@@ -1,0 +1,61 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # CodeRabbit 권고: 토큰 git config에 잔존 방지
+
+      # pnpm 버전은 package.json의 packageManager 필드를 단일 진실 원천으로 사용.
+      # version을 명시하면 packageManager 필드와 충돌해 ERR_PNPM_BAD_PM_VERSION 발생.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # lint:report는 위반(error/warn)이 있어도 exit 1을 반환하지만
+      # lint-result.json은 정상적으로 기록되므로 ratchet step에서 판정.
+      # 단 설정 파싱 실패 등 진짜 크래시는 lint-result.json 자체가 없어 ratchet step이 던짐.
+      - name: Run ESLint (JSON report)
+        run: pnpm lint:report || true
+
+      - name: Ratchet check (errors=0, warns <= baseline)
+        run: |
+          if [ ! -f lint-result.json ]; then
+            echo "FAIL: lint-result.json missing — ESLint crashed before writing report"
+            exit 1
+          fi
+          node -e "
+            const result = require('./lint-result.json');
+            const baseline = require('./docs/개발계획서/harness/lint-baseline.json');
+            const errors = result.reduce((a, f) => a + f.errorCount, 0);
+            const warns = result.reduce((a, f) => a + f.warningCount, 0);
+            console.log('errors:', errors);
+            console.log('warns:', warns, '(baseline:', baseline.warn_total + ')');
+            if (errors > 0) {
+              console.error('FAIL: errors must be 0');
+              process.exit(1);
+            }
+            if (warns > baseline.warn_total) {
+              console.error('FAIL: warn ratchet broken (' + warns + ' > ' + baseline.warn_total + ')');
+              console.error('Either fix the new warning(s), or intentionally raise baseline in a separate PR.');
+              process.exit(1);
+            }
+            if (warns < baseline.warn_total) {
+              console.log('NOTE: warns decreased — update baseline in the same PR to lock in the ratchet.');
+            }
+          "
