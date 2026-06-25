@@ -87,7 +87,7 @@ export function NbFrame({ children }: { children: ReactNode }) {
           <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
             <div style={{ position: "relative" }}>
               <WashiTape
-                color="var(--nb-pink)"
+                color="var(--nb-memo)"
                 width={70}
                 rotate={-14}
                 style={{ position: "absolute", top: -16, left: -6 }}
@@ -144,7 +144,7 @@ export function NbFrame({ children }: { children: ReactNode }) {
                     {it.kr}
                   </span>
                   {on ? <div style={{ position: "absolute", left: -2, right: -2, bottom: -4 }}>
-                      <Squiggle width={64} color="var(--nb-pink)" />
+                      <Squiggle width={64} color="var(--nb-memo)" />
                     </div> : null}
                 </Link>
               );
@@ -214,7 +214,7 @@ export function NbFrame({ children }: { children: ReactNode }) {
           page 14 of 38 · made on rainy weekends · 2026
         </div>
         <WashiTape
-          color="var(--nb-sky)"
+          color="var(--sky-1)"
           width={100}
           rotate={6}
           style={{ position: "absolute", bottom: -10, right: 60 }}

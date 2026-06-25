@@ -7,6 +7,7 @@ import {
   NB_HAND,
   NB_HAND2,
 } from "@/shared/lib/design-data";
+import { SectionHeader } from "@/shared/ui/notebook/SectionHeader";
 import { StickyNote } from "@/shared/ui/notebook/StickyNote";
 
 const ARCHIVE = [
@@ -67,7 +68,7 @@ export function TagsPage() {
           노트 페이지 마지막마다 끄적인 작은 단어들. 자주 쓴 단어는 크게, 가끔 쓴 단어는 작게.
         </p>
         <div style={{ position: "absolute", top: 40, right: 80 }}>
-          <StickyNote color="var(--nb-butter)" rotate={-5} w={190}>
+          <StickyNote color="var(--nb-note)" rotate={-5} w={190}>
             글자가 클수록
             <br />
             <em>자주 쓴 단어</em>예요
@@ -76,22 +77,7 @@ export function TagsPage() {
       </section>
 
       <section style={{ padding: "40px 48px 0" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-            borderBottom: "2px dashed var(--nb-rule)",
-            paddingBottom: 10,
-          }}
-        >
-          <h2 style={{ fontFamily: NB_HAND, fontSize: 42, margin: 0, color: "var(--nb-pink)" }}>
-            공부 태그
-          </h2>
-          <span style={{ fontFamily: NB_HAND2, fontSize: 18, color: "var(--nb-ink-soft)" }}>
-            · tech
-          </span>
-        </div>
+        <SectionHeader title="공부 태그" subtitle="· tech" titleColor="var(--nb-memo)" />
         <div
           style={{
             display: "flex",
@@ -110,7 +96,7 @@ export function TagsPage() {
               style={{
                 fontFamily: NB_HAND,
                 fontSize: sizeFor(t.count),
-                color: hover === t.name ? "var(--nb-pink)" : "var(--nb-ink)",
+                color: hover === t.name ? "var(--nb-memo)" : "var(--nb-ink)",
                 textDecoration: "none",
                 lineHeight: 1,
                 transform: `rotate(${i % 2 === 0 ? -1.5 : 1.2}deg)`,
@@ -134,22 +120,7 @@ export function TagsPage() {
       </section>
 
       <section style={{ padding: "40px 48px 0" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-            borderBottom: "2px dashed var(--nb-rule)",
-            paddingBottom: 10,
-          }}
-        >
-          <h2 style={{ fontFamily: NB_HAND, fontSize: 42, margin: 0, color: "var(--nb-sage)" }}>
-            취미 태그
-          </h2>
-          <span style={{ fontFamily: NB_HAND2, fontSize: 18, color: "var(--nb-ink-soft)" }}>
-            · hobby
-          </span>
-        </div>
+        <SectionHeader title="취미 태그" subtitle="· hobby" titleColor="var(--nb-tape)" />
         <div
           style={{
             display: "flex",
@@ -168,7 +139,7 @@ export function TagsPage() {
               style={{
                 fontFamily: NB_HAND,
                 fontSize: sizeFor(t.count),
-                color: hover === t.name ? "var(--nb-sage)" : "var(--nb-ink)",
+                color: hover === t.name ? "var(--nb-tape)" : "var(--nb-ink)",
                 textDecoration: "none",
                 lineHeight: 1,
                 transform: `rotate(${i % 2 === 0 ? 1.2 : -1.5}deg)`,
@@ -192,20 +163,7 @@ export function TagsPage() {
       </section>
 
       <section style={{ padding: "48px 48px 48px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-            borderBottom: "2px dashed var(--nb-rule)",
-            paddingBottom: 10,
-          }}
-        >
-          <h2 style={{ fontFamily: NB_HAND, fontSize: 42, margin: 0 }}>달력으로 보기</h2>
-          <span style={{ fontFamily: NB_HAND2, fontSize: 18, color: "var(--nb-ink-soft)" }}>
-            · archive · 2026
-          </span>
-        </div>
+        <SectionHeader title="달력으로 보기" subtitle="· archive · 2026" />
         <div style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 16 }}>
           {ARCHIVE.map((mo, i) => (
             <div
@@ -222,7 +180,7 @@ export function TagsPage() {
                 style={{
                   fontFamily: NB_HAND,
                   fontSize: 44,
-                  color: ["var(--nb-pink)", "var(--nb-sage)", "var(--nb-sky)"][i],
+                  color: ["var(--nb-memo)", "var(--nb-tape)", "var(--sky-1)"][i],
                 }}
               >
                 {mo.m}

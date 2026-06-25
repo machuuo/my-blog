@@ -14,6 +14,7 @@ import {
 import { HandArrow } from "@/shared/ui/notebook/HandArrow";
 import { HandCircle } from "@/shared/ui/notebook/HandCircle";
 import { Polaroid } from "@/shared/ui/notebook/Polaroid";
+import { SectionHeader } from "@/shared/ui/notebook/SectionHeader";
 import { StickyNote } from "@/shared/ui/notebook/StickyNote";
 import { StripePlaceholder } from "@/shared/ui/notebook/StripePlaceholder";
 import { WashiTape } from "@/shared/ui/notebook/WashiTape";
@@ -27,10 +28,10 @@ const CODE_SNIPPET = `function Profile({ userPromise }) {
 function RelatedCard({ p, tape }: { p: NbPost; tape: "pink" | "sage" | "sky" }) {
   const tapeColor =
     tape === "sage"
-      ? "var(--nb-sage)"
+      ? "var(--nb-tape)"
       : tape === "pink"
-        ? "var(--nb-pink)"
-        : "var(--nb-sky)";
+        ? "var(--nb-memo)"
+        : "var(--sky-1)";
   return (
     <Link
       href={`/tech/${p.slug}`}
@@ -128,7 +129,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
               <HandCircle
                 width={170}
                 height={70}
-                color="var(--nb-pink)"
+                color="var(--nb-memo)"
                 style={{ left: -14, top: -12 }}
               />
             </span> : null}
@@ -147,7 +148,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
           {post.excerpt}
         </p>
         <div style={{ position: "absolute", top: 48, right: 60 }}>
-          <StickyNote color="var(--nb-butter)" rotate={4} w={200}>
+          <StickyNote color="var(--nb-note)" rotate={4} w={200}>
             ⚠️ 이건 정답이 아니에요.
             <br />
             <span style={{ fontFamily: NB_HAND2, fontSize: 16 }}>
@@ -169,13 +170,13 @@ export function TechDetailPage({ slug }: { slug: string }) {
           }}
         >
           <WashiTape
-            color="var(--nb-pink)"
+            color="var(--nb-memo)"
             rotate={-4}
             width={130}
             style={{ position: "absolute", top: -14, left: 80 }}
           />
           <WashiTape
-            color="var(--nb-sage)"
+            color="var(--nb-tape)"
             rotate={6}
             width={130}
             style={{ position: "absolute", top: -14, right: 80 }}
@@ -240,7 +241,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
                     key={t}
                     style={{
                       marginBottom: 6,
-                      color: i === 2 ? "var(--nb-pink)" : "var(--nb-ink)",
+                      color: i === 2 ? "var(--nb-memo)" : "var(--nb-ink)",
                       position: "relative",
                     }}
                   >
@@ -256,7 +257,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
                     </span>
                     {t}
                     {i === 2 ? <span style={{ position: "absolute", right: -6, top: 2 }}>
-                        <HandArrow width={26} height={22} color="var(--nb-pink)" />
+                        <HandArrow width={26} height={22} color="var(--nb-memo)" />
                       </span> : null}
                   </li>
                 ),
@@ -295,7 +296,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
             }}
           >
             <WashiTape
-              color="var(--nb-butter)"
+              color="var(--nb-note)"
               rotate={-6}
               width={100}
               style={{ position: "absolute", top: -12, left: 60 }}
@@ -315,9 +316,9 @@ export function TechDetailPage({ slug }: { slug: string }) {
                 type="button"
                 onClick={copy}
                 style={{
-                  background: copied ? "var(--nb-pink)" : "transparent",
+                  background: copied ? "var(--nb-memo)" : "transparent",
                   color: copied ? "#1F1813" : "#F1E7D6",
-                  border: "1.5px dashed " + (copied ? "var(--nb-pink)" : "#C7B89A"),
+                  border: "1.5px dashed " + (copied ? "var(--nb-memo)" : "#C7B89A"),
                   padding: "4px 12px",
                   fontFamily: NB_HAND,
                   fontSize: 18,
@@ -350,7 +351,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
               margin: "28px 0",
               padding: "14px 20px",
               background: "var(--nb-highlight)",
-              borderLeft: "4px solid var(--nb-pink)",
+              borderLeft: "4px solid var(--nb-memo)",
               fontFamily: NB_HAND,
               fontSize: 28,
               lineHeight: 1.35,
@@ -378,7 +379,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
               gap: 28,
             }}
           >
-            <StickyNote color="var(--nb-sage)" rotate={-3} w={210}>
+            <StickyNote color="var(--nb-tape)" rotate={-3} w={210}>
               여기, 헷갈렸던 부분.
               <br />
               <span style={{ fontFamily: NB_BODY, fontSize: 15, fontStyle: "italic" }}>
@@ -387,7 +388,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
             </StickyNote>
             <div style={{ position: "relative" }}>
               <WashiTape
-                color="var(--nb-sky)"
+                color="var(--sky-1)"
                 rotate={4}
                 width={110}
                 style={{ position: "absolute", top: -14, left: 30 }}
@@ -405,20 +406,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
       </section>
 
       <section style={{ padding: "48px 48px 48px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-            borderBottom: "2px dashed var(--nb-rule)",
-            paddingBottom: 10,
-          }}
-        >
-          <h2 style={{ fontFamily: NB_HAND, fontSize: 42, margin: 0 }}>이어 읽기</h2>
-          <span style={{ fontFamily: NB_HAND2, fontSize: 18, color: "var(--nb-ink-soft)" }}>
-            · next pages
-          </span>
-        </div>
+        <SectionHeader title="이어 읽기" subtitle="· next pages" />
         <div
           style={{
             display: "grid",

@@ -3,7 +3,7 @@ interface SquiggleProps {
   color?: string;
 }
 
-export function Squiggle({ width = 200, color = "var(--nb-pink)" }: SquiggleProps) {
+export function Squiggle({ width = 200, color = "var(--nb-memo)" }: SquiggleProps) {
   return (
     <svg
       width={width}

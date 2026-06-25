@@ -30,10 +30,10 @@ function NbFeatureCard({
 }) {
   const tapeColor =
     tape === "sage"
-      ? "var(--nb-sage)"
+      ? "var(--nb-tape)"
       : tape === "pink"
-        ? "var(--nb-pink)"
-        : "var(--nb-sky)";
+        ? "var(--nb-memo)"
+        : "var(--sky-1)";
   return (
     <Link
       href={postHref(p, group)}
@@ -126,7 +126,7 @@ function NbColumn({
   arrow: "sage" | "pink";
   group: "tech" | "hobby";
 }) {
-  const arrowColor = arrow === "sage" ? "var(--nb-sage)" : "var(--nb-pink)";
+  const arrowColor = arrow === "sage" ? "var(--nb-tape)" : "var(--nb-memo)";
   return (
     <div>
       <div
@@ -223,7 +223,7 @@ export function HomePage() {
     <>
       <section style={{ padding: "48px 48px 24px", position: "relative" }}>
         <div style={{ position: "absolute", top: 40, right: 80 }}>
-          <StickyNote color="var(--nb-butter)" rotate={6} w={200}>
+          <StickyNote color="var(--nb-note)" rotate={6} w={200}>
             오늘의 메모
             <br />
             <span style={{ fontFamily: NB_HAND2, fontSize: 16 }}>
@@ -253,7 +253,7 @@ export function HomePage() {
         >
           공부하고,
           <br />
-          <span style={{ color: "var(--nb-pink)" }}>축구 보고,</span>
+          <span style={{ color: "var(--nb-memo)" }}>축구 보고,</span>
           <br />
           가끔 책 읽는 사람의
           <br />
@@ -296,7 +296,7 @@ export function HomePage() {
           <span style={{ fontFamily: NB_HAND2, fontSize: 20, color: "var(--nb-ink-soft)" }}>
             · today&apos;s reads
           </span>
-          <HandArrow width={60} color="var(--nb-pink)" />
+          <HandArrow width={60} color="var(--nb-memo)" />
         </div>
         <div
           style={{
@@ -337,7 +337,7 @@ export function HomePage() {
           group="hobby"
         />
         <div style={{ position: "absolute", top: 32, right: 48 }}>
-          <StickyNote color="var(--nb-sage)" rotate={4} w={170}>
+          <StickyNote color="var(--nb-tape)" rotate={4} w={170}>
             축구도 결국
             <br />
             <em>그림 그리기</em>예요

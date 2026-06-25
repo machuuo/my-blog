@@ -47,7 +47,7 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
               <HandCircle
                 width={260}
                 height={80}
-                color="var(--nb-sage)"
+                color="var(--nb-tape)"
                 style={{ left: -18, top: -10 }}
               />
             </span> : null}
@@ -70,7 +70,7 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
           {post.excerpt}
         </p>
         <div style={{ position: "absolute", top: 40, right: 60 }}>
-          <StickyNote color="var(--nb-pink)" rotate={6} w={200}>
+          <StickyNote color="var(--nb-memo)" rotate={6} w={200}>
             진짜 화살표가
             <br />
             <em>다섯 번 바뀌었어요</em>
@@ -96,7 +96,7 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
           }}
         >
           <WashiTape
-            color="var(--nb-sage)"
+            color="var(--nb-tape)"
             rotate={-4}
             width={140}
             style={{ position: "absolute", top: -14, left: 100 }}

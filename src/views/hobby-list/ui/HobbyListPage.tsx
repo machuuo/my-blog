@@ -10,22 +10,9 @@ import {
   accentVar,
   accentTint,
 } from "@/shared/lib/design-data";
+import { NbChip } from "@/shared/ui/notebook/NbChip";
 import { Polaroid } from "@/shared/ui/notebook/Polaroid";
 import { StickyNote } from "@/shared/ui/notebook/StickyNote";
-
-function chipStyle(active: boolean): React.CSSProperties {
-  return {
-    fontFamily: NB_HAND,
-    fontSize: 22,
-    padding: "4px 14px",
-    background: active ? "var(--nb-ink)" : "transparent",
-    color: active ? "var(--nb-paper)" : "var(--nb-ink)",
-    border: "2px solid var(--nb-ink)",
-    borderRadius: 999,
-    cursor: "pointer",
-    transform: `rotate(${active ? 0 : -1}deg)`,
-  };
-}
 
 export function HobbyListPage() {
   const [activeCat, setActiveCat] = useState<string>("all");
@@ -37,7 +24,7 @@ export function HobbyListPage() {
     <>
       <section style={{ padding: "48px 48px 16px", position: "relative" }}>
         <div style={{ position: "absolute", top: 36, right: 60 }}>
-          <StickyNote color="var(--nb-pink)" rotate={-6} w={210}>
+          <StickyNote color="var(--nb-memo)" rotate={-6} w={210}>
             취미 공책은
             <br />
             <em>물감이 많이 묻어있어요</em>
@@ -55,7 +42,7 @@ export function HobbyListPage() {
             color: "var(--nb-ink)",
           }}
         >
-          취미 공책 <span style={{ color: "var(--nb-sage)" }}>16편</span>
+          취미 공책 <span style={{ color: "var(--nb-tape)" }}>16편</span>
         </h1>
         <p
           style={{
@@ -85,14 +72,9 @@ export function HobbyListPage() {
           탭 →
         </span>
         {cats.map((c) => (
-          <button
-            key={c}
-            type="button"
-            onClick={() => setActiveCat(c)}
-            style={chipStyle(activeCat === c)}
-          >
+          <NbChip key={c} active={activeCat === c} onClick={() => setActiveCat(c)}>
             {c}
-          </button>
+          </NbChip>
         ))}
         <span
           style={{
@@ -196,7 +178,7 @@ export function HobbyListPage() {
                       marginLeft: "auto",
                       fontFamily: NB_HAND,
                       fontSize: 22,
-                      color: "var(--nb-pink)",
+                      color: "var(--nb-memo)",
                     }}
                   >
                     읽어보기 →
