@@ -24,9 +24,7 @@ export function SeriesDetailPage({
 
       <header className="mt-6 mb-8">
         <h1 className="text-3xl font-bold tracking-tight">{series.title}</h1>
-        {series.description && (
-          <p className="text-muted-foreground mt-2">{series.description}</p>
-        )}
+        {series.description ? <p className="text-muted-foreground mt-2">{series.description}</p> : null}
         <p className="text-sm text-muted-foreground mt-3">
           {posts.length}개의 포스트
         </p>

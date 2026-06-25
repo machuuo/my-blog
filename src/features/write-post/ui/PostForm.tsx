@@ -57,9 +57,9 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
     if (!isEditing) {
       const autoSlug = value
         .toLowerCase()
-        .replace(/[^a-z0-9가-힣\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
+        .replaceAll(/[^a-z0-9가-힣\s-]/g, "")
+        .replaceAll(/\s+/g, "-")
+        .replaceAll(/-+/g, "-")
         .trim();
       setSlug(autoSlug);
     }
@@ -180,8 +180,7 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
       </div>
 
       {/* Series Selection */}
-      {categories.length > 0 && (
-        <div className="flex flex-col gap-4 p-4 border border-border rounded-md">
+      {categories.length > 0 ? <div className="flex flex-col gap-4 p-4 border border-border rounded-md">
           <p className="text-sm font-medium text-muted-foreground">시리즈 (선택)</p>
           <div className="flex gap-4">
             <div className="flex flex-col gap-2 flex-1">
@@ -215,8 +214,7 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
               </select>
             </div>
           </div>
-          {seriesId && (
-            <div className="flex flex-col gap-2">
+          {seriesId ? <div className="flex flex-col gap-2">
               <label className="text-xs text-muted-foreground">
                 시리즈 내 순서
               </label>
@@ -228,10 +226,8 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
                 min="0"
                 className={`${inputClassName} w-32`}
               />
-            </div>
-          )}
-        </div>
-      )}
+            </div> : null}
+        </div> : null}
 
       {/* Tags */}
       <div className="flex flex-col gap-2">
@@ -262,19 +258,16 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
       <MdxEditor value={content} onChange={setContent} />
 
       {/* Error */}
-      {error && (
-        <p className="text-sm text-red-500 bg-red-500/10 px-4 py-2 rounded-md">
+      {error ? <p className="text-sm text-red-500 bg-red-500/10 px-4 py-2 rounded-md">
           {error}
-        </p>
-      )}
+        </p> : null}
 
       {/* Actions */}
       <div className="flex gap-3">
         <Button type="submit" disabled={saving || !title || !slug}>
           {saving ? "저장 중..." : isEditing ? "수정" : "발행"}
         </Button>
-        {isEditing && (
-          <Button
+        {isEditing ? <Button
             type="button"
             variant="outline"
             onClick={handleDelete}
@@ -282,8 +275,7 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
             className="text-red-500 hover:text-red-600 hover:border-red-500"
           >
             삭제
-          </Button>
-        )}
+          </Button> : null}
       </div>
     </form>
   );

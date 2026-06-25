@@ -43,22 +43,18 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
           }}
         >
           {post.title.split(",")[0]}
-          {post.slug === "city-3241" && (
-            <span style={{ position: "relative" }}>
+          {post.slug === "city-3241" ? <span style={{ position: "relative" }}>
               <HandCircle
                 width={260}
                 height={80}
                 color="var(--nb-sage)"
                 style={{ left: -18, top: -10 }}
               />
-            </span>
-          )}
-          {post.title.includes(",") && (
-            <>
+            </span> : null}
+          {post.title.includes(",") ? <>
               ,<br />
               {post.title.split(",").slice(1).join(",").trim()}
-            </>
-          )}
+            </> : null}
         </h1>
         <p
           style={{
@@ -197,8 +193,7 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
         </div>
       </section>
 
-      {lightbox !== null && (
-        <div
+      {lightbox !== null ? <div
           onClick={() => setLightbox(null)}
           style={{
             position: "fixed",
@@ -233,8 +228,7 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
           >
             {lightbox + 1} / {PHOTOS.length}
           </div>
-        </div>
-      )}
+        </div> : null}
     </>
   );
 }

@@ -19,11 +19,9 @@ export function SectionHeader({ title, subtitle }: SectionHeaderProps) {
       <h2 style={{ fontFamily: NB_HAND, fontSize: 42, margin: 0, color: "var(--nb-ink)" }}>
         {title}
       </h2>
-      {subtitle && (
-        <span style={{ fontFamily: NB_HAND2, fontSize: 18, color: "var(--nb-ink-soft)" }}>
+      {subtitle ? <span style={{ fontFamily: NB_HAND2, fontSize: 18, color: "var(--nb-ink-soft)" }}>
           {subtitle}
-        </span>
-      )}
+        </span> : null}
     </div>
   );
 }

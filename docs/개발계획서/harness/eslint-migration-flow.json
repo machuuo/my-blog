@@ -1,0 +1,268 @@
+{
+  "design_doc": "docs/개발계획서/harness/eslint-migration.md",
+  "generated_at": "2026-06-24",
+  "steps": [
+    {
+      "id": "A-1",
+      "layer": "phase-A-next-upgrade",
+      "title": "peer dependency 사전 점검",
+      "files": [],
+      "command": "pnpm up --dry-run next@^15.5 react@^19 react-dom@^19",
+      "passes": true,
+      "acceptanceCriteria": [
+        "peer dependency 충돌 없음 확인",
+        "next-mdx-remote 등 주요 패키지 호환 확인"
+      ]
+    },
+    {
+      "id": "A-2",
+      "layer": "phase-A-next-upgrade",
+      "title": "package.json 버전 갱신",
+      "files": [
+        {
+          "path": "package.json",
+          "action": "수정",
+          "changes": [
+            "next ^14.2 → ^15.5",
+            "react ^18 → ^19",
+            "react-dom ^18 → ^19",
+            "@types/react ^18 → ^19",
+            "@types/react-dom ^18 → ^19",
+            "eslint-config-next 14.2.35 → ^15.5"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "next 버전 15.5 이상",
+        "react, react-dom 19.x"
+      ]
+    },
+    {
+      "id": "A-3",
+      "layer": "phase-A-next-upgrade",
+      "title": "의존성 설치",
+      "files": [
+        {
+          "path": "pnpm-lock.yaml",
+          "action": "수정",
+          "changes": [
+            "자동 갱신"
+          ]
+        }
+      ],
+      "command": "pnpm install",
+      "passes": true,
+      "acceptanceCriteria": [
+        "install 성공",
+        "lockfile 갱신"
+      ]
+    },
+    {
+      "id": "A-4",
+      "layer": "phase-A-next-upgrade",
+      "title": "빌드 + Breaking change 대응",
+      "files": [
+        {
+          "path": "next.config.mjs",
+          "action": "수정 가능",
+          "changes": [
+            "Next 15 옵션 변경 시"
+          ]
+        },
+        {
+          "path": "middleware.ts",
+          "action": "수정 가능",
+          "changes": [
+            "Next 15 미들웨어 명세 변경 시"
+          ]
+        },
+        {
+          "path": "src/app/**/page.tsx",
+          "action": "수정 가능",
+          "changes": [
+            "async params/searchParams"
+          ]
+        },
+        {
+          "path": "src/app/**/layout.tsx",
+          "action": "수정 가능",
+          "changes": [
+            "async params"
+          ]
+        }
+      ],
+      "command": "pnpm build",
+      "passes": true,
+      "acceptanceCriteria": [
+        "pnpm build 통과",
+        "async API 패턴 적용",
+        "caching 기본 변경 대응"
+      ]
+    },
+    {
+      "id": "A-5",
+      "layer": "phase-A-next-upgrade",
+      "title": "로컬 dev 동작 확인",
+      "files": [],
+      "command": "pnpm dev",
+      "passes": false,
+      "acceptanceCriteria": [
+        "전 페이지 렌더 (홈/about/posts/series/tags/hobby/tech/write/login)",
+        "middleware 동작",
+        "MDX 렌더"
+      ]
+    },
+    {
+      "id": "B-1",
+      "layer": "phase-B-eslint-flat",
+      "title": "legacy config 제거",
+      "files": [
+        {
+          "path": ".eslintrc.json",
+          "action": "삭제",
+          "changes": [
+            "legacy config 제거"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        ".eslintrc.json 파일 없음"
+      ]
+    },
+    {
+      "id": "B-2",
+      "layer": "phase-B-eslint-flat",
+      "title": "ESLint 9 + 플러그인 설치",
+      "files": [
+        {
+          "path": "package.json",
+          "action": "수정",
+          "changes": [
+            "eslint ^8 → ^9",
+            "typescript-eslint 추가",
+            "eslint-plugin-react 추가",
+            "eslint-plugin-react-hooks 추가",
+            "eslint-plugin-jsx-a11y 추가",
+            "eslint-plugin-import 추가",
+            "eslint-import-resolver-typescript 추가",
+            "eslint-plugin-unused-imports 추가",
+            "eslint-plugin-boundaries 추가",
+            "eslint-plugin-sonarjs 추가",
+            "eslint-plugin-unicorn 추가"
+          ]
+        }
+      ],
+      "command": "pnpm remove eslint && pnpm add -D eslint@^9 typescript-eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-import eslint-import-resolver-typescript eslint-plugin-unused-imports eslint-plugin-boundaries eslint-plugin-sonarjs eslint-plugin-unicorn",
+      "passes": true,
+      "acceptanceCriteria": [
+        "pnpm eslint --version → 9.x",
+        "필수 플러그인 모두 devDependencies에 존재"
+      ]
+    },
+    {
+      "id": "B-3",
+      "layer": "phase-B-eslint-flat",
+      "title": "eslint.config.js 생성 (FSD boundaries)",
+      "files": [
+        {
+          "path": "eslint.config.js",
+          "action": "신규",
+          "changes": [
+            "eslint-config-next/flat의 coreWebVitals 적용",
+            "boundaries/elements FSD 6계층 정의",
+            "boundaries/element-types 상→하 의존만 허용",
+            "src/{entities,features}/*/api/** AST 가드",
+            "src/shared/lib/** no-restricted-imports",
+            "explicit-function-return-type warn",
+            "no-console warn, sonarjs/cognitive-complexity warn 15",
+            "ignores: .next/**, scripts/**, *.test.*, *.stories.tsx"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "boundaries 6계층 정의됨",
+        "api 가드는 entities/features의 api segment만 적용",
+        "src/app/api/** AST 가드에서 제외",
+        "shared/lib에 import 제약 적용",
+        "@next/next/* 규칙 보존"
+      ]
+    },
+    {
+      "id": "B-4",
+      "layer": "phase-B-eslint-flat",
+      "title": "package.json scripts 갱신",
+      "files": [
+        {
+          "path": "package.json",
+          "action": "수정",
+          "changes": [
+            "scripts.lint: eslint .",
+            "scripts.lint:fix: eslint . --fix",
+            "scripts.lint:report: eslint . --format json -o lint-result.json"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "pnpm lint 실행 시 flat config 인식"
+      ]
+    },
+    {
+      "id": "C-1",
+      "layer": "phase-C-baseline",
+      "title": "lint 실행 + error 0 만들기",
+      "files": [],
+      "command": "pnpm lint",
+      "passes": true,
+      "acceptanceCriteria": [
+        "error 0",
+        "warn 카운트 측정 완료"
+      ]
+    },
+    {
+      "id": "C-2",
+      "layer": "phase-C-baseline",
+      "title": "lint-baseline.json 생성",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/lint-baseline.json",
+          "action": "신규",
+          "changes": [
+            "generated_at, warn_total, warn_by_rule 기록"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "warn 카운트 baseline 기록됨",
+        "ratchet 메커니즘 동작 가능"
+      ]
+    },
+    {
+      "id": "D-1",
+      "layer": "phase-D-ci",
+      "title": "lint CI 워크플로 신설",
+      "files": [
+        {
+          "path": ".github/workflows/lint.yml",
+          "action": "신규",
+          "changes": [
+            "push, pull_request 트리거",
+            "pnpm install + lint:report 실행",
+            "ratchet 검증 (warn > baseline 시 실패)",
+            "error > 0 시 실패"
+          ]
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "워크플로 파일 존재",
+        "push/PR 트리거 설정됨",
+        "ratchet 검증 인라인 포함"
+      ]
+    }
+  ]
+}

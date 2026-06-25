@@ -50,7 +50,7 @@ export function LoginForm({ redirectTo = "/write" }: LoginFormProps) {
         className="px-4 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
         autoFocus
       />
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error ? <p className="text-sm text-red-500">{error}</p> : null}
       <Button type="submit" disabled={loading || !password}>
         {loading ? "로그인 중..." : "로그인"}
       </Button>

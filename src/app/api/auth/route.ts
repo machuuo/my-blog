@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSessionToken, getSessionCookieConfig } from "@/shared/lib/auth";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const { password } = await request.json();
 
