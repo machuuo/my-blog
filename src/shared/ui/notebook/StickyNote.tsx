@@ -11,7 +11,7 @@ interface StickyNoteProps {
 
 export function StickyNote({
   children,
-  color = "var(--nb-butter)",
+  color = "var(--nb-note)",
   rotate = -2,
   w = 220,
   style = {},

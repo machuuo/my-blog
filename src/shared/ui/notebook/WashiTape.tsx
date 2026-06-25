@@ -8,7 +8,7 @@ interface WashiTapeProps {
 }
 
 export function WashiTape({
-  color = "var(--nb-pink)",
+  color = "var(--nb-memo)",
   width = 110,
   rotate = -8,
   style = {},
