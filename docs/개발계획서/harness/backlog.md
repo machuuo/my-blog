@@ -16,7 +16,7 @@ ESLint 마이그레이션(PR #7) 머지 후 baseline 강화 트래커.
 
 | # | 상태 | 브랜치 | 룰 | 위반 | 작업 |
 |---|---|---|---|---|---|
-| A-1 | ✅ | `chore/lint/a11y-lightbox` | `jsx-a11y/click-events-have-key-events` + `jsx-a11y/no-static-element-interactions` | 1 + 1 (같은 위치) | HobbyDetailPage:196 div에 onKeyDown + role + tabIndex (두 룰 동시 해소 — 분리 불가능) |
+| A-1 | ✅ | `chore/lint/a11y-lightbox` | `jsx-a11y/click-events-have-key-events` + `jsx-a11y/no-static-element-interactions` | 1 + 1 (같은 위치) | HobbyDetailPage:196 인라인 라이트박스 div를 shadcn `Dialog`/`DialogContent`로 전환 (role=dialog + focus trap + autoFocus + Esc 닫기 모두 base-ui 자동) |
 | A-2 | ⬜ | `chore/lint/array-index-key` | `react/no-array-index-key` | 2 | breadcrumb path segment + TagsPage 데이터 안정 key |
 | A-3 | ⬜ | `chore/lint/set-state-in-effect` | `react-hooks/set-state-in-effect` | 1 | NbFrame 테마 영속화 패턴 변경 (useSyncExternalStore 등) |
 | A-4 | ⬜ | `chore/lint/non-null-assertion` | `@typescript-eslint/no-non-null-assertion` | 6 | `requireEnv("KEY")` 가드 헬퍼 도입 + 6곳 교체 |
@@ -71,7 +71,7 @@ ESLint 마이그레이션(PR #7) 머지 후 baseline 강화 트래커.
 
 ## 진행 순서
 
-```
+```text
 A-1 (jsx-a11y 묶음) → A-2 (array-index-key) → A-3 (set-state-in-effect) → A-4 (non-null-assertion)
   → Tier B 묶음 PR
   → Tier C-1 autofix 묶음 PR

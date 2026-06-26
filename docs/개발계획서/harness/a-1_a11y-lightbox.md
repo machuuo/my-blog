@@ -20,7 +20,7 @@ baseline 24건 중 jsx-a11y 2건이 같은 위치(`HobbyDetailPage.tsx:196`)의 
 ## 2. 기능 요구사항
 
 ### In scope
-- HobbyDetailPage 라이트박스 오버레이를 키보드 사용자도 닫을 수 있게 한다 (Esc/Enter/Space — base-ui 자동)
+- HobbyDetailPage 라이트박스 오버레이를 키보드 사용자도 닫을 수 있게 한다 (Esc — base-ui 자동)
 - 스크린리더가 오버레이를 다이얼로그로 인식하게 한다 (role=dialog + aria-modal — base-ui 자동)
 - 두 jsx-a11y 룰 error 0건 달성
 - 라이트박스 열림 시 자동 포커스 + 닫힘 시 트리거 복귀 (base-ui 자동)
@@ -38,8 +38,7 @@ baseline 24건 중 jsx-a11y 2건이 같은 위치(`HobbyDetailPage.tsx:196`)의 
 기능
 - [x] 오버레이 클릭 시 라이트박스 닫힘 (기존 유지)
 - [x] Esc 키 입력 시 라이트박스 닫힘 (base-ui Dialog 자동)
-- [x] Enter/Space 키 입력 시 닫힘 (base-ui Dialog 자동, 트리거 button의 기본 동작)
-- [x] 폴라로이드 클릭으로 라이트박스 열림 (기존 유지)
+- [x] 폴라로이드 클릭(또는 트리거 button 포커스 상태에서 Enter/Space)으로 라이트박스 열림 (기존 유지)
 
 접근성 (§5 a11y 미러)
 - [x] 오버레이가 `role="dialog"` 시멘틱 보유 (base-ui `Dialog.Popup` 자동)
@@ -65,7 +64,7 @@ baseline 24건 중 jsx-a11y 2건이 같은 위치(`HobbyDetailPage.tsx:196`)의 
 
 ### 사용자 시나리오
 
-```
+```text
 [닫힘]
   ↓ 폴라로이드 클릭 (기존)
 [열림]                                  ← base-ui Dialog mount
@@ -80,7 +79,7 @@ baseline 24건 중 jsx-a11y 2건이 같은 위치(`HobbyDetailPage.tsx:196`)의 
 ```
 
 ### 엣지 케이스
-- 다른 키 누름 (Esc/Enter/Space 외) → 핸들러 무시
+- Esc 외 다른 키 누름 → base-ui Dialog 무동작
 - 오버레이 클릭과 Esc 입력이 짧은 간격으로 발생 → onOpenChange 두 번 호출, React 상태 동일 → 영향 없음
 - Dialog mount 직후 첫 렌더에서 포커스 가능 자식 없음 → base-ui가 Popup(tabIndex 자동 부여)에 포커스
 
@@ -92,7 +91,7 @@ baseline 24건 중 jsx-a11y 2건이 같은 위치(`HobbyDetailPage.tsx:196`)의 
 
 ### 컴포넌트 트리
 
-```
+```text
 HobbyDetailPage (변경)
 ├─ <section> (히어로/본문, 변경 없음)
 ├─ <section> (폴라로이드 갤러리, 변경 없음)
@@ -106,14 +105,14 @@ HobbyDetailPage (변경)
 
 ### 접근성 (§3 인수 기준에 미러됨)
 
-| 요소 | 속성/동작 | 제공 방식 |
+| 영역 | 속성/동작 | 제공 방식 |
 |---|---|---|
 | 오버레이 | `role="dialog"` + `aria-modal="true"` | base-ui `Dialog.Popup` 자동 |
 | 다이얼로그 라벨 | `Dialog.Title` "사진 확대 보기" (sr-only) | 명시 |
-| Esc/Enter/Space → 닫기 | base-ui Dialog 자동 |
-| 열림 시 자동 포커스 | base-ui Dialog 자동 |
-| Focus trap | base-ui Dialog 자동 |
-| 닫힘 시 트리거 복귀 | base-ui Dialog 자동 |
+| 키보드 | Esc → 닫기 | base-ui Dialog 자동 |
+| 포커스 | 열림 시 다이얼로그로 자동 이동 | base-ui Dialog 자동 |
+| 키보드 | Focus trap — 다이얼로그 외부 탈출 방지 | base-ui Dialog 자동 |
+| 포커스 | 닫힘 시 트리거 복귀 | base-ui Dialog 자동 |
 
 ---
 
@@ -123,7 +122,7 @@ HobbyDetailPage (변경)
 
 | 경로 | 역할 |
 |---|---|
-| `src/shared/ui/dialog.tsx` | shadcn dialog 컴포넌트 (base-ui 기반). 본 PR에선 base-ui primitive를 직접 사용하나 향후 박스형 모달용으로 보존 |
+| `src/shared/ui/dialog.tsx` | `@base-ui/react/dialog`를 감싼 공통 다이얼로그 래퍼 컴포넌트 (`Dialog`, `DialogContent`, `DialogTitle`, `DialogOverlay`, `DialogHeader`, `DialogFooter`, `DialogDescription`). 본 PR의 라이트박스 + 향후 박스형 모달 공용. |
 
 ### 변경 파일
 
