@@ -25,6 +25,7 @@
 | 2026-06-25 | `explicit-function-return-type` `.ts` warn→error 승격 + 15건 해소 | Route Handler 11 + lib 4 시그니처 명시, baseline 26→11 |
 | 2026-06-25 | `max-lines-per-function: warn 80` 추가 (`.tsx`) | 컴포넌트 비대화 간접 강제, baseline 11→24 (정책 강화 의도) |
 | 2026-06-25 | `SessionCookieConfig` interface export | `auth.ts`의 인라인 반환 타입 → 명명 타입 |
+| 2026-06-25 | **A-1**: `jsx-a11y/click-events-have-key-events` + `jsx-a11y/no-static-element-interactions` warn→error 승격 + 위반 1건 해소 (Dialog 도입) | `HobbyDetailPage.tsx:196` 인라인 라이트박스 div → shadcn `Dialog` + `DialogContent` + `DialogTitle` 구조로 교체 (`DialogContent` className으로 박스→풀스크린 reset, `showCloseButton={false}`). role=dialog + aria-modal + focus trap + autoFocus + Esc 닫기 모두 자동. `@base-ui/react@1.6.0` 추가, `src/shared/ui/dialog.tsx` 신규. baseline 24→22 |
 
 ---
 
