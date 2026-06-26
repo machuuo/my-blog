@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { NB_BODY, NB_HAND, NB_HAND2 } from "@/shared/lib/design-data";
 import { WashiTape } from "@/shared/ui/notebook/WashiTape";
 import { Squiggle } from "@/shared/ui/notebook/Squiggle";
+import { useNbTheme } from "../lib";
 
 const navItems = [
   { id: "home", label: "Home", kr: "집", href: "/" },
@@ -42,19 +43,14 @@ const iconBtnStyle: React.CSSProperties = {
 export function NbFrame({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const active = activeIdFromPath(pathname || "/");
-  const [dark, setDark] = useState(false);
+  const { theme, toggle } = useNbTheme();
+  const dark = theme === "dark";
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const stored = typeof window !== "undefined" ? localStorage.getItem("nb-theme") : null;
-    if (stored === "dark") setDark(true);
-  }, []);
-
-  useEffect(() => {
     if (typeof window === "undefined") return;
-    document.documentElement.dataset.nbTheme = dark ? "dark" : "light";
-    localStorage.setItem("nb-theme", dark ? "dark" : "light");
-  }, [dark]);
+    document.documentElement.dataset.nbTheme = theme;
+  }, [theme]);
 
   return (
     <div
@@ -176,7 +172,7 @@ export function NbFrame({ children }: { children: ReactNode }) {
                 }}
               />
               <button
-                onClick={() => setDark((d) => !d)}
+                onClick={toggle}
                 style={iconBtnStyle}
                 aria-label="theme"
                 type="button"

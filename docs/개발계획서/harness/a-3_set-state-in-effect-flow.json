@@ -1,0 +1,158 @@
+{
+  "designDoc": "a-3_set-state-in-effect.md",
+  "branch": "chore/lint/set-state-in-effect",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "test",
+      "title": "useNbTheme.test.ts 작성 (Red)",
+      "files": [
+        {
+          "path": "src/widgets/nb-frame/lib/useNbTheme.test.ts",
+          "action": "create",
+          "changes": "6 케이스: 초기값(light), 영속화(setTheme dark), storage 이벤트 동기화, 토글, SSR getServerSnapshot, ref 안정성"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "테스트 6건 작성",
+        "구현 없는 상태에서 실패(Red) 확인"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "hooks",
+      "title": "useNbTheme.ts 구현 (Green)",
+      "files": [
+        {
+          "path": "src/widgets/nb-frame/lib/useNbTheme.ts",
+          "action": "create",
+          "changes": "useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) + setTheme + toggle"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "useSyncExternalStore 사용",
+        "getServerSnapshot 'light' 반환",
+        "storage 이벤트 구독/cleanup",
+        "useNbTheme.test.ts 6건 통과"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "components",
+      "title": "NbFrame.tsx에 useNbTheme 적용",
+      "files": [
+        {
+          "path": "src/widgets/nb-frame/ui/NbFrame.tsx",
+          "action": "modify",
+          "changes": "useState+2x useEffect 제거 → useNbTheme() + 1x useEffect(dataset 동기화). 토글 버튼은 toggle() 사용"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "useEffect 내부 setState 0건",
+        "기존 토글 동작 유지",
+        "기존 localStorage 영속화 유지"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "app",
+      "title": "layout.tsx suppressHydrationWarning",
+      "files": [
+        {
+          "path": "src/app/layout.tsx",
+          "action": "modify",
+          "changes": "<html lang=\"ko\" suppressHydrationWarning>"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "html 태그에 suppressHydrationWarning 속성 추가"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "verify",
+      "title": "pnpm lint — react-hooks/set-state-in-effect error 0건",
+      "files": [],
+      "passes": false,
+      "acceptanceCriteria": [
+        "react-hooks/set-state-in-effect error 0건",
+        "pnpm lint exit 0"
+      ]
+    },
+    {
+      "id": 6,
+      "layer": "verify",
+      "title": "회귀 차단 검증",
+      "files": [],
+      "passes": false,
+      "acceptanceCriteria": [
+        "임시 useEffect 내 setState 추가 시 lint 실패",
+        "되돌린 후 통과"
+      ]
+    },
+    {
+      "id": 7,
+      "layer": "meta",
+      "title": "lint-baseline.json 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/lint-baseline.json",
+          "action": "modify",
+          "changes": "warn_by_rule에서 react-hooks/set-state-in-effect 제거. warn_total 유지(20 — 이미 error였음). decreases에 A-3 기록"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "warn_by_rule에서 react-hooks/set-state-in-effect 항목 제거",
+        "decreases 배열에 A-3 항목 추가"
+      ]
+    },
+    {
+      "id": 8,
+      "layer": "meta",
+      "title": "eslint-migration.md Changelog 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/eslint-migration.md",
+          "action": "modify",
+          "changes": "Changelog: A-3 react-hooks/set-state-in-effect 위반 1건 해소 (룰은 이미 error)"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "Changelog 섹션에 A-3 항목 추가"
+      ]
+    },
+    {
+      "id": 9,
+      "layer": "meta",
+      "title": "backlog.md A-3 ✅ 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/backlog.md",
+          "action": "modify",
+          "changes": "A-3 상태 ⬜ → ✅"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "A-3 상태 ✅"
+      ]
+    },
+    {
+      "id": 10,
+      "layer": "verify",
+      "title": "최종 pnpm lint + tsc 통과 확인",
+      "files": [],
+      "passes": false,
+      "acceptanceCriteria": [
+        "pnpm lint exit 0",
+        "tsc 통과"
+      ]
+    }
+  ]
+}
