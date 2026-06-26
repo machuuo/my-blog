@@ -192,12 +192,12 @@ export default [
         ],
         patterns: [
           "react/*",
-          // 외부 layer alias 차단
-          "@/app/*",
-          "@/views/*",
-          "@/widgets/*",
-          "@/features/*",
-          "@/entities/*",
+          // 외부 layer alias 차단 — ** 재귀로 deep subpath까지 차단
+          "@/app/**",
+          "@/views/**",
+          "@/widgets/**",
+          "@/features/**",
+          "@/entities/**",
           // 외부 layer relative-traversal 차단 — alias 우회 방지.
           // shared/lib 내부에서 ../../views 같은 경로로 외부 layer 접근 불가.
           "../**/app/**",

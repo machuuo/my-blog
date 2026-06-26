@@ -10,12 +10,12 @@
         {
           "path": "src/shared/lib/env.test.ts",
           "action": "create",
-          "changes": "4 케이스: 정상 반환, undefined throw, 빈 문자열 throw, 메시지 포맷 일관성"
+          "changes": "5 케이스: 정상 반환, undefined throw, 빈 문자열 throw, 메시지 포맷 일관성, MissingEnvError 식별(클래스/key/name)"
         }
       ],
       "passes": true,
       "acceptanceCriteria": [
-        "테스트 4건 작성",
+        "테스트 5건 작성",
         "구현 없는 상태에서 실패(RED) 확인"
       ]
     },
@@ -27,7 +27,7 @@
         {
           "path": "src/shared/lib/env.ts",
           "action": "create",
-          "changes": "requireEnv(key) — process.env 읽기 + undefined/'' 시 throw"
+          "changes": "MissingEnvError 클래스(extends Error, key 프로퍼티) + requireEnv(key) — process.env 읽기 + undefined/'' 시 MissingEnvError throw"
         },
         {
           "path": "src/shared/lib/index.ts",
@@ -123,13 +123,14 @@
         {
           "path": "eslint.config.mjs",
           "action": "modify",
-          "changes": "L96 no-non-null-assertion 주석을 A-4 완료 표기로 갱신 + shared/lib 그룹(L183-) 정리: (a) import/no-relative-parent-imports를 off로 해제(슬롯 자기참조 허용), (b) no-restricted-imports.patterns에 외부 layer relative-traversal 차단 5종(../**/{app,views,widgets,features,entities}/**) 추가 — alias 우회 방지"
+          "changes": "L96 no-non-null-assertion 주석을 A-4 완료 표기로 갱신 + shared/lib 그룹(L183-) 정리: (a) import/no-relative-parent-imports를 off로 해제(슬롯 자기참조 허용), (b) no-restricted-imports.patterns의 기존 alias 5종(@/{app,views,widgets,features,entities}/*)을 재귀 패턴(@/{...}/**)으로 보강해 deep subpath까지 차단, (c) 외부 layer relative-traversal 차단 5종(../**/{app,views,widgets,features,entities}/**) 신규 추가 — alias 우회 방지"
         }
       ],
       "passes": true,
       "acceptanceCriteria": [
         "L96 no-non-null-assertion 주석에 A-4 표기",
         "shared/lib 그룹에서 import/no-relative-parent-imports 해제",
+        "shared/lib 그룹의 alias 패턴 5종이 @/{layer}/** 재귀 형식",
         "shared/lib 그룹의 no-restricted-imports.patterns에 외부 layer relative-traversal 차단 5종 추가"
       ]
     },

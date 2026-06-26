@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSessionToken, getSessionCookieConfig } from "@/shared/lib/auth";
+import { MissingEnvError } from "@/shared/lib/env";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
@@ -19,7 +20,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     response.cookies.set(cookieConfig);
 
     return response;
-  } catch {
+  } catch (error) {
+    if (error instanceof MissingEnvError) {
+      console.error(`[auth] Missing required env: ${error.key}`);
+      return NextResponse.json(
+        { error: "Server misconfigured" },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
       { error: "Invalid request" },
       { status: 400 }

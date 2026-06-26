@@ -21,10 +21,12 @@
 - 호출 위치는 6곳: `auth.ts(SESSION_SECRET × 2)`, `supabase/client.ts(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY)`, `supabase/server.ts(NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)`.
 
 ### in scope
-- `src/shared/lib/env.ts` 신규 (헬퍼) — D1 재고로 `shared/lib`에 배치
-- `src/shared/lib/env.test.ts` 신규 (4 케이스)
+- `src/shared/lib/env.ts` 신규 — `requireEnv` + `MissingEnvError` 클래스 (D9)
+- `src/shared/lib/env.test.ts` 신규 (5 케이스)
 - `src/shared/lib/index.ts` 수정 — `export * from "./env"` 추가
 - 6곳 `process.env.X!` → `requireEnv("X")` 교체 (auth × 2, supabase/client × 2, supabase/server × 2)
+- `src/app/api/auth/route.ts` 수정 — catch에서 `MissingEnvError` 분기 → 500 (D9)
+- `src/app/api/posts/route.ts` 수정 — `handleRouteError` 헬퍼로 catch 통일, `MissingEnvError` 분기 → 500 (D9)
 - `eslint.config.mjs` 룰 주석 갱신 + `shared/lib` 그룹의 `import/no-relative-parent-imports` 해제 (D6 처리)
 - baseline / migration / backlog 메타 갱신
 
@@ -41,12 +43,14 @@
 - [ ] `pnpm lint` 실행 시 `@typescript-eslint/no-non-null-assertion` error 0건.
 - [ ] `pnpm lint` exit 0.
 - [ ] 회귀 차단 검증: 일부러 새 `process.env.X!`를 추가하면 lint 실패 → 되돌리면 통과.
-- [ ] `pnpm test` 통과 (env.test.ts 4건 + 기존 7건 = 11 passed).
+- [ ] `pnpm test` 통과 (env.test.ts 5건 + 기존 7건 = 12 passed).
 - [ ] `npx tsc --noEmit` error 0건.
 - [ ] 모든 호출 6곳이 `requireEnv("X")` 형식.
-- [ ] `requireEnv("MISSING")` 호출 시 `Error: Missing required env: MISSING` throw.
+- [ ] `requireEnv("MISSING")` 호출 시 `MissingEnvError("MISSING")` throw (`instanceof MissingEnvError`, `error.key === "MISSING"`).
 - [ ] env 값이 빈 문자열일 때도 동일하게 throw.
 - [ ] `requireEnv("KEY")`가 정상 값일 때는 그 값을 반환.
+- [ ] `auth/route.ts` catch에서 `MissingEnvError` 발생 시 500 + `console.error`, 그 외는 기존 400 유지.
+- [ ] `posts/route.ts` 3개 catch 모두 `handleRouteError("posts", error)`로 통일 — `MissingEnvError` 분기 동일 동작.
 
 ---
 
@@ -96,13 +100,15 @@ N/A — 컴포넌트 없음.
 
 | 경로 | 동작 | 역할 |
 |---|---|---|
-| `src/shared/lib/env.ts` | 신규 | `requireEnv(key: string): string` 가드 헬퍼 |
-| `src/shared/lib/env.test.ts` | 신규 | 4 케이스: 정상/undefined/빈문자열/메시지 포맷 |
+| `src/shared/lib/env.ts` | 신규 | `MissingEnvError` 클래스 + `requireEnv(key: string): string` 가드 헬퍼 |
+| `src/shared/lib/env.test.ts` | 신규 | 5 케이스: 정상/undefined/빈문자열/메시지 포맷/MissingEnvError 식별 |
+| `src/app/api/auth/route.ts` | 수정 | catch (error) → `MissingEnvError`면 500 + `console.error`, 그 외는 기존 400 |
+| `src/app/api/posts/route.ts` | 수정 | `handleRouteError(scope, error)` 헬퍼 도입 + 3개 catch에서 호출 (POST/PUT/DELETE) |
 | `src/shared/lib/index.ts` | 수정 | `export * from "./env"` 추가 (기존 barrel 보강) |
 | `src/shared/lib/auth.ts` | 수정 | L32, L38 `process.env.SESSION_SECRET!` → `requireEnv("SESSION_SECRET")` (same-slot `./env` import) |
 | `src/shared/lib/supabase/client.ts` | 수정 | L8, L9 `process.env.X!` → `requireEnv("X")` (`../env`) |
 | `src/shared/lib/supabase/server.ts` | 수정 | L4, L5 `process.env.X!` → `requireEnv("X")` (`../env`) |
-| `eslint.config.mjs` | 수정 | L96 주석 갱신 + `shared/lib` 그룹의 `import/no-relative-parent-imports`를 `off`로 (D6 충돌 해소) + `no-restricted-imports.patterns`에 외부 layer relative-traversal 차단 패턴 5종 추가 (D6 보강) |
+| `eslint.config.mjs` | 수정 | L96 주석 갱신 + `shared/lib` 그룹의 `import/no-relative-parent-imports`를 `off`로 (D6 충돌 해소) + `no-restricted-imports.patterns` 보강: 기존 alias 5종 `@/{layer}/*` → `@/{layer}/**`로 재귀 패턴 변경(deep subpath 차단) + 외부 layer relative-traversal 차단 5종 신규 추가 (D6 보강) |
 | `docs/개발계획서/harness/lint-baseline.json` | 수정 | `no-non-null-assertion` 항목 제거. warn_total 19→13. decreases에 A-4 기록 |
 | `docs/개발계획서/harness/eslint-migration.md` | 수정 | Changelog 표에 A-4 행 추가 |
 | `docs/개발계획서/harness/backlog.md` | 수정 | A-4 ✅ + Changelog 갱신 |
@@ -114,19 +120,23 @@ N/A — 컴포넌트 없음.
 
 ```ts
 // src/shared/lib/env.ts
+export class MissingEnvError extends Error {
+  readonly key: string;
+}
 export function requireEnv(key: string): string;
 ```
 
 - 입력: env 키 문자열
 - 출력: env 값 (non-empty string)
-- 예외: `Error("Missing required env: <key>")` — `undefined` 또는 빈 문자열일 때
+- 예외: `MissingEnvError(key)` (extends `Error`) — `undefined` 또는 빈 문자열일 때. `key` 프로퍼티로 어떤 env가 누락됐는지 호출 측에서 식별 가능.
 
-### env.test.ts 테스트 케이스 (4)
+### env.test.ts 테스트 케이스 (5)
 
 1. **정상 반환** — `process.env["TEST_KEY"] = "value"` 설정 후 `requireEnv("TEST_KEY") === "value"`.
 2. **undefined 시 throw** — `process.env["TEST_KEY"]` 미설정 시 `Missing required env: TEST_KEY` throw.
 3. **빈 문자열 시 throw** — `process.env["TEST_KEY"] = ""` 설정 시 동일 throw.
-4. **에러 메시지 포맷 일관성** — throw된 Error의 message가 정확히 `"Missing required env: ${key}"` 형식.
+4. **에러 메시지 포맷 일관성** — `toThrow(new MissingEnvError(TEST_KEY))` 정확 매칭.
+5. **MissingEnvError 식별** — `instanceof MissingEnvError` + `error.key === TEST_KEY` + `error.name === "MissingEnvError"`.
 
 > `beforeEach`/`afterEach`로 `process.env["TEST_KEY"]`를 reset해 테스트 격리.
 
@@ -153,8 +163,9 @@ export function requireEnv(key: string): string;
 | D3 | 캐싱 | 매 호출 시 `process.env` 직접 읽기 | Lazy + 단순. Next.js 번들링이 `NEXT_PUBLIC_*`를 인라인하므로 성능 무관. 테스트에서 `process.env` 조작이 즉시 반영되어 격리 쉬움. |
 | D4 | 헬퍼 추출 방식 | 가드 헬퍼 (1개 함수) | Zod 기반 envSchema는 의존성/스코프 폭증 → 본 사이클 원칙(1 룰 = 1 PR) 위배. 미래 envSchema 도입 시 본 헬퍼는 그대로 흡수 가능. |
 | D5 | barrel 보강 | `src/shared/lib/index.ts`에 `export * from "./env"` 추가 | D1 재고 결과 기존 `shared/lib/index.ts`에 한 줄 추가로 처리. 새 슬롯 불필요. |
-| D6 | boundaries / import 룰 충돌 | `shared/lib` 그룹의 `import/no-relative-parent-imports` 해제 + `no-restricted-imports.patterns` 보강 | `supabase/` 서브폴더에서 `../env` import가 룰 위반으로 잡힘. 룰 의도는 외부 layer(app/views/features 등) 차단이라 `shared/lib` 내부 자기참조는 정당. 단순 해제만 하면 `../../views/...` 같은 relative-traversal로 외부 layer 우회 가능 → patterns에 `../**/views/**` 등 5종 추가해 alias + relative 양쪽 모두 차단. |
+| D6 | boundaries / import 룰 충돌 | `shared/lib` 그룹의 `import/no-relative-parent-imports` 해제 + `no-restricted-imports.patterns` 보강 (alias 재귀화 + relative 차단) | `supabase/` 서브폴더에서 `../env` import가 룰 위반으로 잡힘. 룰 의도는 외부 layer(app/views/features 등) 차단이라 `shared/lib` 내부 자기참조는 정당. 단순 해제만 하면 `../../views/...` 같은 relative-traversal로 외부 layer 우회 가능 → (a) 기존 alias 패턴 `@/{layer}/*` → `@/{layer}/**`로 재귀화하여 deep subpath까지 차단, (b) `../**/views/**` 등 relative 5종 신규 추가. alias + relative 양쪽 + 모든 depth 차단. |
 | D7 | 테스트 작성 | `env.test.ts` 4 케이스 | impl-review #15 — 새 util/hook 추출 시 `*.test.ts` 필수. happy path + undefined + 빈 문자열 + 메시지 포맷. |
-| D8 | 호출 측 try/catch | 안 함 | env 누락은 복구 불가능한 환경 설정 문제. fail-fast가 정답 — 묻혀버린 에러보다 명확한 500이 진단 비용 낮음. |
+| D8 | 호출 측 try/catch | 라우트 catch에서 `MissingEnvError`만 500으로 분기, 그 외 400 유지 | env 누락은 복구 불가능한 환경 설정 문제. fail-fast가 정답 — 묻혀버린 에러보다 명확한 500이 진단 비용 낮음. 단 라우트의 catch-all이 모든 throw를 400으로 응답하는 것을 D9로 개선. |
+| D9 | `MissingEnvError` 클래스 + 라우트 분기 | env.ts에 `class MissingEnvError extends Error { key }` + auth/posts 라우트 catch에서 `instanceof MissingEnvError` 분기 → 500 + 로그 | CodeRabbit 지적. generic `Error` throw 시 라우트의 catch-all이 400 "Invalid request"로 잘못 분류 → 클라이언트 입력 오류로 표면화. 클래스 분기로 서버 설정 오류(500)와 입력 오류(400) 의미 분리. `series/categories/upload` 라우트는 본 PR에서 같은 패턴 적용 안 함 — `requireEnv` 직접 호출 의존성 없음(supabase client만) + 일관성 정리는 별도 사이클(보안/에러 처리). |
 
 모든 결정 사항이 해소되어 미확정 항목 없음.

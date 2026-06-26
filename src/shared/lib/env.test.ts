@@ -1,4 +1,4 @@
-import { requireEnv } from "./env";
+import { MissingEnvError, requireEnv } from "./env";
 
 const TEST_KEY = "A4_TEST_REQUIRE_ENV";
 
@@ -31,7 +31,18 @@ describe("requireEnv", () => {
 
   it("formats the error message exactly as 'Missing required env: <KEY>'", () => {
     expect(() => requireEnv(TEST_KEY)).toThrow(
-      new Error(`Missing required env: ${TEST_KEY}`),
+      new MissingEnvError(TEST_KEY),
     );
+  });
+
+  it("throws MissingEnvError (distinguishable from generic Error) carrying the key", () => {
+    try {
+      requireEnv(TEST_KEY);
+      throw new Error("requireEnv should have thrown");
+    } catch (error) {
+      expect(error).toBeInstanceOf(MissingEnvError);
+      expect((error as MissingEnvError).key).toBe(TEST_KEY);
+      expect((error as MissingEnvError).name).toBe("MissingEnvError");
+    }
   });
 });
