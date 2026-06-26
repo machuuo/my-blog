@@ -46,3 +46,6 @@ next-env.d.ts
 # omc (로컬 state)
 .omc/
 lint-result.json
+
+# docs
+docs/blog-drafts
