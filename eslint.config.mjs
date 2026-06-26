@@ -95,7 +95,7 @@ export default [
       }],
       "@typescript-eslint/no-non-null-assertion": "warn", // 점진(1)
       "@typescript-eslint/no-explicit-any": "error",
-      "react-hooks/set-state-in-effect": "warn", // 점진(1), React 19 + react-hooks 7 신규 규칙
+      "react-hooks/set-state-in-effect": "error", // 점진(1), React 19 + react-hooks 7 신규 규칙
       "@typescript-eslint/consistent-type-assertions": ["error", {
         assertionStyle: "as",
         objectLiteralTypeAssertions: "never",
