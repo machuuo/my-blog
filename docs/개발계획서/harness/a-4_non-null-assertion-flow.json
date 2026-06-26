@@ -96,7 +96,7 @@
       "layer": "verify",
       "title": "pnpm lint + tsc + test 검증",
       "files": [],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "no-non-null-assertion error 0건",
         "pnpm lint exit 0",
@@ -109,7 +109,7 @@
       "layer": "verify",
       "title": "회귀 차단 검증",
       "files": [],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "임시 ! 추가 시 lint 실패",
         "되돌린 후 통과"
@@ -126,7 +126,7 @@
           "changes": "L96 주석을 A-4 완료 표기로 갱신 + shared/lib 그룹의 import/no-relative-parent-imports를 off로 (D6 재고)"
         }
       ],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "주석에 A-4 표기",
         "shared/lib 그룹에서 import/no-relative-parent-imports 해제"
@@ -143,7 +143,7 @@
           "changes": "no-non-null-assertion 항목 제거. warn_total 19→13. decreases에 A-4 기록"
         }
       ],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "warn_by_rule에서 no-non-null-assertion 제거",
         "decreases에 A-4 추가"
@@ -165,7 +165,7 @@
           "changes": "A-4 ⬜ → ✅ + Changelog 항목 추가"
         }
       ],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "A-4 상태 ✅",
         "Changelog A-4 항목 존재"
