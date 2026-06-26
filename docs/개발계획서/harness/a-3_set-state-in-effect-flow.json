@@ -10,12 +10,12 @@
         {
           "path": "src/widgets/nb-frame/lib/useNbTheme.test.ts",
           "action": "create",
-          "changes": "4 케이스: 초기값(light), 영속화(setTheme dark), storage 이벤트 동기화, SSR getServerSnapshot"
+          "changes": "6 케이스: 초기값(light), 영속화(setTheme dark), storage 이벤트 동기화, 토글, SSR getServerSnapshot, ref 안정성"
         }
       ],
       "passes": true,
       "acceptanceCriteria": [
-        "테스트 4건 작성",
+        "테스트 6건 작성",
         "구현 없는 상태에서 실패(Red) 확인"
       ]
     },
@@ -35,7 +35,7 @@
         "useSyncExternalStore 사용",
         "getServerSnapshot 'light' 반환",
         "storage 이벤트 구독/cleanup",
-        "useNbTheme.test.ts 4건 통과"
+        "useNbTheme.test.ts 6건 통과"
       ]
     },
     {

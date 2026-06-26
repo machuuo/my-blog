@@ -107,7 +107,7 @@ NbFrame (변경)
 | 경로 | 동작 | 역할 |
 |---|---|---|
 | `src/widgets/nb-frame/lib/useNbTheme.ts` | 신규 | localStorage 기반 테마 동기화 커스텀 훅 |
-| `src/widgets/nb-frame/lib/useNbTheme.test.ts` | 신규 | useNbTheme 단위 테스트 (4 케이스) |
+| `src/widgets/nb-frame/lib/useNbTheme.test.ts` | 신규 | useNbTheme 단위 테스트 (6 케이스) |
 | `src/widgets/nb-frame/ui/NbFrame.tsx` | 수정 | `useState + 2x useEffect` → `useNbTheme()` + `1x useEffect(dataset 동기화)` |
 | `src/app/layout.tsx` | 수정 | `<html lang="ko" suppressHydrationWarning>` 부착 |
 
@@ -136,12 +136,14 @@ function useNbTheme(): {
 - `getServerSnapshot`: 항상 `'light'` 반환 (SSR 안전).
 - `setTheme`: localStorage 쓰기 + 같은 탭에 수동 `storage` 이벤트 디스패치 (브라우저는 다른 탭에만 보냄).
 
-### useNbTheme 테스트 케이스 (4)
+### useNbTheme 테스트 케이스 (6)
 
 1. 초기값 — localStorage가 비어있으면 `'light'` 반환.
 2. 영속화 — `setTheme('dark')` 호출 후 `localStorage.getItem('nb-theme') === 'dark'`.
 3. 외부 변경 동기화 — `storage` 이벤트 디스패치 시 새 값 반영.
-4. SSR safe — `window` 미정의 환경(`getServerSnapshot`)에서 `'light'` 반환.
+4. 토글 — `toggle()` 호출로 light ↔ dark 왕복.
+5. SSR safe — `getServerSnapshot()` 직접 호출 시 `'light'` 반환.
+6. 반환 객체 ref 안정성 — 동일 theme에서 rerender 시 `result.current` 동일 참조 유지 (`useMemo` 가드).
 
 ### API 통합
 **N/A — 네트워크 호출 없음.**
@@ -163,7 +165,7 @@ function useNbTheme(): {
 | D1 | localStorage ↔ state 동기화 패턴 | `useSyncExternalStore` | React 18+ 정석. SSR-safe(getServerSnapshot). 룰 통과 확실. 외부 시스템 동기화 의도 코드에 드러남. |
 | D2 | SSR hydration 처리 | 서버 light 고정 + `suppressHydrationWarning` | 깜빡임 ~50ms 허용. inline script 부채 회피. 산책 노트 1인 사용에 충분. |
 | D3 | hook 추출 위치 | `widgets/nb-frame/lib/useNbTheme.ts` | FSD에서 widget 내부 보조 로직은 `lib` 슬롯. `shared/lib`는 도메인 중립 코드용. |
-| D4 | 테스트 작성 | `useNbTheme.test.ts` 신규 4 케이스 | 새 hook 추출 → impl-review 체크리스트 #15 충족. |
+| D4 | 테스트 작성 | `useNbTheme.test.ts` 신규 6 케이스 | 새 hook 추출 → impl-review 체크리스트 #15 충족. SSR safe + ref 안정성 케이스 추가는 /impl-review T-1/T-2 반영. |
 | D5 | 다탭 동기화 | `storage` 이벤트 구독 포함 | `useSyncExternalStore` 채택 시 자연스럽게 따라오는 부수 효과. 비용 0. |
 
 모든 결정 사항이 해소되어 미확정 항목 없음.

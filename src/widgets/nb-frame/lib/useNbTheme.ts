@@ -5,9 +5,15 @@ export type NbTheme = "light" | "dark";
 const STORAGE_KEY = "nb-theme";
 
 function subscribe(callback: () => void): () => void {
-  window.addEventListener("storage", callback);
+  const handler = (event: StorageEvent): void => {
+    if (event.storageArea !== localStorage) return;
+    if (event.key !== null && event.key !== STORAGE_KEY) return;
+    callback();
+  };
+
+  window.addEventListener("storage", handler);
   return () => {
-    window.removeEventListener("storage", callback);
+    window.removeEventListener("storage", handler);
   };
 }
 
