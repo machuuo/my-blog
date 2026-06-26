@@ -10,19 +10,21 @@ import unicorn from "eslint-plugin-unicorn"
 
 // ── FSD 슬라이스 내부의 api segment에만 적용 (Next Route Handler 제외) ──
 const API_LAYER_PATTERNS = [
-  { selector: "CallExpression[callee.property.name='sort']",     message: "api segment에서 .sort() 금지. shared/lib 또는 model로 옮기세요." },
-  { selector: "CallExpression[callee.property.name='reverse']",  message: "api segment에서 .reverse() 금지." },
-  { selector: "CallExpression[callee.property.name='reduce']",   message: "api segment에서 .reduce() 금지." },
-  { selector: "CallExpression[callee.property.name='flat']",     message: "api segment에서 .flat() 금지." },
-  { selector: "CallExpression[callee.property.name='flatMap']",  message: "api segment에서 .flatMap() 금지." },
-  { selector: "NewExpression[callee.name='Date']",               message: "api segment에서 new Date() 금지." },
-  { selector: "MemberExpression[object.name='Math']",            message: "api segment에서 Math.* 금지." },
-  { selector: "MemberExpression[object.name='localStorage']",    message: "api segment에서 localStorage 금지." },
-  { selector: "MemberExpression[object.name='sessionStorage']",  message: "api segment에서 sessionStorage 금지." },
-  { selector: "MemberExpression[object.name='window']",          message: "api segment에서 window 금지." },
-  { selector: "MemberExpression[object.name='document']",        message: "api segment에서 document 금지." },
-  { selector: "CallExpression[callee.type='MemberExpression'][callee.property.name='parse'][callee.object.name='JSON']",
-    message: "api segment에서 JSON.parse() 금지." },
+  { selector: "CallExpression[callee.property.name='sort']", message: "api segment에서 .sort() 금지. shared/lib 또는 model로 옮기세요." },
+  { selector: "CallExpression[callee.property.name='reverse']", message: "api segment에서 .reverse() 금지." },
+  { selector: "CallExpression[callee.property.name='reduce']", message: "api segment에서 .reduce() 금지." },
+  { selector: "CallExpression[callee.property.name='flat']", message: "api segment에서 .flat() 금지." },
+  { selector: "CallExpression[callee.property.name='flatMap']", message: "api segment에서 .flatMap() 금지." },
+  { selector: "NewExpression[callee.name='Date']", message: "api segment에서 new Date() 금지." },
+  { selector: "MemberExpression[object.name='Math']", message: "api segment에서 Math.* 금지." },
+  { selector: "MemberExpression[object.name='localStorage']", message: "api segment에서 localStorage 금지." },
+  { selector: "MemberExpression[object.name='sessionStorage']", message: "api segment에서 sessionStorage 금지." },
+  { selector: "MemberExpression[object.name='window']", message: "api segment에서 window 금지." },
+  { selector: "MemberExpression[object.name='document']", message: "api segment에서 document 금지." },
+  {
+    selector: "CallExpression[callee.type='MemberExpression'][callee.property.name='parse'][callee.object.name='JSON']",
+    message: "api segment에서 JSON.parse() 금지."
+  },
 ]
 
 const IGNORE_TEST = ["**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"]
@@ -70,12 +72,12 @@ export default [
         typescript: { project: "./tsconfig.json" },
       },
       "boundaries/elements": [
-        { type: "app",      pattern: "src/app",         mode: "folder" },
-        { type: "views",    pattern: "src/views/*",     mode: "folder", capture: ["view"] },
-        { type: "widgets",  pattern: "src/widgets/*",   mode: "folder", capture: ["widget"] },
-        { type: "features", pattern: "src/features/*",  mode: "folder", capture: ["feature"] },
-        { type: "entities", pattern: "src/entities/*",  mode: "folder", capture: ["entity"] },
-        { type: "shared",   pattern: "src/shared",      mode: "folder" },
+        { type: "app", pattern: "src/app", mode: "folder" },
+        { type: "views", pattern: "src/views/*", mode: "folder", capture: ["view"] },
+        { type: "widgets", pattern: "src/widgets/*", mode: "folder", capture: ["widget"] },
+        { type: "features", pattern: "src/features/*", mode: "folder", capture: ["feature"] },
+        { type: "entities", pattern: "src/entities/*", mode: "folder", capture: ["entity"] },
+        { type: "shared", pattern: "src/shared", mode: "folder" },
       ],
     },
     rules: {
@@ -117,12 +119,12 @@ export default [
       "boundaries/dependencies": ["error", {
         default: "disallow",
         rules: [
-          { from: [["app"]],      allow: [["app"], ["views"], ["widgets"], ["features"], ["entities"], ["shared"]] },
-          { from: [["views"]],    allow: [["views"], ["widgets"], ["features"], ["entities"], ["shared"]] },
-          { from: [["widgets"]],  allow: [["widgets"], ["features"], ["entities"], ["shared"]] },
+          { from: [["app"]], allow: [["app"], ["views"], ["widgets"], ["features"], ["entities"], ["shared"]] },
+          { from: [["views"]], allow: [["views"], ["widgets"], ["features"], ["entities"], ["shared"]] },
+          { from: [["widgets"]], allow: [["widgets"], ["features"], ["entities"], ["shared"]] },
           { from: [["features"]], allow: [["features"], ["entities"], ["shared"]] },
           { from: [["entities"]], allow: [["entities"], ["shared"]] },
-          { from: [["shared"]],   allow: [["shared"]] },
+          { from: [["shared"]], allow: [["shared"]] },
         ],
       }],
 
@@ -161,8 +163,8 @@ export default [
         ignoreRoles: ["grid", "listbox", "menu", "menubar", "radiogroup", "row", "tablist", "toolbar", "tree", "treegrid"],
       }],
       "jsx-a11y/aria-role": "error",
-      "jsx-a11y/click-events-have-key-events": "warn", // 점진(1)
-      "jsx-a11y/no-static-element-interactions": "warn", // 점진(1)
+      "jsx-a11y/click-events-have-key-events": "error", // 점진(1)
+      "jsx-a11y/no-static-element-interactions": "error", // 점진(1)
     },
   },
 
@@ -185,7 +187,7 @@ export default [
     rules: {
       "no-restricted-imports": ["error", {
         paths: [
-          { name: "react",     message: "shared/lib은 React를 import할 수 없습니다 (순수 함수 유지)." },
+          { name: "react", message: "shared/lib은 React를 import할 수 없습니다 (순수 함수 유지)." },
           { name: "react-dom", message: "shared/lib은 react-dom을 import할 수 없습니다." },
         ],
         patterns: [

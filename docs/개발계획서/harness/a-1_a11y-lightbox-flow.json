@@ -1,0 +1,112 @@
+{
+  "designDoc": "a-1_a11y-lightbox.md",
+  "branch": "chore/lint/a11y-lightbox",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "code",
+      "title": "HobbyDetailPage.tsx 라이트박스 div a11y 속성 + 키 핸들러 추가",
+      "files": [
+        {
+          "path": "src/views/hobby-detail/ui/HobbyDetailPage.tsx",
+          "action": "modify",
+          "changes": "L196 div에 role=button, tabIndex=0, aria-label, onKeyDown(Esc) 추가"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "오버레이 클릭 시 라이트박스 닫힘 (기존 유지)",
+        "Esc 키 입력 시 라이트박스 닫힘 (신규)",
+        "오버레이 div에 role=\"button\" 부여",
+        "오버레이 div에 tabIndex={0} 부여",
+        "오버레이 div에 aria-label=\"라이트박스 닫기\" 부여",
+        "오버레이 div에 onKeyDown 핸들러 부착"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "verify",
+      "title": "pnpm lint — jsx-a11y 두 룰 error 0 확인",
+      "files": [],
+      "passes": false,
+      "acceptanceCriteria": [
+        "jsx-a11y/click-events-have-key-events error 0건",
+        "jsx-a11y/no-static-element-interactions error 0건",
+        "pnpm lint exit 0"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "verify",
+      "title": "회귀 차단 검증 — 임시 위반 추가 → lint 실패 → 되돌리기",
+      "files": [],
+      "passes": false,
+      "acceptanceCriteria": [
+        "다른 .tsx에 <div onClick={...}> 임시 추가 시 pnpm lint 실패",
+        "임시 코드 되돌린 후 pnpm lint 통과"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "meta",
+      "title": "lint-baseline.json 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/lint-baseline.json",
+          "action": "modify",
+          "changes": "jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions 두 항목 제거. warn_total 24→22. decreases에 A-1 기록."
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "warn_by_rule에서 두 룰 제거",
+        "warn_total: 22",
+        "decreases 배열에 A-1 항목 추가"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "meta",
+      "title": "eslint-migration.md Changelog 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/eslint-migration.md",
+          "action": "modify",
+          "changes": "Changelog: A-1 jsx-a11y 2룰 warn→error 승격 + HobbyDetailPage:196 위반 해소"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "Changelog 섹션에 A-1 항목 추가"
+      ]
+    },
+    {
+      "id": 6,
+      "layer": "meta",
+      "title": "backlog.md A-1 ✅ 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/backlog.md",
+          "action": "modify",
+          "changes": "A-1 상태 🟡 → ✅, 변경 이력에 완료 기록"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "A-1 상태 ✅",
+        "변경 이력에 완료 날짜 + 항목 추가"
+      ]
+    },
+    {
+      "id": 7,
+      "layer": "verify",
+      "title": "최종 pnpm lint + pnpm build 통과 확인",
+      "files": [],
+      "passes": false,
+      "acceptanceCriteria": [
+        "pnpm lint exit 0",
+        "pnpm build 통과"
+      ]
+    }
+  ]
+}

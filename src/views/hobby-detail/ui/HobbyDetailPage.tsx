@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/shared/ui/dialog";
 import {
   HOBBY_POSTS,
   NB_BODY,
@@ -193,13 +194,25 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
         </div>
       </section>
 
-      {lightbox !== null ? <div
+      <Dialog
+        open={lightbox !== null}
+        onOpenChange={(open) => {
+          if (!open) setLightbox(null);
+        }}
+      >
+        <DialogContent
+          showCloseButton={false}
           onClick={() => setLightbox(null)}
+          className="gap-0 rounded-none ring-0"
           style={{
             position: "fixed",
-            inset: 0,
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            maxWidth: "none",
+            transform: "none",
             background: "rgba(28,22,14,0.92)",
-            zIndex: 100,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -207,28 +220,34 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
             padding: 40,
           }}
         >
-          <Polaroid
-            label={PHOTOS[lightbox].label}
-            tint={PHOTOS[lightbox].tint}
-            rotate={-1}
-            w={720}
-            caption={PHOTOS[lightbox].cap + " · 아무 곳이나 클릭"}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: 30,
-              left: 0,
-              right: 0,
-              textAlign: "center",
-              color: "#F1E1A3",
-              fontFamily: NB_HAND,
-              fontSize: 24,
-            }}
-          >
-            {lightbox + 1} / {PHOTOS.length}
-          </div>
-        </div> : null}
+          <DialogTitle className="sr-only">사진 확대 보기</DialogTitle>
+          {lightbox !== null ? (
+            <>
+              <Polaroid
+                label={PHOTOS[lightbox].label}
+                tint={PHOTOS[lightbox].tint}
+                rotate={-1}
+                w={720}
+                caption={PHOTOS[lightbox].cap + " · 아무 곳이나 클릭"}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 30,
+                  left: 0,
+                  right: 0,
+                  textAlign: "center",
+                  color: "#F1E1A3",
+                  fontFamily: NB_HAND,
+                  fontSize: 24,
+                }}
+              >
+                {lightbox + 1} / {PHOTOS.length}
+              </div>
+            </>
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
