@@ -1,0 +1,177 @@
+{
+  "designDoc": "a-4_non-null-assertion.md",
+  "branch": "chore/lint/non-null-assertion",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "test",
+      "title": "env.test.ts 작성 (RED)",
+      "files": [
+        {
+          "path": "src/shared/lib/env.test.ts",
+          "action": "create",
+          "changes": "5 케이스: 정상 반환, undefined throw, 빈 문자열 throw, 메시지 포맷 일관성, MissingEnvError 식별(클래스/key/name)"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "테스트 5건 작성",
+        "구현 없는 상태에서 실패(RED) 확인"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "util",
+      "title": "env.ts 구현 (GREEN)",
+      "files": [
+        {
+          "path": "src/shared/lib/env.ts",
+          "action": "create",
+          "changes": "MissingEnvError 클래스(extends Error, key 프로퍼티) + requireEnv(key) — process.env 읽기 + undefined/'' 시 MissingEnvError throw"
+        },
+        {
+          "path": "src/shared/lib/index.ts",
+          "action": "modify",
+          "changes": "export * from \"./env\" 추가 (기존 barrel 보강)"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "requireEnv 함수 export",
+        "shared/lib/index.ts에 env re-export 추가",
+        "env.test 4건 통과"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "callsite",
+      "title": "auth.ts 2건 교체",
+      "files": [
+        {
+          "path": "src/shared/lib/auth.ts",
+          "action": "modify",
+          "changes": "L32, L38 process.env.SESSION_SECRET! → requireEnv('SESSION_SECRET')"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "non-null assertion 0건",
+        "기존 동작 유지"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "callsite",
+      "title": "supabase/client.ts 2건 교체",
+      "files": [
+        {
+          "path": "src/shared/lib/supabase/client.ts",
+          "action": "modify",
+          "changes": "L8, L9 process.env.X! → requireEnv('X')"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "non-null assertion 0건"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "callsite",
+      "title": "supabase/server.ts 2건 교체",
+      "files": [
+        {
+          "path": "src/shared/lib/supabase/server.ts",
+          "action": "modify",
+          "changes": "L4, L5 process.env.X! → requireEnv('X')"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "non-null assertion 0건"
+      ]
+    },
+    {
+      "id": 6,
+      "layer": "verify",
+      "title": "pnpm lint + tsc + test 검증",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "no-non-null-assertion error 0건",
+        "pnpm lint exit 0",
+        "tsc 통과",
+        "pnpm test 11/11 (env 4 + 기존 7) 통과"
+      ]
+    },
+    {
+      "id": 7,
+      "layer": "verify",
+      "title": "회귀 차단 검증",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "임시 ! 추가 시 lint 실패",
+        "되돌린 후 통과"
+      ]
+    },
+    {
+      "id": 8,
+      "layer": "config",
+      "title": "eslint.config.mjs 주석 갱신",
+      "files": [
+        {
+          "path": "eslint.config.mjs",
+          "action": "modify",
+          "changes": "L96 no-non-null-assertion 주석을 A-4 완료 표기로 갱신 + shared/lib 그룹(L183-) 정리: (a) import/no-relative-parent-imports를 off로 해제(슬롯 자기참조 허용), (b) no-restricted-imports.patterns의 기존 alias 5종(@/{app,views,widgets,features,entities}/*)을 재귀 패턴(@/{...}/**)으로 보강해 deep subpath까지 차단, (c) 외부 layer relative-traversal 차단 5종(../**/{app,views,widgets,features,entities}/**) 신규 추가 — alias 우회 방지"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "L96 no-non-null-assertion 주석에 A-4 표기",
+        "shared/lib 그룹에서 import/no-relative-parent-imports 해제",
+        "shared/lib 그룹의 alias 패턴 5종이 @/{layer}/** 재귀 형식",
+        "shared/lib 그룹의 no-restricted-imports.patterns에 외부 layer relative-traversal 차단 5종 추가"
+      ]
+    },
+    {
+      "id": 9,
+      "layer": "meta",
+      "title": "lint-baseline.json 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/lint-baseline.json",
+          "action": "modify",
+          "changes": "no-non-null-assertion 항목 제거. warn_total 19→13. decreases에 A-4 기록"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "warn_by_rule에서 no-non-null-assertion 제거",
+        "decreases에 A-4 추가"
+      ]
+    },
+    {
+      "id": 10,
+      "layer": "meta",
+      "title": "eslint-migration.md + backlog.md 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/eslint-migration.md",
+          "action": "modify",
+          "changes": "Changelog 표에 A-4 행 추가"
+        },
+        {
+          "path": "docs/개발계획서/harness/backlog.md",
+          "action": "modify",
+          "changes": "A-4 ⬜ → ✅ + Changelog 항목 추가"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "A-4 상태 ✅",
+        "Changelog A-4 항목 존재"
+      ]
+    }
+  ]
+}

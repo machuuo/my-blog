@@ -29,6 +29,7 @@
 | 2026-06-26 | **A-2**: `react/no-array-index-key` warn→error 승격 + 위반 2건 해소 | `breadcrumb.tsx:23` `key={index}` → `key={item.href ?? item.label}`, `TagsPage.tsx:199` `key={j}` → `key={t}`. baseline 22→20 |
 | 2026-06-26 | **Test-1**: vitest + @testing-library/react@^16 + happy-dom 인프라 도입 | `vitest.config.ts`/`vitest.setup.ts` 신규, `tsconfig.types`에 globals 추가, `src/__tests__/smoke.test.ts` 가드. CI/Husky 통합은 후속 사이클. PR #10 |
 | 2026-06-26 | **A-3**: `react-hooks/set-state-in-effect` warn→error 승격 + 위반 1건 해소 | `NbFrame.tsx:48-57` `useState + 2x useEffect` → `useNbTheme()` + 1x `useEffect(dataset)`. `useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)` 기반. `widgets/nb-frame/lib/useNbTheme.{ts,test.ts,index.ts}` 신규 (6 테스트 케이스). `layout.tsx` `<html suppressHydrationWarning>`. baseline 20→19 |
+| 2026-06-26 | **A-4**: `@typescript-eslint/no-non-null-assertion` warn→error 승격 + 위반 6건 해소 | `shared/lib/env.{ts,test.ts}` 신규 — `requireEnv(key)` 가드 헬퍼(undefined·"" 시 `Missing required env: <KEY>` throw, 4 테스트 케이스). `auth.ts(×2)`, `supabase/client.ts(×2)`, `supabase/server.ts(×2)` `process.env.X!` → `requireEnv("X")` 교체. 부수: `shared/lib` 그룹의 `import/no-relative-parent-imports` 해제(슬롯 자기참조 허용, 외부 layer 차단은 `no-restricted-imports.patterns`로 유지). baseline 19→13 |
 
 ---
 

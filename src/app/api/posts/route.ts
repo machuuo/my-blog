@@ -1,7 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/shared/lib/auth";
+import { MissingEnvError } from "@/shared/lib/env";
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
+
+function handleRouteError(scope: string, error: unknown): NextResponse {
+  if (error instanceof MissingEnvError) {
+    console.error(`[${scope}] Missing required env: ${error.key}`);
+    return NextResponse.json(
+      { error: "Server misconfigured" },
+      { status: 500 }
+    );
+  }
+  return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+}
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   if (!(await isAuthenticated())) {
@@ -28,8 +40,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     revalidatePath(`/posts/${slug}`);
 
     return NextResponse.json({ post: data }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  } catch (error) {
+    return handleRouteError("posts", error);
   }
 }
 
@@ -59,8 +71,8 @@ export async function PUT(request: NextRequest): Promise<NextResponse> {
     revalidatePath(`/posts/${slug}`);
 
     return NextResponse.json({ post: data });
-  } catch {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  } catch (error) {
+    return handleRouteError("posts", error);
   }
 }
 
@@ -83,7 +95,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
     revalidatePath("/");
 
     return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  } catch (error) {
+    return handleRouteError("posts", error);
   }
 }
