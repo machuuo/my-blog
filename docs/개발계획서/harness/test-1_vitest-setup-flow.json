@@ -1,0 +1,168 @@
+{
+  "designDoc": "test-1_vitest-setup.md",
+  "branch": "chore/test/vitest-setup",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "install",
+      "title": "pnpm add -D 의존성 6개 설치",
+      "files": [
+        {
+          "path": "package.json",
+          "action": "modify",
+          "changes": "vitest, @vitejs/plugin-react, vite-tsconfig-paths, happy-dom, @testing-library/react@^16, @testing-library/jest-dom devDeps 추가"
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "action": "modify",
+          "changes": "lockfile 갱신"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "pnpm install 성공",
+        "node_modules에 6개 패키지 존재"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "config",
+      "title": "vitest.config.ts 작성",
+      "files": [
+        {
+          "path": "vitest.config.ts",
+          "action": "create",
+          "changes": "plugins(react, tsconfigPaths) + test(environment, globals, setupFiles)"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "vitest.config.ts 존재",
+        "환경 happy-dom 지정",
+        "globals: true 지정",
+        "setupFiles에 ./vitest.setup.ts 지정"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "config",
+      "title": "vitest.setup.ts 작성 (jest-dom 매처 확장)",
+      "files": [
+        {
+          "path": "vitest.setup.ts",
+          "action": "create",
+          "changes": "import '@testing-library/jest-dom/vitest'"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "vitest.setup.ts 존재",
+        "jest-dom 매처 import"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "config",
+      "title": "tsconfig.json types 추가",
+      "files": [
+        {
+          "path": "tsconfig.json",
+          "action": "modify",
+          "changes": "compilerOptions.types에 vitest/globals, @testing-library/jest-dom 추가"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "types 배열 존재 + 2개 항목 포함"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "config",
+      "title": ".gitignore coverage 추가",
+      "files": [
+        {
+          "path": ".gitignore",
+          "action": "modify",
+          "changes": "coverage/ 라인 추가"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        ".gitignore에 coverage/ 존재"
+      ]
+    },
+    {
+      "id": 6,
+      "layer": "config",
+      "title": "package.json scripts 추가",
+      "files": [
+        {
+          "path": "package.json",
+          "action": "modify",
+          "changes": "test: vitest run, test:watch: vitest"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "scripts.test 존재",
+        "scripts['test:watch'] 존재"
+      ]
+    },
+    {
+      "id": 7,
+      "layer": "test",
+      "title": "src/__tests__/smoke.test.ts 작성",
+      "files": [
+        {
+          "path": "src/__tests__/smoke.test.ts",
+          "action": "create",
+          "changes": "describe/it/expect — 1+1===2 스모크"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "describe/it/expect import 없이 사용",
+        "1 test 통과"
+      ]
+    },
+    {
+      "id": 8,
+      "layer": "verify",
+      "title": "pnpm test — Green 확인",
+      "files": [],
+      "passes": false,
+      "acceptanceCriteria": [
+        "pnpm test exit 0",
+        "1 passed"
+      ]
+    },
+    {
+      "id": 9,
+      "layer": "config",
+      "title": "eslint.config.mjs 테스트 파일 예외 (필요 시)",
+      "files": [
+        {
+          "path": "eslint.config.mjs",
+          "action": "modify",
+          "changes": "**/*.test.ts(x), **/__tests__/** glob에 boundaries/unused-imports 예외"
+        }
+      ],
+      "passes": false,
+      "acceptanceCriteria": [
+        "pnpm lint exit 0"
+      ]
+    },
+    {
+      "id": 10,
+      "layer": "verify",
+      "title": "pnpm lint + tsc 최종 검증",
+      "files": [],
+      "passes": false,
+      "acceptanceCriteria": [
+        "pnpm lint exit 0",
+        "npx tsc --noEmit 통과"
+      ]
+    }
+  ]
+}
