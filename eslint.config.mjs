@@ -93,7 +93,7 @@ export default [
         args: "after-used",
         argsIgnorePattern: "^_",
       }],
-      "@typescript-eslint/no-non-null-assertion": "warn", // 점진(1)
+      "@typescript-eslint/no-non-null-assertion": "error", // A-4: requireEnv 헬퍼 도입 후 위반 0
       "@typescript-eslint/no-explicit-any": "error",
       "react-hooks/set-state-in-effect": "error", // 점진(1), React 19 + react-hooks 7 신규 규칙
       "@typescript-eslint/consistent-type-assertions": ["error", {
@@ -192,14 +192,25 @@ export default [
         ],
         patterns: [
           "react/*",
+          // 외부 layer alias 차단
           "@/app/*",
           "@/views/*",
           "@/widgets/*",
           "@/features/*",
           "@/entities/*",
+          // 외부 layer relative-traversal 차단 — alias 우회 방지.
+          // shared/lib 내부에서 ../../views 같은 경로로 외부 layer 접근 불가.
+          "../**/app/**",
+          "../**/views/**",
+          "../**/widgets/**",
+          "../**/features/**",
+          "../**/entities/**",
         ],
       }],
-      "import/no-relative-parent-imports": "error",
+      // shared/lib 내 슬롯 간 자기 참조(예: supabase/ → ../env)는 허용한다.
+      // 외부 layer 차단은 위의 no-restricted-imports.patterns(alias + relative)가
+      // 모두 강제하므로 relative-parent-imports 룰 자체는 해제 가능.
+      "import/no-relative-parent-imports": "off",
     },
   },
 ]

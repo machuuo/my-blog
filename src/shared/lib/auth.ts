@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { requireEnv } from "./env";
 
 export interface SessionCookieConfig {
   name: string;
@@ -29,13 +30,13 @@ function verifyToken(token: string, secret: string): boolean {
 }
 
 export function createSessionToken(): string {
-  const secret = process.env.SESSION_SECRET!;
+  const secret = requireEnv("SESSION_SECRET");
   const payload = `admin:${Date.now()}`;
   return signToken(payload, secret);
 }
 
 export function verifySessionToken(token: string): boolean {
-  const secret = process.env.SESSION_SECRET!;
+  const secret = requireEnv("SESSION_SECRET");
   return verifyToken(token, secret);
 }
 
