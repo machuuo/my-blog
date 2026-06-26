@@ -18,7 +18,7 @@
           "changes": "lockfile 갱신"
         }
       ],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "pnpm install 성공",
         "node_modules에 6개 패키지 존재"
@@ -71,7 +71,7 @@
           "changes": "compilerOptions.types에 vitest/globals, @testing-library/jest-dom 추가"
         }
       ],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "types 배열 존재 + 2개 항목 포함"
       ]
@@ -87,7 +87,7 @@
           "changes": "coverage/ 라인 추가"
         }
       ],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         ".gitignore에 coverage/ 존재"
       ]
@@ -103,7 +103,7 @@
           "changes": "test: vitest run, test:watch: vitest"
         }
       ],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "scripts.test 존재",
         "scripts['test:watch'] 존재"
@@ -131,7 +131,7 @@
       "layer": "verify",
       "title": "pnpm test — Green 확인",
       "files": [],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "pnpm test exit 0",
         "1 passed"
@@ -148,7 +148,7 @@
           "changes": "**/*.test.ts(x), **/__tests__/** glob에 boundaries/unused-imports 예외"
         }
       ],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "pnpm lint exit 0"
       ]
@@ -158,7 +158,7 @@
       "layer": "verify",
       "title": "pnpm lint + tsc 최종 검증",
       "files": [],
-      "passes": false,
+      "passes": true,
       "acceptanceCriteria": [
         "pnpm lint exit 0",
         "npx tsc --noEmit 통과"
