@@ -195,8 +195,8 @@ export function TagsPage() {
                   lineHeight: 1.5,
                 }}
               >
-                {mo.items.map((t, j) => (
-                  <li key={j}>· {t}</li>
+                {mo.items.map((t) => (
+                  <li key={t}>· {t}</li>
                 ))}
               </ul>
             </div>

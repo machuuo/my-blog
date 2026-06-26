@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-25T00:00:00Z",
-  "warn_total": 22,
+  "generated_at": "2026-06-26T00:00:00Z",
+  "warn_total": 20,
   "warn_by_rule": {
     "max-lines-per-function": 13,
     "@typescript-eslint/no-non-null-assertion": 6,
-    "react/no-array-index-key": 2,
     "react-hooks/set-state-in-effect": 1
   },
   "note": "ratchet baseline — CI fails if warn_total exceeds this value. Decreases only via PRs that also update this file.",
   "decreases": [
     { "from": 87, "to": 26, "source": "rule-off", "rule": "explicit-function-return-type (.tsx)", "date": "2026-06-24" },
     { "from": 26, "to": 11, "source": "code-fix + rule-promote", "rule": "explicit-function-return-type (.ts)", "date": "2026-06-25", "files_changed": ["src/app/api/**/route.ts", "src/shared/lib/{auth,utils}.ts", "src/shared/lib/supabase/*.ts"] },
-    { "from": 24, "to": 22, "source": "code-fix + rule-promote", "rule": "jsx-a11y/click-events-have-key-events + jsx-a11y/no-static-element-interactions", "date": "2026-06-25", "files_changed": ["src/views/hobby-detail/ui/HobbyDetailPage.tsx"], "pr": "A-1" }
+    { "from": 24, "to": 22, "source": "code-fix + rule-promote", "rule": "jsx-a11y/click-events-have-key-events + jsx-a11y/no-static-element-interactions", "date": "2026-06-25", "files_changed": ["src/views/hobby-detail/ui/HobbyDetailPage.tsx"], "pr": "A-1" },
+    { "from": 22, "to": 20, "source": "code-fix + rule-promote", "rule": "react/no-array-index-key", "date": "2026-06-26", "files_changed": ["src/shared/ui/breadcrumb.tsx", "src/views/tags/ui/TagsPage.tsx"], "pr": "A-2" }
   ],
   "increases": [
     { "from": 11, "to": 24, "source": "new-rule", "rule": "max-lines-per-function", "date": "2026-06-25", "note": "intentional policy strengthening — component bloat detection per CLAUDE.md orchestrator principle" }

@@ -153,7 +153,7 @@ export default [
       "max-lines-per-function": ["warn", { max: 80, skipBlankLines: true, skipComments: true, IIFEs: true }],
 
       "react/jsx-key": "error",
-      "react/no-array-index-key": "warn",
+      "react/no-array-index-key": "error",
       "react/jsx-no-leaked-render": ["warn", { validStrategies: ["ternary"] }], // 점진(1)
 
       // ── 접근성 ──

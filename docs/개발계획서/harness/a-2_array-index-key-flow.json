@@ -1,0 +1,123 @@
+{
+  "designDoc": "a-2_array-index-key.md",
+  "branch": "chore/lint/array-index-key",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "code",
+      "title": "breadcrumb.tsx key={index} → key={item.href ?? item.label}",
+      "files": [
+        {
+          "path": "src/shared/ui/breadcrumb.tsx",
+          "action": "modify",
+          "changes": "L23 span key를 item.href ?? item.label로 교체"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "key={item.href ?? item.label} 적용",
+        "renders 시각 동일"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "code",
+      "title": "TagsPage.tsx key={j} → key={t}",
+      "files": [
+        {
+          "path": "src/views/tags/ui/TagsPage.tsx",
+          "action": "modify",
+          "changes": "L199 li key를 t(제목)로 교체"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "key={t} 적용",
+        "renders 시각 동일"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "verify",
+      "title": "pnpm lint — react/no-array-index-key error 0 확인",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "react/no-array-index-key error 0건",
+        "pnpm lint exit 0"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "verify",
+      "title": "회귀 차단 검증 — 임시 key={i} 추가 → lint 실패 → 되돌리기",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "임시 key={i} 추가 시 pnpm lint 실패",
+        "되돌린 후 pnpm lint 통과"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "meta",
+      "title": "lint-baseline.json 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/lint-baseline.json",
+          "action": "modify",
+          "changes": "react/no-array-index-key 항목 제거. warn_total 22→20. decreases에 A-2 기록"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "warn_by_rule에서 react/no-array-index-key 제거",
+        "warn_total: 20",
+        "decreases 배열에 A-2 항목 추가"
+      ]
+    },
+    {
+      "id": 6,
+      "layer": "meta",
+      "title": "eslint-migration.md Changelog 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/eslint-migration.md",
+          "action": "modify",
+          "changes": "Changelog: A-2 react/no-array-index-key warn→error 승격 + 위반 2건 해소"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "Changelog 섹션에 A-2 항목 추가"
+      ]
+    },
+    {
+      "id": 7,
+      "layer": "meta",
+      "title": "backlog.md A-2 ✅ 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/backlog.md",
+          "action": "modify",
+          "changes": "A-2 상태 ⬜ → ✅"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "A-2 상태 ✅"
+      ]
+    },
+    {
+      "id": 8,
+      "layer": "verify",
+      "title": "최종 pnpm lint + tsc 통과 확인",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "pnpm lint exit 0",
+        "tsc 통과"
+      ]
+    }
+  ]
+}
