@@ -123,13 +123,14 @@
         {
           "path": "eslint.config.mjs",
           "action": "modify",
-          "changes": "L96 주석을 A-4 완료 표기로 갱신 + shared/lib 그룹의 import/no-relative-parent-imports를 off로 (D6 재고)"
+          "changes": "L96 no-non-null-assertion 주석을 A-4 완료 표기로 갱신 + shared/lib 그룹(L183-) 정리: (a) import/no-relative-parent-imports를 off로 해제(슬롯 자기참조 허용), (b) no-restricted-imports.patterns에 외부 layer relative-traversal 차단 5종(../**/{app,views,widgets,features,entities}/**) 추가 — alias 우회 방지"
         }
       ],
       "passes": true,
       "acceptanceCriteria": [
-        "주석에 A-4 표기",
-        "shared/lib 그룹에서 import/no-relative-parent-imports 해제"
+        "L96 no-non-null-assertion 주석에 A-4 표기",
+        "shared/lib 그룹에서 import/no-relative-parent-imports 해제",
+        "shared/lib 그룹의 no-restricted-imports.patterns에 외부 layer relative-traversal 차단 5종 추가"
       ]
     },
     {
