@@ -12,3 +12,53 @@ pnpm install             # 전체 설치
 ```
 
 `npm install` / `yarn add` 사용 금지 — `pnpm-lock.yaml`과 충돌해 Vercel 빌드가 실패합니다.
+
+## Control Flow & Conditionals
+
+These rules are **enforced by ESLint** (build fails on violation). Follow them when writing or editing code.
+
+### Prefer early returns / guard clauses
+
+Flatten nesting with guard clauses instead of wrapping logic in conditionals. Deep nesting is the main driver of cognitive complexity.
+
+```ts
+// ❌ nested
+function label(saving: boolean, isEditing: boolean): string {
+  if (saving) {
+    return "saving...";
+  } else {
+    if (isEditing) return "edit";
+    else return "publish";
+  }
+}
+
+// ✅ early return
+function label(saving: boolean, isEditing: boolean): string {
+  if (saving) return "saving...";
+  if (isEditing) return "edit";
+  return "publish";
+}
+```
+
+Enforced by `no-else-return` (no `else` after `return`) and `sonarjs/cognitive-complexity` (max 10 — nesting is penalized).
+
+### Ternaries: simple yes, nested no
+
+A **simple** ternary is fine and preferred for JSX conditional rendering and value assignment. **Nested** ternaries are forbidden — replace them with a lookup object or an extracted early-return helper.
+
+```tsx
+// ✅ simple ternary — fine (and the required strategy for jsx-no-leaked-render)
+{isOpen ? <Panel /> : null}
+const label = isEditing ? "edit" : "publish";
+
+// ❌ nested ternary — forbidden
+const color = tone === "a" ? "x" : tone === "b" ? "y" : "z";
+
+// ✅ value mapping → lookup object
+const COLOR: Record<"a" | "b" | "c", string> = { a: "x", b: "y", c: "z" };
+const color = COLOR[tone];
+```
+
+Enforced by `no-nested-ternary`. JSX conditional rendering must use the ternary strategy (`react/jsx-no-leaked-render`), never bare `&&` (which can leak `0`/`""`).
+
+> Every code fence must declare a language identifier (see global `~/.claude/CLAUDE.md` §9).

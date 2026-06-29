@@ -14,6 +14,12 @@ interface PostFormProps {
   seriesList: SeriesWithCount[];
 }
 
+function submitLabel(saving: boolean, isEditing: boolean): string {
+  if (saving) return "저장 중...";
+  if (isEditing) return "수정";
+  return "발행";
+}
+
 export function PostForm({ initialData, categories, seriesList }: PostFormProps) {
   const router = useRouter();
   const isEditing = !!initialData;
@@ -265,7 +271,7 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
       {/* Actions */}
       <div className="flex gap-3">
         <Button type="submit" disabled={saving || !title || !slug}>
-          {saving ? "저장 중..." : isEditing ? "수정" : "발행"}
+          {submitLabel(saving, isEditing)}
         </Button>
         {isEditing ? <Button
             type="button"

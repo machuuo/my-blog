@@ -17,6 +17,12 @@ function postHref(p: NbPost, group: "tech" | "hobby") {
   return `/${group}/${p.slug}`;
 }
 
+const TAPE_COLOR: Record<"sage" | "pink" | "sky", string> = {
+  sage: "var(--nb-tape)",
+  pink: "var(--nb-memo)",
+  sky: "var(--sky-1)",
+};
+
 function NbFeatureCard({
   p,
   big,
@@ -28,12 +34,7 @@ function NbFeatureCard({
   tape: "sage" | "pink" | "sky";
   group: "tech" | "hobby";
 }) {
-  const tapeColor =
-    tape === "sage"
-      ? "var(--nb-tape)"
-      : tape === "pink"
-        ? "var(--nb-memo)"
-        : "var(--sky-1)";
+  const tapeColor = TAPE_COLOR[tape];
   return (
     <Link
       href={postHref(p, group)}
