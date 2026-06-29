@@ -1,0 +1,79 @@
+{
+  "designDoc": "c-1_tier-c1-autofix.md",
+  "branch": "chore/lint/tier-c1-autofix",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "config",
+      "title": "eslint.config.mjs 8룰 error 등록",
+      "files": [
+        {
+          "path": "eslint.config.mjs",
+          "action": "modify",
+          "changes": "react/jsx-no-useless-fragment, react/self-closing-comp, import/order(alphabetize ON + pathGroups react/next/@ + newlines-between always), import/first, import/newline-after-import, prefer-template, unicorn/throw-new-error, unicorn/no-await-expression-member 를 error로 등록"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "8룰 error 등록",
+        "import/order alphabetize ON + pathGroups"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "autofix",
+      "title": "pnpm lint:fix 일괄 적용",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "import 재정렬 + prefer-template 3곳 자동 정리",
+        "로직 변경 0 (정렬/빈줄/축약/템플릿만)"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "verify",
+      "title": "pnpm lint + tsc 검증",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "pnpm lint exit 0 (8룰 위반 0, 기존 13 warning만)",
+        "tsc --noEmit 통과"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "verify",
+      "title": "회귀 차단 검증",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "대표 룰 위반 추가 시 error",
+        "되돌린 후 통과"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "meta",
+      "title": "메타 갱신 (backlog/migration)",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/backlog.md",
+          "action": "modify",
+          "changes": "Tier C-1 ✅ + Changelog c-1"
+        },
+        {
+          "path": "docs/개발계획서/harness/eslint-migration.md",
+          "action": "modify",
+          "changes": "Changelog 표에 c-1 행 추가"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "backlog Tier C-1 ✅",
+        "migration Changelog c-1",
+        "baseline warn_total 13 유지(검증만)"
+      ]
+    }
+  ]
+}

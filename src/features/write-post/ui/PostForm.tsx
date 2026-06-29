@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
-import { Button } from "@/shared/ui/button";
-import { MdxEditor } from "./MdxEditor";
-import type { Post } from "@/entities/post";
+
 import type { Category } from "@/entities/category";
+import type { Post } from "@/entities/post";
 import type { SeriesWithCount } from "@/entities/series";
+import { Button } from "@/shared/ui/button";
+
+import { MdxEditor } from "./MdxEditor";
 
 interface PostFormProps {
   initialData?: Post;

@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+
 import { Badge } from "@/shared/ui/badge";
-import { PostMeta } from "./PostMeta";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+
 import type { Post } from "../model/types";
+
+import { PostMeta } from "./PostMeta";
 
 interface PostCardProps {
   post: Post;

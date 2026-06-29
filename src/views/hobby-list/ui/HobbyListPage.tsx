@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+
+import Link from "next/link";
+
 import {
   HOBBY_POSTS,
   NB_BODY,
@@ -117,7 +119,7 @@ export function HobbyListPage() {
                   tint={accentTint(p.accent)}
                   rotate={i % 2 === 0 ? -3 : 2.4}
                   w={300}
-                  caption={p.cat + " · " + p.date}
+                  caption={`${p.cat} · ${p.date}`}
                 />
               </div>
               <div style={{ order: i % 2 === 0 ? 2 : 1, paddingTop: 18 }}>

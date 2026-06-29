@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { getPostBySlug } from "@/entities/post/server";
+
 import { getAllCategories } from "@/entities/category/server";
+import { getPostBySlug } from "@/entities/post/server";
 import { getAllPublishedSeries } from "@/entities/series/server";
 import { WritePage } from "@/views/write";
 

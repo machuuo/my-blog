@@ -1,9 +1,9 @@
 "use client";
 
-import { PostForm } from "@/features/write-post";
-import type { Post } from "@/entities/post";
 import type { Category } from "@/entities/category";
+import type { Post } from "@/entities/post";
 import type { SeriesWithCount } from "@/entities/series";
+import { PostForm } from "@/features/write-post";
 
 interface WritePageProps {
   post?: Post;

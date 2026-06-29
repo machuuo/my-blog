@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { ChevronRight } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";

@@ -1,6 +1,9 @@
 import Link from "next/link";
+
 import { BookOpen } from "lucide-react";
+
 import { Card, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+
 import type { SeriesWithCount } from "../model/types";
 
 interface SeriesCardProps {

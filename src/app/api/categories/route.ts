@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
+
 import { isAuthenticated } from "@/shared/lib/auth";
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
 
