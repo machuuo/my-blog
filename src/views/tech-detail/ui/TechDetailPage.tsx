@@ -25,13 +25,14 @@ const CODE_SNIPPET = `function Profile({ userPromise }) {
   return <h1>{user.name}</h1>;
 }`;
 
+const TAPE_COLOR: Record<"sage" | "pink" | "sky", string> = {
+  sage: "var(--nb-tape)",
+  pink: "var(--nb-memo)",
+  sky: "var(--sky-1)",
+};
+
 function RelatedCard({ p, tape }: { p: NbPost; tape: "pink" | "sage" | "sky" }) {
-  const tapeColor =
-    tape === "sage"
-      ? "var(--nb-tape)"
-      : tape === "pink"
-        ? "var(--nb-memo)"
-        : "var(--sky-1)";
+  const tapeColor = TAPE_COLOR[tape];
   return (
     <Link
       href={`/tech/${p.slug}`}

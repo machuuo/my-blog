@@ -129,13 +129,19 @@ export default [
       }],
 
       // ── 복잡도 ──
-      "sonarjs/cognitive-complexity": ["warn", 15],
+      // b-1: threshold 10 (기본값 15보다 엄격, 현재 최복잡 함수=9 통과). 8은 자의적+향후 마찰로 기각.
+      "sonarjs/cognitive-complexity": ["error", 10],
+
+      // ── 제어흐름 스타일 (b-1: early-return 우선 / 중첩삼항 금지) ──
+      // CLAUDE.md "Control Flow & Conditionals" 절과 짝. 단순 삼항은 허용(특히 JSX), 중첩만 금지.
+      "no-else-return": "error",
+      "no-nested-ternary": "error",
 
       // ── unicorn (선별) ──
       "unicorn/no-array-for-each": "error",
       "unicorn/prefer-node-protocol": "error",
       "unicorn/no-useless-undefined": "error",
-      "unicorn/prefer-string-replace-all": "warn",
+      "unicorn/prefer-string-replace-all": "error",
     },
   },
 
@@ -154,7 +160,7 @@ export default [
 
       "react/jsx-key": "error",
       "react/no-array-index-key": "error",
-      "react/jsx-no-leaked-render": ["warn", { validStrategies: ["ternary"] }], // 점진(1)
+      "react/jsx-no-leaked-render": ["error", { validStrategies: ["ternary"] }], // 점진(1)
 
       // ── 접근성 ──
       "jsx-a11y/alt-text": "error",

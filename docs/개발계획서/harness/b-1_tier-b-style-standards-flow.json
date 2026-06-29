@@ -1,0 +1,115 @@
+{
+  "designDoc": "b-1_tier-b-style-standards.md",
+  "branch": "fix/check-design-sync",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "code",
+      "title": "중첩삼항 3곳 해소 (동작 보존)",
+      "files": [
+        {
+          "path": "src/views/home/ui/HomePage.tsx",
+          "action": "modify",
+          "changes": "tapeColor 중첩삼항 → 모듈 레벨 TAPE_COLOR Record + TAPE_COLOR[tape]"
+        },
+        {
+          "path": "src/views/tech-detail/ui/TechDetailPage.tsx",
+          "action": "modify",
+          "changes": "tapeColor 중첩삼항 → 로컬 TAPE_COLOR Record (HomePage와 동일 선언, 로컬 유지)"
+        },
+        {
+          "path": "src/features/write-post/ui/PostForm.tsx",
+          "action": "modify",
+          "changes": "버튼 라벨 중첩삼항 → 모듈 레벨 submitLabel(saving, isEditing) early-return 헬퍼"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "no-nested-ternary 위반 0건",
+        "렌더 결과 동일 (라벨/CSS변수 보존)"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "config",
+      "title": "eslint.config.mjs 5룰 정리",
+      "files": [
+        {
+          "path": "eslint.config.mjs",
+          "action": "modify",
+          "changes": "cognitive-complexity [error,8]→[error,10], no-else-return error 신규, no-nested-ternary error 신규, prefer-string-replace-all/jsx-no-leaked-render error 확인"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "cognitive-complexity [\"error\", 10]",
+        "no-else-return \"error\"",
+        "no-nested-ternary \"error\"",
+        "prefer-string-replace-all / jsx-no-leaked-render error"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "verify",
+      "title": "pnpm lint + tsc 검증",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "pnpm lint exit 0 (5룰 error, 위반 0)",
+        "tsc --noEmit 통과"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "verify",
+      "title": "회귀 차단 검증",
+      "files": [],
+      "passes": true,
+      "acceptanceCriteria": [
+        "각 룰 위반 추가 시 error",
+        "되돌린 후 통과"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "docs",
+      "title": "프로젝트 CLAUDE.md 제어흐름 절 신설 (영어)",
+      "files": [
+        {
+          "path": "CLAUDE.md",
+          "action": "modify",
+          "changes": "영어 'Control Flow & Conditionals' 절: early-return 우선 / 단순삼항 허용(JSX) / 중첩삼항 금지 + 강제 룰(no-else-return, no-nested-ternary, cognitive-complexity) 명시. 코드펜스 언어 식별자 준수"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "early-return 우선 명시",
+        "중첩삼항 금지 + 단순삼항 허용 명시",
+        "강제 린트 룰 명시"
+      ]
+    },
+    {
+      "id": 6,
+      "layer": "meta",
+      "title": "메타 갱신 (backlog/migration/baseline)",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/backlog.md",
+          "action": "modify",
+          "changes": "Tier B ✅ + no-else-return/no-nested-ternary 기록 + Changelog b-1"
+        },
+        {
+          "path": "docs/개발계획서/harness/eslint-migration.md",
+          "action": "modify",
+          "changes": "Changelog 표에 b-1 행 추가"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "backlog Tier B ✅",
+        "migration Changelog b-1",
+        "baseline warn_total 13 유지"
+      ]
+    }
+  ]
+}
