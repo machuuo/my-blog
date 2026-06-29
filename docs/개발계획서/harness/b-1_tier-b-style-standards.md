@@ -25,7 +25,8 @@
 - `eslint.config.mjs` 5룰 변경 (3 승격 + 2 신규 error)
 - 중첩삼항 3곳 해소: HomePage / TechDetailPage(값 매핑 → 로컬 Record), PostForm(다조건 라벨 → 모듈 레벨 early-return 헬퍼)
 - 프로젝트 `CLAUDE.md`에 영어 "Control Flow & Conditionals" 절 신설
-- 메타 갱신: `backlog.md`, `eslint-migration.md`, `lint-baseline.json`
+- 메타 갱신: `backlog.md`, `eslint-migration.md`
+- `lint-baseline.json` 검증 (변경 없음 — `warn_total` 13 유지만 확인, 승격 룰 전부 0 warning)
 
 ### out of scope
 - **PostForm cognitive-complexity 리팩터** — threshold 10에서 9는 통과. 중첩삼항(라벨)만 surgical 수정, 컴포넌트 훅 추출은 안 함 (CLAUDE.md §3).
