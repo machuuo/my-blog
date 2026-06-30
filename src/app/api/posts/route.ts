@@ -29,6 +29,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const { data, error } = await supabase
       .from("posts")
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- 빈 문자열 series_id도 null로 저장 의도 (?? 시 ""가 FK로 저장됨)
       .insert({ slug, title, description, content, tags, published, series_id: series_id || null, display_order: display_order ?? null })
       .select()
       .single();
@@ -59,6 +60,7 @@ export async function PUT(request: NextRequest): Promise<NextResponse> {
 
     const { data, error } = await supabase
       .from("posts")
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- 빈 문자열 series_id도 null로 저장 의도 (?? 시 ""가 FK로 저장됨)
       .update({ slug, title, description, content, tags, published, series_id: series_id || null, display_order: display_order ?? null })
       .eq("post_id", post_id)
       .select()

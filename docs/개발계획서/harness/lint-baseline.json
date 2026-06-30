@@ -15,5 +15,8 @@
   ],
   "increases": [
     { "from": 11, "to": 24, "source": "new-rule", "rule": "max-lines-per-function", "date": "2026-06-25", "note": "intentional policy strengthening — component bloat detection per CLAUDE.md orchestrator principle" }
+  ],
+  "neutral": [
+    { "warn_total": 13, "source": "new-rule-as-error", "rule": "@typescript-eslint/prefer-nullish-coalescing + prefer-optional-chain", "date": "2026-06-30", "pr": "C-2", "note": "type-aware 룰 2종을 처음부터 error로 등록 → warn 미증가. 전제로 parserOptions.projectService 도입. nullish 위반 5건은 빈 문자열 폴백 의도라 line-level eslint-disable로 처리(동작 보존), optional-chain 위반 0." }
   ]
 }

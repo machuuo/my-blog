@@ -84,6 +84,7 @@ export function StripePlaceholder({
           fillOpacity="0.85"
           letterSpacing="1"
         >
+          {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- 빈 label("")도 기본 라벨로 폴백 의도 */}
           {label || "image →"}
         </text>
       </g>

@@ -1,0 +1,71 @@
+{
+  "design": "c-2_tier-c2-type-aware.md",
+  "task": "Tier C-2 — type-aware 룰(prefer-nullish-coalescing / prefer-optional-chain) 도입",
+  "type": "refactor-behavior-preserving",
+  "steps": [
+    {
+      "id": "1",
+      "layer": "config",
+      "title": "eslint.config.mjs — projectService 파서 설정 + 룰 2종 error 등록",
+      "files": ["eslint.config.mjs"],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "languageOptions.parserOptions.projectService: true + tsconfigRootDir 추가",
+        "prefer-nullish-coalescing error 등록",
+        "prefer-optional-chain error 등록",
+        "pnpm lint 정상 동작 (파싱 에러 없음)"
+      ]
+    },
+    {
+      "id": "2",
+      "layer": "code",
+      "title": "위반 5건 line-level eslint-disable 처리 (동작 보존)",
+      "files": [
+        "src/app/api/posts/route.ts",
+        "src/app/login/page.tsx",
+        "src/features/write-post/ui/PostForm.tsx",
+        "src/shared/ui/notebook/StripePlaceholder.tsx"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "route.ts:32 series_id || null disable + 사유",
+        "route.ts:62 series_id || null disable + 사유",
+        "login/page.tsx:13 redirect || \"/write\" disable + 사유",
+        "PostForm.tsx:108 data.error || \"저장 실패\" disable + 사유",
+        "StripePlaceholder.tsx:87 label || \"image →\" disable + 사유",
+        "pnpm lint 위반 0 (0 errors, 13 warnings)"
+      ]
+    },
+    {
+      "id": "3",
+      "layer": "verify",
+      "title": "회귀 차단 검증 — 의도적 위반 시 lint error 확인 후 되돌림",
+      "files": [],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "nullable || 추가 시 prefer-nullish-coalescing error 발생 확인",
+        "되돌린 후 lint 위반 0 복귀"
+      ]
+    },
+    {
+      "id": "4",
+      "layer": "docs",
+      "title": "문서 3종 갱신 (baseline / migration / backlog)",
+      "files": [
+        "docs/개발계획서/harness/lint-baseline.json",
+        "docs/개발계획서/harness/eslint-migration.md",
+        "docs/개발계획서/harness/backlog.md"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "lint-baseline.json warn_total 13 유지 + 메타 기록",
+        "eslint-migration.md Changelog 갱신",
+        "backlog.md Tier C-2 ✅ + 변경 이력"
+      ]
+    }
+  ]
+}
