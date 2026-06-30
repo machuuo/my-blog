@@ -60,6 +60,14 @@ export default [
   {
     files: ["src/**/*.{ts,tsx}"],
     ignores: IGNORE_TEST,
+    // c-2: type-aware 룰(prefer-nullish-coalescing/prefer-optional-chain) 전제.
+    // projectService는 project 배열보다 빠르고 관리 쉬운 typescript-eslint v8 권장 방식.
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     plugins: {
       boundaries,
       sonarjs,
@@ -162,6 +170,12 @@ export default [
 
       // ── 코드 스타일 (c-1) ──
       "prefer-template": "error",
+
+      // ── type-aware (c-2) ──
+      // ||/&& 함정 차단. nullish 의도엔 ??, 중첩 null 체크엔 ?. 강제.
+      // 빈 문자열("")/0/false도 폴백 의도인 || 는 line-level eslint-disable로 예외 명시.
+      "@typescript-eslint/prefer-nullish-coalescing": "error",
+      "@typescript-eslint/prefer-optional-chain": "error",
     },
   },
 
