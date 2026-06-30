@@ -143,7 +143,7 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
     "px-4 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20";
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-6">
       {/* Title */}
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium text-muted-foreground">
@@ -280,7 +280,7 @@ export function PostForm({ initialData, categories, seriesList }: PostFormProps)
         {isEditing ? <Button
             type="button"
             variant="outline"
-            onClick={handleDelete}
+            onClick={() => void handleDelete()}
             disabled={saving}
             className="text-red-500 hover:text-red-600 hover:border-red-500"
           >

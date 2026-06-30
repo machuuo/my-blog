@@ -43,7 +43,7 @@ export function LoginForm({ redirectTo = "/write" }: LoginFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-sm">
+    <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4 max-w-sm">
       <input
         type="password"
         value={password}

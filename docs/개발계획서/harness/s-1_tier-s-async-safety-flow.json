@@ -1,0 +1,72 @@
+{
+  "design": "s-1_tier-s-async-safety.md",
+  "task": "Tier S — async 안전성 type-aware 룰 4종 도입",
+  "type": "refactor-behavior-preserving",
+  "steps": [
+    {
+      "id": "1",
+      "layer": "config",
+      "title": "eslint.config.mjs — async 안전성 4룰 error 등록",
+      "files": ["eslint.config.mjs"],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "no-floating-promises error 등록 (위반 0)",
+        "no-misused-promises error 등록 (위반 4)",
+        "await-thenable error 등록 (위반 0)",
+        "require-await error 등록 (위반 0)",
+        "pnpm lint 정상 동작"
+      ]
+    },
+    {
+      "id": "2",
+      "layer": "code",
+      "title": "no-misused-promises 4건 인라인 void 래핑 (동작 보존)",
+      "files": [
+        "src/features/auth/ui/LoginForm.tsx",
+        "src/features/write-post/ui/MdxEditor.tsx",
+        "src/features/write-post/ui/PostForm.tsx"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "LoginForm.tsx:46 onSubmit={(e) => void handleSubmit(e)}",
+        "MdxEditor.tsx:93 onPaste={(e) => void handlePaste(e)}",
+        "PostForm.tsx:146 onSubmit={(e) => void handleSubmit(e)}",
+        "PostForm.tsx:283 onClick={() => void handleDelete()}",
+        "핸들러 본문 미수정 (내부 try/catch 유지)",
+        "pnpm lint 위반 0 (0 errors, 13 warnings)"
+      ]
+    },
+    {
+      "id": "3",
+      "layer": "verify",
+      "title": "회귀 차단 검증 — floating Promise / void 위치 async 추가 시 error 확인 후 되돌림",
+      "files": [],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "처리 안 한 fetch → no-floating-promises error 발생",
+        "void 위치 async 핸들러 → no-misused-promises error 발생",
+        "되돌린 후 lint 위반 0 복귀"
+      ]
+    },
+    {
+      "id": "4",
+      "layer": "docs",
+      "title": "문서 3종 갱신 (baseline / migration / backlog)",
+      "files": [
+        "docs/개발계획서/harness/lint-baseline.json",
+        "docs/개발계획서/harness/eslint-migration.md",
+        "docs/개발계획서/harness/backlog.md"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "lint-baseline.json neutral 섹션에 new-rule-as-error 항목, warn_total 13 유지",
+        "eslint-migration.md Changelog 갱신",
+        "backlog.md Tier S ✅ + Tier D 분리 명시"
+      ]
+    }
+  ]
+}
