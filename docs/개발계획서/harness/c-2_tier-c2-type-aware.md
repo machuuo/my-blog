@@ -46,7 +46,7 @@ ESLint baseline 승격 사이클(Tier A/B/C-1)이 모두 완료된 상태에서,
   - [ ] `src/shared/ui/notebook/StripePlaceholder.tsx:87` `label || "image →"`
 - [ ] `pnpm lint` 위반 0 확인 (`0 errors, 13 warnings` — 기존 max-lines-per-function 13 유지)
 - [ ] 회귀 차단 검증 — 일부러 nullable `||`/중첩 `&&` 추가 시 lint **error**로 실패 확인 후 되돌리기
-- [ ] `lint-baseline.json` 갱신 (warn_total 13 유지 — 두 룰 error라 warn 미증가. `decreases`/메타 기록)
+- [ ] `lint-baseline.json` 갱신 (warn_total 13 유지 — 두 룰 error라 warn 미증가. `neutral` 섹션에 `source: "new-rule-as-error"` 항목 기록)
 - [ ] `eslint-migration.md` Changelog 갱신
 - [ ] `backlog.md` Tier C-2 항목 ✅ + 변경 이력 추가
 - [ ] 빌드 검증 — `pnpm build` 통과 (type-aware lint와 별개로 회귀 없음 확인)
@@ -150,7 +150,7 @@ languageOptions: {
 
 | # | 쟁점 | 결정 | 근거 |
 |---|---|---|---|
-| 1 | 도입 범위(A/B/C안) | **B — 두 룰 전체 기본옵션 도입** | 사용자 선택. 모든 `||` 사용을 명시 검토 |
+| 1 | 도입 범위(A/B/C안) | **B — 두 룰 전체 기본옵션 도입** | 사용자 선택. 모든 `\|\|` 사용을 명시 검토 |
 | 2 | 위반 5건 처리(치환 vs 유지) | **5건 전부 `\|\|` 유지 + line-level eslint-disable** | Phase 2 "Best". 5건 모두 빈 문자열 폴백이 의도 → `??` 치환 시 동작 변경(빈 redirect 이동, 빈 토스트, 빈 라벨, DB 빈 FK 저장) |
 | 3 | 파서 설정 방식 | **`projectService: true`** (project 배열 아님) | typescript-eslint v8 권장. 성능·관리 우수 |
 | 4 | 룰 등록 강도 | **처음부터 error** (warn 경유 안 함) | 위반을 즉시 해소(disable) 가능하므로 C-1과 동일하게 직접 error. baseline warn 미증가 |
