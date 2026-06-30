@@ -176,6 +176,14 @@ export default [
       // 빈 문자열("")/0/false도 폴백 의도인 || 는 line-level eslint-disable로 예외 명시.
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
+
+      // ── async 안전성 (s-1, type-aware) ──
+      // unhandled rejection / void 위치 Promise 전달 / 잘못된 await 차단.
+      // async 핸들러를 JSX void 위치에 넘길 땐 (e) => void fn(e) 로 명시적 무시.
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": "error",
+      "@typescript-eslint/await-thenable": "error",
+      "@typescript-eslint/require-await": "error",
     },
   },
 

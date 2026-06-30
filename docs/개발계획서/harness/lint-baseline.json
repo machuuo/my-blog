@@ -17,6 +17,7 @@
     { "from": 11, "to": 24, "source": "new-rule", "rule": "max-lines-per-function", "date": "2026-06-25", "note": "intentional policy strengthening — component bloat detection per CLAUDE.md orchestrator principle" }
   ],
   "neutral": [
-    { "warn_total": 13, "source": "new-rule-as-error", "rule": "@typescript-eslint/prefer-nullish-coalescing + prefer-optional-chain", "date": "2026-06-30", "pr": "C-2", "note": "type-aware 룰 2종을 처음부터 error로 등록 → warn 미증가. 전제로 parserOptions.projectService 도입. nullish 위반 5건은 빈 문자열 폴백 의도라 line-level eslint-disable로 처리(동작 보존), optional-chain 위반 0." }
+    { "warn_total": 13, "source": "new-rule-as-error", "rule": "@typescript-eslint/prefer-nullish-coalescing + prefer-optional-chain", "date": "2026-06-30", "pr": "C-2", "note": "type-aware 룰 2종을 처음부터 error로 등록 → warn 미증가. 전제로 parserOptions.projectService 도입. nullish 위반 5건은 빈 문자열 폴백 의도라 line-level eslint-disable로 처리(동작 보존), optional-chain 위반 0." },
+    { "warn_total": 13, "source": "new-rule-as-error", "rule": "@typescript-eslint/no-floating-promises + no-misused-promises + await-thenable + require-await", "date": "2026-06-30", "pr": "S-1", "note": "async 안전성 4룰을 처음부터 error로 등록 → warn 미증가. no-misused-promises 위반 4건은 async 핸들러를 JSX void 위치에 전달한 케이스로 인라인 void 래핑으로 해소(핸들러 내부 try/catch 완비, 동작 보존). 나머지 3룰 위반 0. no-unnecessary-condition(17건)은 Tier D로 분리." }
   ]
 }

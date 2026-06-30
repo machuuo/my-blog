@@ -90,7 +90,7 @@ export function MdxEditor({ value, onChange }: MdxEditorProps) {
         ref={textareaRef}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        onPaste={handlePaste}
+        onPaste={(e) => void handlePaste(e)}
         placeholder="MDX 내용을 작성하세요. 이미지는 Ctrl+V로 붙여넣을 수 있습니다."
         className="w-full min-h-[500px] px-4 py-3 border border-border rounded-md bg-background text-foreground font-mono text-sm resize-y focus:outline-none focus:ring-2 focus:ring-foreground/20"
         spellCheck={false}
