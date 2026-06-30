@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
+
 import type { Metadata } from "next";
+
 import { getPostBySlug } from "@/entities/post/server";
-import { PostDetailPage } from "@/views/post-detail";
 import { BLOG_NAME } from "@/shared/lib/constants";
+import { PostDetailPage } from "@/views/post-detail";
 
 export const revalidate = 60;
 

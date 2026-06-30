@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
+
 import { NB_HAND } from "@/shared/lib/design-data";
+
 import { StripePlaceholder } from "./StripePlaceholder";
 
 interface PolaroidProps {

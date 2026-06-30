@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { BLOG_NAME, NAV_LINKS } from "@/shared/lib/constants";
 
 interface HeaderProps {

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { createSessionToken, getSessionCookieConfig } from "@/shared/lib/auth";
 import { MissingEnvError } from "@/shared/lib/env";
 

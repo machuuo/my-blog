@@ -1,5 +1,5 @@
-import { SeriesGrid } from "@/widgets/series-grid";
 import type { CategoryWithSeries } from "@/entities/series";
+import { SeriesGrid } from "@/widgets/series-grid";
 
 interface CategorySectionProps {
   category: CategoryWithSeries;

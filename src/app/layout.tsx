@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
 import localFont from "next/font/local";
+
+import type { Metadata } from "next";
 import { Toaster } from "sonner";
-import { NbFrame } from "@/widgets/nb-frame";
+
 import { BLOG_NAME, BLOG_DESCRIPTION } from "@/shared/lib/constants";
+import { NbFrame } from "@/widgets/nb-frame";
 import "./globals.css";
 
 const geistSans = localFont({

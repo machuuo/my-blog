@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+
+import Link from "next/link";
+
 import {
   TECH_POSTS,
   NB_BODY,
@@ -319,7 +321,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
                 style={{
                   background: copied ? "var(--nb-memo)" : "transparent",
                   color: copied ? "#1F1813" : "#F1E7D6",
-                  border: "1.5px dashed " + (copied ? "var(--nb-memo)" : "#C7B89A"),
+                  border: `1.5px dashed ${copied ? "var(--nb-memo)" : "#C7B89A"}`,
                   padding: "4px 12px",
                   fontFamily: NB_HAND,
                   fontSize: 18,

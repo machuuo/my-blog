@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
+
 import type { Metadata } from "next";
-import { getSeriesBySlug } from "@/entities/series/server";
+
 import { getPostsBySeries } from "@/entities/post/server";
-import { SeriesDetailPage } from "@/views/series-detail";
+import { getSeriesBySlug } from "@/entities/series/server";
 import { BLOG_NAME } from "@/shared/lib/constants";
+import { SeriesDetailPage } from "@/views/series-detail";
 
 export const revalidate = 60;
 

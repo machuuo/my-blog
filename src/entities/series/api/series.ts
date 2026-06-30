@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
+
 import type { Series, SeriesWithCount } from "../model/types";
 
 export async function getAllPublishedSeries(): Promise<SeriesWithCount[]> {

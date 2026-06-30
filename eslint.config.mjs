@@ -142,6 +142,26 @@ export default [
       "unicorn/prefer-node-protocol": "error",
       "unicorn/no-useless-undefined": "error",
       "unicorn/prefer-string-replace-all": "error",
+      "unicorn/throw-new-error": "error",        // c-1
+      "unicorn/no-await-expression-member": "error", // c-1 (위반 0)
+
+      // ── import 정렬·구조 (c-1) ──
+      "import/first": "error",
+      "import/newline-after-import": "error",
+      "import/order": ["error", {
+        groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+        pathGroups: [
+          { pattern: "react", group: "external", position: "before" },
+          { pattern: "next/**", group: "external", position: "before" },
+          { pattern: "@/**", group: "internal" },
+        ],
+        pathGroupsExcludedImportTypes: ["react"],
+        "newlines-between": "always",
+        alphabetize: { order: "asc", caseInsensitive: true },
+      }],
+
+      // ── 코드 스타일 (c-1) ──
+      "prefer-template": "error",
     },
   },
 
@@ -161,6 +181,8 @@ export default [
       "react/jsx-key": "error",
       "react/no-array-index-key": "error",
       "react/jsx-no-leaked-render": ["error", { validStrategies: ["ternary"] }], // 점진(1)
+      "react/jsx-no-useless-fragment": "error", // c-1
+      "react/self-closing-comp": "error",       // c-1
 
       // ── 접근성 ──
       "jsx-a11y/alt-text": "error",

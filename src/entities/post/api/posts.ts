@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
+
 import { toPost, toPostWithSeries } from "../model/mappers";
 import type { Post, PostWithSeries } from "../model/types";
 

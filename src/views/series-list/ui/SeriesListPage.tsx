@@ -1,6 +1,6 @@
-import { CategorySection } from "@/widgets/category-section";
-import { Breadcrumb } from "@/shared/ui/breadcrumb";
 import type { CategoryWithSeries } from "@/entities/series";
+import { Breadcrumb } from "@/shared/ui/breadcrumb";
+import { CategorySection } from "@/widgets/category-section";
 
 interface SeriesListPageProps {
   categories: CategoryWithSeries[];

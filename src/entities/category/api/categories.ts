@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
+
 import type { Category } from "../model/types";
 
 export async function getAllCategories(): Promise<Category[]> {

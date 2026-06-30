@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTitle } from "@/shared/ui/dialog";
+
 import {
   HOBBY_POSTS,
   NB_BODY,
@@ -9,6 +9,7 @@ import {
   NB_HAND2,
   accentTint,
 } from "@/shared/lib/design-data";
+import { Dialog, DialogContent, DialogTitle } from "@/shared/ui/dialog";
 import { HandCircle } from "@/shared/ui/notebook/HandCircle";
 import { Polaroid } from "@/shared/ui/notebook/Polaroid";
 import { StickyNote } from "@/shared/ui/notebook/StickyNote";
@@ -228,7 +229,7 @@ export function HobbyDetailPage({ slug }: { slug: string }) {
                 tint={PHOTOS[lightbox].tint}
                 rotate={-1}
                 w={720}
-                caption={PHOTOS[lightbox].cap + " · 아무 곳이나 클릭"}
+                caption={`${PHOTOS[lightbox].cap} · 아무 곳이나 클릭`}
               />
               <div
                 style={{

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+
 import { getAllCategories } from "@/entities/category/server";
-import { getAllPublishedSeries } from "@/entities/series/server";
-import { SeriesListPage } from "@/views/series-list";
-import { BLOG_NAME } from "@/shared/lib/constants";
 import type { CategoryWithSeries } from "@/entities/series";
+import { getAllPublishedSeries } from "@/entities/series/server";
+import { BLOG_NAME } from "@/shared/lib/constants";
+import { SeriesListPage } from "@/views/series-list";
 
 export const revalidate = 60;
 

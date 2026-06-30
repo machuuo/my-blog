@@ -1,4 +1,5 @@
 import readingTime from "reading-time";
+
 import type { Post, PostWithSeries } from "./types";
 
 export function toPost(row: Record<string, unknown>): Post {
