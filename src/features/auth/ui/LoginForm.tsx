@@ -27,7 +27,7 @@ export function LoginForm({ redirectTo = "/write" }: LoginFormProps) {
       router.push(redirectTo);
       router.refresh();
     } catch (err) {
-      if (err instanceof HttpError) {
+      if (err instanceof HttpError && err.status === 401) {
         setError("비밀번호가 올바르지 않습니다.");
       } else {
         setError("로그인 중 오류가 발생했습니다.");
