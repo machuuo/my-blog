@@ -4,5 +4,5 @@ export function slugify(input: string): string {
     .replaceAll(/[^a-z0-9가-힣\s-]/g, "")
     .replaceAll(/\s+/g, "-")
     .replaceAll(/-+/g, "-")
-    .trim();
+    .replaceAll(/^-+|-+$/g, "");
 }

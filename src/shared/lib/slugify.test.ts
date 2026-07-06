@@ -18,9 +18,8 @@ describe("slugify", () => {
     expect(slugify("a---b")).toBe("a-b");
   });
 
-  it("trims leading and trailing whitespace (converted to hyphens first, so trim leaves them)", () => {
-    // 원본 로직 순서: 공백 치환(-)이 trim()보다 먼저 실행되므로
-    // 앞뒤 공백은 하이픈으로 바뀐 뒤 trim으로는 제거되지 않는다 (원본 동작 보존).
-    expect(slugify("  hi  ")).toBe("-hi-");
+  it("strips leading and trailing hyphens produced from boundary whitespace", () => {
+    // 앞뒤 공백이 하이픈으로 치환된 뒤, 경계 하이픈을 제거해 깔끔한 slug를 만든다.
+    expect(slugify("  hi  ")).toBe("hi");
   });
 });
