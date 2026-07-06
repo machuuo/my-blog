@@ -1,0 +1,27 @@
+{
+  "designDoc": "gate-1_write-auth-guard.md",
+  "branch": "feat/write-auth-guard",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "app (server component)",
+      "title": "app/write/layout.tsx 인증 게이트",
+      "files": [
+        {
+          "path": "src/app/write/layout.tsx",
+          "action": "create",
+          "changes": "서버 컴포넌트. isAuthenticated() 미인증 시 redirect('/login'), 통과 시 children 렌더. MissingEnvError는 별도 catch 없이 전파."
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "비로그인 /write 접근 → /login redirect",
+        "비로그인 /write/[slug] 접근 → /login redirect",
+        "로그인 사용자는 /write·/write/[slug] 정상 진입",
+        "layout 한 곳에서 두 라우트 커버 (page.tsx 불변)",
+        "기존 @/shared/lib/auth isAuthenticated() 사용, 신규 인증 로직 없음",
+        "인증 판정 예외(MissingEnvError)는 catch 없이 전파(500)"
+      ]
+    }
+  ]
+}
