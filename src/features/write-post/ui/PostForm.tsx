@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
-
-import { useRouter } from "next/navigation";
-
 import type { Category } from "@/entities/category";
 import type { Post } from "@/entities/post";
 import type { SeriesWithCount } from "@/entities/series";
 import { Button } from "@/shared/ui/button";
+
+import { usePostForm } from "../lib/usePostForm";
 
 import { MdxEditor } from "./MdxEditor";
 
@@ -24,120 +22,32 @@ function submitLabel(saving: boolean, isEditing: boolean): string {
 }
 
 export function PostForm({ initialData, categories, seriesList }: PostFormProps) {
-  const router = useRouter();
-  const isEditing = !!initialData;
-
-  const [title, setTitle] = useState(initialData?.title ?? "");
-  const [slug, setSlug] = useState(initialData?.slug ?? "");
-  const [description, setDescription] = useState(
-    initialData?.description ?? ""
-  );
-  const [tags, setTags] = useState(initialData?.tags.join(", ") ?? "");
-  const [content, setContent] = useState(initialData?.content ?? "");
-  const [published, setPublished] = useState(initialData?.published ?? false);
-  const [seriesId, setSeriesId] = useState(initialData?.series_id ?? "");
-  const [displayOrder, setDisplayOrder] = useState<string>(
-    initialData?.display_order?.toString() ?? ""
-  );
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-
-  // category_id로 필터된 series 목록
-  const [selectedCategoryId, setSelectedCategoryId] = useState(() => {
-    if (initialData?.series_id) {
-      const s = seriesList.find((s) => s.series_id === initialData.series_id);
-      return s?.category_id ?? "";
-    }
-    return "";
-  });
-
-  const filteredSeries = selectedCategoryId
-    ? seriesList.filter((s) => s.category_id === selectedCategoryId)
-    : seriesList;
-
-  function handleCategoryChange(categoryId: string) {
-    setSelectedCategoryId(categoryId);
-    setSeriesId("");
-  }
-
-  // title에서 slug 자동 생성 (새 글일 때만)
-  function handleTitleChange(value: string) {
-    setTitle(value);
-    if (!isEditing) {
-      const autoSlug = value
-        .toLowerCase()
-        .replaceAll(/[^a-z0-9가-힣\s-]/g, "")
-        .replaceAll(/\s+/g, "-")
-        .replaceAll(/-+/g, "-")
-        .trim();
-      setSlug(autoSlug);
-    }
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-    setSaving(true);
-
-    try {
-      const tagArray = tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean);
-
-      const body = {
-        ...(isEditing ? { post_id: initialData.post_id } : {}),
-        slug,
-        title,
-        description,
-        content,
-        tags: tagArray,
-        published,
-        series_id: seriesId || null,
-        display_order: displayOrder ? Number(displayOrder) : null,
-      };
-
-      const res = await fetch("/api/posts", {
-        method: isEditing ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- 빈 error 문자열("")도 기본 메시지로 폴백 의도
-        throw new Error(data.error || "저장 실패");
-      }
-
-      router.push(`/posts/${slug}`);
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "저장 중 오류 발생");
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function handleDelete() {
-    if (!initialData || !confirm("정말 삭제하시겠습니까?")) return;
-
-    setSaving(true);
-    try {
-      const res = await fetch("/api/posts", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ post_id: initialData.post_id }),
-      });
-
-      if (!res.ok) throw new Error("삭제 실패");
-
-      router.push("/");
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "삭제 중 오류 발생");
-      setSaving(false);
-    }
-  }
+  const {
+    title,
+    slug,
+    setSlug,
+    description,
+    setDescription,
+    tags,
+    setTags,
+    content,
+    setContent,
+    published,
+    setPublished,
+    seriesId,
+    setSeriesId,
+    displayOrder,
+    setDisplayOrder,
+    saving,
+    error,
+    isEditing,
+    selectedCategoryId,
+    filteredSeries,
+    handleCategoryChange,
+    handleTitleChange,
+    handleSubmit,
+    handleDelete,
+  } = usePostForm({ initialData, categories, seriesList });
 
   const inputClassName =
     "px-4 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20";

@@ -1,0 +1,157 @@
+{
+  "designDoc": "refactor-1_shared-hooks-extraction.md",
+  "branch": "refactor/shared-hooks",
+  "squashBase": "2c43cd3",
+  "scope": "A (Tier 1+2 전체)",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "shared/lib (util, TDD)",
+      "title": "slugify 순수 함수 (test→impl)",
+      "files": [
+        {
+          "path": "src/shared/lib/slugify.test.ts",
+          "action": "create",
+          "changes": "RED: 소문자화+공백하이픈, 한글보존, 특수문자제거, 연속하이픈병합, trim 5케이스"
+        },
+        {
+          "path": "src/shared/lib/slugify.ts",
+          "action": "create",
+          "changes": "GREEN: PostForm:67-72 replaceAll 체인을 순수 함수로. React import 금지(순수)"
+        },
+        {
+          "path": "src/shared/lib/index.ts",
+          "action": "modify",
+          "changes": "export * from \"./slugify\" 추가"
+        }
+      ],
+      "barrel": "src/shared/lib/index.ts",
+      "passes": true,
+      "acceptanceCriteria": [
+        "slugify가 소문자화+한글/영숫자 외 제거+공백→하이픈+연속하이픈 병합+trim 수행",
+        "slugify.test.ts 5케이스 통과"
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "shared/api (util, TDD)",
+      "title": "postJson + HttpError (test→impl)",
+      "files": [
+        {
+          "path": "src/shared/api/postJson.test.ts",
+          "action": "create",
+          "changes": "RED: 성공 파싱반환, !res.ok→HttpError+status, error body 전달, 빈error 폴백, method 전달 5케이스"
+        },
+        {
+          "path": "src/shared/api/HttpError.ts",
+          "action": "create",
+          "changes": "GREEN: Error 상속 + status:number 보유"
+        },
+        {
+          "path": "src/shared/api/postJson.ts",
+          "action": "create",
+          "changes": "GREEN: postJson<T>(url,body,method='POST'). !res.ok시 HttpError throw. d.error||기본은 prefer-nullish-coalescing line-disable+사유주석"
+        },
+        {
+          "path": "src/shared/api/index.ts",
+          "action": "create",
+          "changes": "배럴: postJson, HttpError export"
+        }
+      ],
+      "barrel": "src/shared/api/index.ts",
+      "passes": true,
+      "acceptanceCriteria": [
+        "postJson 성공시 파싱 JSON(T) 반환, !res.ok시 HttpError(status,message) throw",
+        "HttpError는 Error 상속 + status:number 보유",
+        "postJson.test.ts 5케이스 통과"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "features/write-post/lib (hook)",
+      "title": "usePostForm 훅 (PostForm 로직 추출)",
+      "files": [
+        {
+          "path": "src/features/write-post/lib/usePostForm.ts",
+          "action": "create",
+          "changes": "폼 값 11종+setter, 파생(filteredSeries,isEditing), 핸들러(handleTitleChange→slugify, handleCategoryChange, handleSubmit→postJson PUT|POST, handleDelete→postJson DELETE), saving/error. 이벤트 핸들러 반환은 컴포넌트에서 void 래핑"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "신규글일 때만 제목 입력시 slug 자동 생성(slugify)",
+        "카테고리 선택시 series 필터 + seriesId 초기화, initialData.series_id로 초기 카테고리 역추적",
+        "submit 실패시 서버 error 메시지, 성공시 /posts/{slug} push+refresh",
+        "delete confirm 후 삭제, 성공시 / push+refresh, 실패시 에러+saving 해제"
+      ]
+    },
+    {
+      "id": 4,
+      "layer": "features/write-post/lib (hook)",
+      "title": "useImagePasteUpload 훅 (MdxEditor 로직 추출)",
+      "files": [
+        {
+          "path": "src/features/write-post/lib/useImagePasteUpload.ts",
+          "action": "create",
+          "changes": "MdxEditor:13-82 insertAtCursor(내부)+handlePaste(FormData /api/upload). (value,onChange)→{textareaRef,handlePaste}. postJson 미사용(FormData)"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "이미지 붙여넣기시 placeholder 삽입→성공시 URL 치환/실패시 제거",
+        "커서 위치 복원 동작 보존"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "features/write-post/ui (component)",
+      "title": "PostForm orchestrator 축소",
+      "files": [
+        {
+          "path": "src/features/write-post/ui/PostForm.tsx",
+          "action": "modify",
+          "changes": "로직 전부 usePostForm으로 이관, JSX orchestrator만 남김. submitLabel은 유지 or 훅 내부 판단. 렌더 트리/마크업 불변"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "PostForm이 JSX orchestrator로 축소(로직은 훅에만)",
+        "기존 폼 UI/동작 100% 보존"
+      ]
+    },
+    {
+      "id": 6,
+      "layer": "features/write-post/ui (component)",
+      "title": "MdxEditor orchestrator 축소",
+      "files": [
+        {
+          "path": "src/features/write-post/ui/MdxEditor.tsx",
+          "action": "modify",
+          "changes": "insertAtCursor/handlePaste를 useImagePasteUpload로 이관. onPaste void 래핑 유지. 마크업 불변"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "MdxEditor가 orchestrator로 축소",
+        "붙여넣기 업로드 동작 100% 보존"
+      ]
+    },
+    {
+      "id": 7,
+      "layer": "features/auth/ui (component)",
+      "title": "LoginForm postJson+HttpError 적용",
+      "files": [
+        {
+          "path": "src/features/auth/ui/LoginForm.tsx",
+          "action": "modify",
+          "changes": "fetch 보일러플레이트를 postJson으로 교체. catch에서 instanceof HttpError로 HTTP('비밀번호가 올바르지 않습니다') vs 네트워크('로그인 중 오류가 발생했습니다') 2메시지 구분 보존"
+        }
+      ],
+      "passes": true,
+      "acceptanceCriteria": [
+        "HTTP 401→'비밀번호가 올바르지 않습니다', 네트워크→'로그인 중 오류가 발생했습니다' 구분 유지",
+        "성공시 redirectTo push+refresh"
+      ]
+    }
+  ]
+}
