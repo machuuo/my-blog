@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { HttpError, postJson } from "@/shared/api";
 import { Button } from "@/shared/ui/button";
 
 interface LoginFormProps {
@@ -22,21 +23,15 @@ export function LoginForm({ redirectTo = "/write" }: LoginFormProps) {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      });
-
-      if (!res.ok) {
-        setError("비밀번호가 올바르지 않습니다.");
-        return;
-      }
-
+      await postJson("/api/auth", { password });
       router.push(redirectTo);
       router.refresh();
-    } catch {
-      setError("로그인 중 오류가 발생했습니다.");
+    } catch (err) {
+      if (err instanceof HttpError) {
+        setError("비밀번호가 올바르지 않습니다.");
+      } else {
+        setError("로그인 중 오류가 발생했습니다.");
+      }
     } finally {
       setLoading(false);
     }
