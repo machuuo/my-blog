@@ -45,8 +45,9 @@ export function useImagePasteUpload(
 
       e.preventDefault();
 
-      // 업로드 중 표시
-      insertAtCursor("![업로드 중...]()\n");
+      // 업로드마다 고유 토큰으로 placeholder를 구분 (동시 붙여넣기 경합 방지)
+      const placeholder = `![업로드 중...](uploading:${crypto.randomUUID()})`;
+      insertAtCursor(`${placeholder}\n`);
 
       try {
         const formData = new FormData();
@@ -66,7 +67,7 @@ export function useImagePasteUpload(
         if (textarea) {
           const currentValue = textarea.value;
           const newValue = currentValue.replace(
-            "![업로드 중...]()",
+            placeholder,
             `![image](${url})`
           );
           onChange(newValue);
@@ -76,7 +77,7 @@ export function useImagePasteUpload(
         const textarea = textareaRef.current;
         if (textarea) {
           const currentValue = textarea.value;
-          const newValue = currentValue.replace("![업로드 중...]()\n", "");
+          const newValue = currentValue.replace(`${placeholder}\n`, "");
           onChange(newValue);
         }
       }
