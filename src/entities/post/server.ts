@@ -1,1 +1,8 @@
-export { getAllPosts, getPostBySlug, getPostsBySeries, getUncategorizedPosts, getAllSlugs } from "./api/posts";
+export {
+  getAllPosts,
+  getPostBySlug,
+  getPublishedPostBySlug,
+  getPostsBySeries,
+  getUncategorizedPosts,
+  getAllSlugs,
+} from "./api/posts";

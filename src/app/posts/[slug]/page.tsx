@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import type { Metadata } from "next";
 
-import { getPostBySlug } from "@/entities/post/server";
+import { getPublishedPostBySlug } from "@/entities/post/server";
 import { BLOG_NAME } from "@/shared/lib/constants";
 import { PostDetailPage } from "@/views/post-detail";
 
@@ -16,7 +16,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getPublishedPostBySlug(slug);
 
   if (!post) {
     return { title: "Not Found" };
@@ -30,7 +30,7 @@ export async function generateMetadata({
 
 export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getPublishedPostBySlug(slug);
 
   if (!post) {
     notFound();
