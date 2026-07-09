@@ -31,6 +31,21 @@ export async function getPostBySlug(slug: string): Promise<PostWithSeries | null
   return toPostWithSeries(data);
 }
 
+export async function getPublishedPostBySlug(slug: string): Promise<PostWithSeries | null> {
+  const supabase = createServerSupabaseClient();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*, series(title, slug, categories(name, slug))")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
+
+  if (error || !data) return null;
+
+  return toPostWithSeries(data);
+}
+
 export async function getPostsBySeries(seriesId: string): Promise<Post[]> {
   const supabase = createServerSupabaseClient();
 

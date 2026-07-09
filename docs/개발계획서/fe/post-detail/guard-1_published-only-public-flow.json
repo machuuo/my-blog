@@ -1,0 +1,32 @@
+{
+  "design": "guard-1_published-only-public.md",
+  "branch": "fix/published-only-public",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "api",
+      "title": "getPublishedPostBySlug 신규 (published=true 필터)",
+      "files": ["src/entities/post/api/posts.ts"],
+      "barrel": "src/entities/post/server.ts",
+      "passes": true,
+      "acceptanceCriteria": [
+        "getPublishedPostBySlug는 published=true 필터로 조회하고, 미발행/없음/에러 시 null을 반환한다.",
+        "server.ts 배럴에 getPublishedPostBySlug export 추가."
+      ]
+    },
+    {
+      "id": 2,
+      "layer": "app",
+      "title": "공개 페이지 호출부 2곳 교체",
+      "files": ["src/app/posts/[slug]/page.tsx"],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "미발행 초안 slug로 /posts/[slug] 접근 시 notFound()(404)로 처리된다.",
+        "발행 글 slug로 접근 시 정상 렌더된다.",
+        "generateMetadata도 미발행 slug에 대해 'Not Found' 메타를 반환한다.",
+        "편집 /write/[slug]는 여전히 초안을 불러온다(getPostBySlug 불변)."
+      ]
+    }
+  ]
+}
