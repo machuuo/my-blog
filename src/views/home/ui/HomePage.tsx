@@ -8,11 +8,8 @@ import {
   NB_HAND2,
   accentTint,
   type NbPost,
-} from "@/shared/lib/design-data";
-import { HandArrow } from "@/shared/ui/notebook/HandArrow";
-import { StickyNote } from "@/shared/ui/notebook/StickyNote";
-import { StripePlaceholder } from "@/shared/ui/notebook/StripePlaceholder";
-import { WashiTape } from "@/shared/ui/notebook/WashiTape";
+} from "@/shared/lib";
+import { HandArrow, StickyNote, StripePlaceholder, WashiTape } from "@/shared/ui";
 
 function postHref(p: NbPost, group: "tech" | "hobby") {
   return `/${group}/${p.slug}`;

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { HttpError, postJson } from "@/shared/api";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui";
 
 interface LoginFormProps {
   redirectTo?: string;

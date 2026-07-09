@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 
-import { NB_HAND } from "@/shared/lib/design-data";
+import { NB_HAND } from "@/shared/lib";
 
 interface StickyNoteProps {
   children: ReactNode;

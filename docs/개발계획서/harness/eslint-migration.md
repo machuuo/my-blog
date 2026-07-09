@@ -526,3 +526,7 @@ const nextConfig = {
 | pre-commit hook | 미포함 | 본 작업 범위 외 |
 | 배포 워크플로 통합 | 미통합 | GitHub Pages 배포 영향 분리 |
 | 위반 일괄 수정 | 별도 작업으로 분리 (warn → 코드 수정만) | 본 PR은 ratchet 도입까지 |
+| **FSD 진입점(배럴) 강제** (barrel-1) | **`boundaries/dependencies` + `internalPath` 통합** | 레이어 상→하 규칙에 진입점(배럴/2차 진입점)을 결합해 단일 룰로 의미적 강제. `boundaries/entry-point`(주 후보)는 v6.0.2 **deprecated**라 미채택 → dependencies 마이그레이션 |
+| **`import/no-internal-modules` 백스톱** (barrel-1) | **드롭 (미도입)** | `@/` alias가 dependencies 진입점 검사에서 정상 해석돼 완전 중복. `allow`는 외부 deep import 오탐, `forbid`는 server.ts 예외가 취약 |
+| **shared 세그먼트 내부 참조** (barrel-1) | **relative(`./x`, `../lib`), 배럴 alias 아님** | same-element은 `checkInternals:false`로 검사 제외. `dialog.tsx`→button은 배럴 경유 시 순환이라 relative `./button` |
+| **dead 세그먼트 배럴 제거** (barrel-1) | **8개 (설계 9개 중 1 정정)** | `widgets/nb-frame/lib/index.ts`는 `NbFrame.tsx`가 `../lib`로 소비 중 → 유지. 나머지 7 views/ui + nb-frame/ui는 소비 0 확인 후 삭제 |

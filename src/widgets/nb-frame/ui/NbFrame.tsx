@@ -5,9 +5,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { NB_BODY, NB_HAND, NB_HAND2 } from "@/shared/lib/design-data";
-import { Squiggle } from "@/shared/ui/notebook/Squiggle";
-import { WashiTape } from "@/shared/ui/notebook/WashiTape";
+import { NB_BODY, NB_HAND, NB_HAND2 } from "@/shared/lib";
+import { Squiggle, WashiTape } from "@/shared/ui";
 
 import { useNbTheme } from "../lib";
 

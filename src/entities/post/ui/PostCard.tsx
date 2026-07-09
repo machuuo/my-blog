@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import { Badge } from "@/shared/ui/badge";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+import { Badge, Card, CardHeader, CardTitle, CardDescription } from "@/shared/ui";
 
 import type { Post } from "../model/types";
 

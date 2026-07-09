@@ -8,13 +8,17 @@ import {
   NB_HAND,
   NB_HAND2,
   accentTint,
-} from "@/shared/lib/design-data";
-import { Dialog, DialogContent, DialogTitle } from "@/shared/ui/dialog";
-import { HandCircle } from "@/shared/ui/notebook/HandCircle";
-import { Polaroid } from "@/shared/ui/notebook/Polaroid";
-import { StickyNote } from "@/shared/ui/notebook/StickyNote";
-import { StripePlaceholder } from "@/shared/ui/notebook/StripePlaceholder";
-import { WashiTape } from "@/shared/ui/notebook/WashiTape";
+} from "@/shared/lib";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  HandCircle,
+  Polaroid,
+  StickyNote,
+  StripePlaceholder,
+  WashiTape,
+} from "@/shared/ui";
 
 const PHOTOS = [
   { id: 1, label: "pre-match · 라인업", tint: "#BCCFA4", cap: "경기 시작 직전" },

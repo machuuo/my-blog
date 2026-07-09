@@ -1,6 +1,6 @@
 import type { Post } from "@/entities/post";
 import type { Series } from "@/entities/series";
-import { Breadcrumb } from "@/shared/ui/breadcrumb";
+import { Breadcrumb } from "@/shared/ui";
 import { PostList } from "@/widgets/post-list";
 
 interface SeriesDetailPageProps {

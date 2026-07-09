@@ -8,7 +8,7 @@ import type { Category } from "@/entities/category";
 import type { Post } from "@/entities/post";
 import type { SeriesWithCount } from "@/entities/series";
 import { postJson } from "@/shared/api";
-import { slugify } from "@/shared/lib/slugify";
+import { slugify } from "@/shared/lib";
 
 interface UsePostFormProps {
   initialData?: Post;

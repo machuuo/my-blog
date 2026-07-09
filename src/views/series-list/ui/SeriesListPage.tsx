@@ -1,5 +1,5 @@
 import type { CategoryWithSeries } from "@/entities/series";
-import { Breadcrumb } from "@/shared/ui/breadcrumb";
+import { Breadcrumb } from "@/shared/ui";
 import { CategorySection } from "@/widgets/category-section";
 
 interface SeriesListPageProps {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { BLOG_NAME, NAV_LINKS } from "@/shared/lib/constants";
+import { BLOG_NAME, NAV_LINKS } from "@/shared/lib";
 
 interface HeaderProps {
   className?: string;

@@ -29,6 +29,16 @@ const API_LAYER_PATTERNS = [
 
 const IGNORE_TEST = ["**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"]
 
+// ── FSD 공개 진입점 (배럴 소비 강제, internalPath = element 루트 기준 상대경로) ──
+// boundaries/dependencies의 allow selector에 붙여 "어느 레이어냐(상→하)"에 더해
+// "그 레이어의 공개 진입점(배럴/2차 진입점)으로 들어왔는가"까지 의미적으로 강제한다.
+// same-element(내부 형제) import은 checkInternals 기본 false라 검사 제외 → relative(./button) 통과.
+const ENTRY_POINTS = {
+  slice: "index.ts", // views/widgets/features: 슬라이스 루트 배럴만
+  entities: ["index.ts", "server.ts"], // client-safe(index) ↔ server-only fetcher(server) 이중 진입점
+  shared: ["*/index.ts", "lib/auth.ts", "lib/supabase/*.ts"], // 세그먼트 배럴 + server-only 예외
+}
+
 export default [
   // ── 전역 무시 ──
   {
@@ -123,16 +133,57 @@ export default [
       // ── import 순환 ──
       "import/no-cycle": ["error", { maxDepth: 3 }],
 
-      // ── 레이어 경계 (FSD 6계층 상→하, boundaries v6 dependencies API) ──
+      // ── 레이어 경계 + FSD 진입점 강제 (boundaries v6 dependencies, modern selector) ──
+      // 상→하 레이어 규칙에 진입점(internalPath)을 결합해 하나의 룰로 통합.
+      // default:"disallow" + allow(type+internalPath)만 통과 → 잘못된 레이어/딥 import 모두 error.
+      // (boundaries/entry-point는 v6에서 deprecated → dependencies+internalPath로 마이그레이션.)
       "boundaries/dependencies": ["error", {
         default: "disallow",
         rules: [
-          { from: [["app"]], allow: [["app"], ["views"], ["widgets"], ["features"], ["entities"], ["shared"]] },
-          { from: [["views"]], allow: [["views"], ["widgets"], ["features"], ["entities"], ["shared"]] },
-          { from: [["widgets"]], allow: [["widgets"], ["features"], ["entities"], ["shared"]] },
-          { from: [["features"]], allow: [["features"], ["entities"], ["shared"]] },
-          { from: [["entities"]], allow: [["entities"], ["shared"]] },
-          { from: [["shared"]], allow: [["shared"]] },
+          {
+            from: { type: "app" },
+            allow: [
+              { to: { type: "app" } },
+              { to: { type: ["views", "widgets", "features"], internalPath: ENTRY_POINTS.slice } },
+              { to: { type: "entities", internalPath: ENTRY_POINTS.entities } },
+              { to: { type: "shared", internalPath: ENTRY_POINTS.shared } },
+            ],
+          },
+          {
+            from: { type: "views" },
+            allow: [
+              { to: { type: ["views", "widgets", "features"], internalPath: ENTRY_POINTS.slice } },
+              { to: { type: "entities", internalPath: ENTRY_POINTS.entities } },
+              { to: { type: "shared", internalPath: ENTRY_POINTS.shared } },
+            ],
+          },
+          {
+            from: { type: "widgets" },
+            allow: [
+              { to: { type: ["widgets", "features"], internalPath: ENTRY_POINTS.slice } },
+              { to: { type: "entities", internalPath: ENTRY_POINTS.entities } },
+              { to: { type: "shared", internalPath: ENTRY_POINTS.shared } },
+            ],
+          },
+          {
+            from: { type: "features" },
+            allow: [
+              { to: { type: "features", internalPath: ENTRY_POINTS.slice } },
+              { to: { type: "entities", internalPath: ENTRY_POINTS.entities } },
+              { to: { type: "shared", internalPath: ENTRY_POINTS.shared } },
+            ],
+          },
+          {
+            from: { type: "entities" },
+            allow: [
+              { to: { type: "entities", internalPath: ENTRY_POINTS.entities } },
+              { to: { type: "shared", internalPath: ENTRY_POINTS.shared } },
+            ],
+          },
+          {
+            from: { type: "shared" },
+            allow: [{ to: { type: "shared", internalPath: ENTRY_POINTS.shared } }],
+          },
         ],
       }],
 

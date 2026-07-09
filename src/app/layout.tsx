@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 
-import { BLOG_NAME, BLOG_DESCRIPTION } from "@/shared/lib/constants";
+import { BLOG_NAME, BLOG_DESCRIPTION } from "@/shared/lib";
 import { NbFrame } from "@/widgets/nb-frame";
 import "./globals.css";
 
