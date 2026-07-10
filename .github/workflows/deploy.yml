@@ -27,9 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # pnpm 버전은 package.json의 packageManager 필드를 단일 진실 원천으로 사용.
+      # version을 명시하면 packageManager 필드와 충돌해 ERR_PNPM_BAD_PM_VERSION 발생.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - uses: actions/setup-node@v4
         with:
