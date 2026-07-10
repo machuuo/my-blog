@@ -3,6 +3,9 @@ import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
 import { toPost, toPostWithSeries } from "../model/mappers";
 import type { Post, PostWithSeries } from "../model/types";
 
+/** breadcrumb용 series/category 조인. model의 PostWithSeriesRow와 짝을 이룬다. */
+const POST_WITH_SERIES_SELECT = "*, series(title, slug, categories(name, slug))";
+
 export async function getAllPosts(): Promise<Post[]> {
   const supabase = createServerSupabaseClient();
 
@@ -22,7 +25,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithSeries | null
 
   const { data, error } = await supabase
     .from("posts")
-    .select("*, series(title, slug, categories(name, slug))")
+    .select(POST_WITH_SERIES_SELECT)
     .eq("slug", slug)
     .single();
 
@@ -36,7 +39,7 @@ export async function getPublishedPostBySlug(slug: string): Promise<PostWithSeri
 
   const { data, error } = await supabase
     .from("posts")
-    .select("*, series(title, slug, categories(name, slug))")
+    .select(POST_WITH_SERIES_SELECT)
     .eq("slug", slug)
     .eq("published", true)
     .single();

@@ -1,0 +1,285 @@
+{
+  "designDoc": "typegen-1_supabase-type-ssot.md",
+  "branch": "chore/typegen/supabase-type-ssot",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "test",
+      "title": "특성화 테스트 선작성 (리팩터 안전망, 로그인 불필요)",
+      "files": [
+        {
+          "path": "src/entities/post/model/mappers.test.ts",
+          "action": "create",
+          "changes": "toPost 3케이스(정상 로우 / null 폴백 / content null 경계값) + toPostWithSeries 2케이스(조인 성공 / series null). 현행 Record<string,unknown> 입력 기준으로 GREEN."
+        },
+        {
+          "path": "src/entities/series/model/mappers.test.ts",
+          "action": "create",
+          "changes": "toSeries 2케이스(정상 / description null→\"\" + thumbnail_url null 유지) + toSeriesWithCount 2케이스(post_count 숫자 / null→0 경계값). 현행 코드 기준 GREEN."
+        }
+      ],
+      "tests": true,
+      "acceptanceCriteria": [
+        "현행 코드(as 단언 유지) 상태에서 9케이스 전부 GREEN",
+        "테스트가 도메인 타입 출력 모양을 고정 — 이후 타입 교체의 동작 보존 증명 근거"
+      ],
+      "passes": true
+    },
+    {
+      "id": 2,
+      "layer": "config",
+      "title": "Supabase CLI devDependency 설치",
+      "files": [
+        {
+          "path": "package.json",
+          "action": "modify",
+          "changes": "pnpm add -D supabase. 전역 설치 대신 프로젝트 고정(CI/타 머신 버전 일치)."
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "action": "modify",
+          "changes": "의존성 반영."
+        }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "pnpm exec supabase --version 응답",
+        "pnpm 사용 (npm/yarn 금지 — pnpm-lock.yaml 충돌 시 Vercel 빌드 실패)"
+      ],
+      "passes": true
+    },
+    {
+      "id": 3,
+      "layer": "config",
+      "title": "타입 생성 파이프라인 (⏸ 사용자 supabase login 선행)",
+      "files": [
+        {
+          "path": "package.json",
+          "action": "modify",
+          "changes": "db:types 스크립트 등록. --project-id spbgcnyqdgxhsouofeno --schema public (공개 URL 서브도메인, 비밀 아님)."
+        },
+        {
+          "path": "src/shared/lib/supabase/database.types.ts",
+          "action": "create",
+          "changes": "생성물. 손으로 수정 금지. .gitignore 아님 — 커밋해야 CI가 DB 접근 없이 tsc 실행 가능."
+        },
+        {
+          "path": "eslint.config.mjs",
+          "action": "modify",
+          "changes": "ignores에 database.types.ts 등록(기계 생성물이라 import/order 등 룰 무의미)."
+        }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "pnpm db:types 재실행 시 동일 산출물 (idempotent)",
+        "생성 파일에 Database / Tables / TablesInsert / TablesUpdate 헬퍼 존재",
+        "pnpm lint에서 생성 파일 위반 0 (ignores 적용 확인)"
+      ],
+      "passes": true
+    },
+    {
+      "id": 4,
+      "layer": "shared",
+      "title": "서버 클라이언트에 Database 제네릭 주입",
+      "files": [
+        {
+          "path": "src/shared/lib/supabase/server.ts",
+          "action": "modify",
+          "changes": "createClient<Database>(url, serviceRoleKey, ...). 반환 타입 SupabaseClient<Database>."
+        }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "createServerSupabaseClient 반환 타입이 SupabaseClient<Database>",
+        "이 시점에 tsc가 기존 as 단언 지점의 불일치를 지적하기 시작 (기대된 동작)"
+      ],
+      "passes": true
+    },
+    {
+      "id": 5,
+      "layer": "entities/post",
+      "title": "post 매퍼 as 제거 + 조인 쿼리 QueryData",
+      "files": [
+        {
+          "path": "src/entities/post/model/mappers.ts",
+          "action": "modify",
+          "changes": "toPost 입력 Record<string,unknown> → Tables<\"posts\">. as 단언 전부 제거. toPostWithSeries 입력은 posts.ts에서 역추출한 조인 타입."
+        },
+        {
+          "path": "src/entities/post/api/posts.ts",
+          "action": "modify",
+          "changes": "getPostBySlug/getPublishedPostBySlug가 중복 보유한 select(\"*, series(title, slug, categories(name, slug))\")를 한 곳에 선언하고 QueryData<typeof q>로 타입 역추출. 런타임 가드 if(error||!data) 유지."
+        },
+        {
+          "path": "src/entities/post/model/types.ts",
+          "action": "modify",
+          "changes": "PostRow/PostWithSeriesRow 파생 + date/published/updated_at nullable화(결정 8)."
+        },
+        {
+          "path": "src/entities/post/ui/PostMeta.tsx",
+          "action": "modify",
+          "changes": "date null 가드. new Date(null) → 1970-01-01 렌더 버그 제거."
+        }
+      ],
+      "tests": true,
+      "acceptanceCriteria": [
+        "step 1a의 5케이스 GREEN 유지 (동작 보존 증명)",
+        "mappers.ts 본문에 as 0개",
+        "select 문자열 중복 제거",
+        "if (error || !data) 가드 삭제되지 않음"
+      ],
+      "passes": true
+    },
+    {
+      "id": 6,
+      "layer": "entities/series",
+      "title": "series 매퍼 부활 + RPC 반환 타입 검증",
+      "files": [
+        {
+          "path": "src/entities/series/model/mappers.ts",
+          "action": "modify",
+          "changes": "dead 상태였던 toSeries/toSeriesWithCount 재작성. 입력 Tables<\"series\"> / RPC Returns 타입. as 제거."
+        },
+        {
+          "path": "src/entities/series/api/series.ts",
+          "action": "modify",
+          "changes": "data as Series[] / data as SeriesWithCount[] 제거하고 매퍼 경유. rpc(\"get_published_series_with_count\") 반환 타입이 생성 타입에서 추론되는지 확인."
+        },
+        {
+          "path": "src/entities/series/model/types.ts",
+          "action": "modify",
+          "changes": "SeriesRow/SeriesWithCountRow(RPC Returns) 파생."
+        }
+      ],
+      "tests": true,
+      "acceptanceCriteria": [
+        "step 1b의 4케이스 GREEN 유지",
+        "series.ts에 as 0개",
+        "RPC 반환 타입이 Database[\"public\"][\"Functions\"]에서 추론됨"
+      ],
+      "passes": true
+    },
+    {
+      "id": 7,
+      "layer": "entities/category",
+      "title": "category 매퍼 신규 (RIGID TDD — 테스트 먼저 RED)",
+      "files": [
+        {
+          "path": "src/entities/category/model/mappers.test.ts",
+          "action": "create",
+          "changes": "먼저 작성해 RED 확인. 3케이스: 정상 변환 / display_order 0 보존(?? 오용 시 falsy 삼킴 탐지) / 여분 컬럼 미유출."
+        },
+        {
+          "path": "src/entities/category/model/mappers.ts",
+          "action": "create",
+          "changes": "toCategory(row: Tables<\"categories\">): Category. RED 확인 후 구현."
+        },
+        {
+          "path": "src/entities/category/api/categories.ts",
+          "action": "modify",
+          "changes": "data as Category[] 제거, data.map(toCategory)."
+        },
+        {
+          "path": "src/entities/category/model/types.ts",
+          "action": "modify",
+          "changes": "CategoryRow 파생. 배럴 노출은 소비처 0이라 미적용."
+        }
+      ],
+      "tests": true,
+      "acceptanceCriteria": [
+        "테스트 작성 시점에 RED 확인 (구현 전 코드 작성 금지 — 위반 시 삭제 후 재시작)",
+        "구현 후 3케이스 GREEN",
+        "categories.ts에 as 0개"
+      ],
+      "passes": true
+    },
+    {
+      "id": 8,
+      "layer": "app",
+      "title": "쓰기 route handler insert()/update() 초과 속성 검사 복원 (impl-review 2회 반영)",
+      "files": [
+        {
+          "path": "src/app/api/posts/route.ts",
+          "action": "modify",
+          "changes": "insert/update 페이로드를 TablesInsert<\"posts\">/TablesUpdate<\"posts\"> 명시 변수로. 인라인 리터럴은 EPC 미작동. eslint-disable(prefer-nullish-coalescing) 주석 2개도 series_id 라인을 따라 이동."
+        },
+        {
+          "path": "src/app/api/series/route.ts",
+          "action": "modify",
+          "changes": "insert/update 페이로드를 TablesInsert<\"series\">/TablesUpdate<\"series\"> 명시 변수로. 인라인 리터럴은 EPC 미작동."
+        },
+        {
+          "path": "src/app/api/categories/route.ts",
+          "action": "modify",
+          "changes": "insert/update 페이로드를 TablesInsert<\"categories\">/TablesUpdate<\"categories\"> 명시 변수로. 인라인 리터럴은 EPC 미작동."
+        }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "insert/update에 없는 컬럼 추가 시 세 파일 모두 TS2353 발생 (회귀 검증 후 되돌림)",
+        "인라인 리터럴은 유효 컬럼이 섞이면 미검출 — 명시 타입 변수 필수",
+        "Unused eslint-disable directive 경고 0 (baseline 13 유지)",
+        "값 타입 검증은 body:any라 불가 — validation-1로 이연",
+        "app/api/upload/route.ts는 Storage 버킷이라 대상 아님"
+      ],
+      "passes": true
+    },
+    {
+      "id": 9,
+      "layer": "cleanup",
+      "title": "dead code 정리 (설계 §8 결정 5 — 2건만)",
+      "files": [
+        {
+          "path": "src/shared/lib/supabase/client.ts",
+          "action": "delete",
+          "changes": "createBrowserSupabaseClient 소비처 0. 제네릭 주입으로 직접 손대는 파일이라 정리 대상."
+        },
+        {
+          "path": "package.json",
+          "action": "modify",
+          "changes": "pnpm remove @supabase/ssr (src/ 내 import 0건)."
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "action": "modify",
+          "changes": "의존성 제거 반영."
+        },
+        {
+          "path": ".gitignore",
+          "action": "modify",
+          "changes": "supabase/.temp/ 추가(CLI 스크래치). migrations/는 추적해야 하므로 디렉토리 전체는 무시하지 않음."
+        }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "grep으로 createBrowserSupabaseClient / @supabase/ssr 소비 0건 재확인 후 삭제",
+        "entities/post/index.ts의 toPost re-export는 변경 경로 밖이라 남김 (surgical changes)",
+        "pnpm build 통과"
+      ],
+      "passes": true
+    },
+    {
+      "id": 10,
+      "layer": "docs",
+      "title": "백로그 갱신",
+      "files": [
+        {
+          "path": "docs/개발계획서/harness/backlog.md",
+          "action": "modify",
+          "changes": "typegen-1 완료 변경 이력 + 후속 트랙 등재: tierD-1(룰 재평가), migration-1(스키마 버전 관리), toPost re-export dead 기록."
+        },
+        {
+          "path": "docs/개발계획서/harness/typegen-1_supabase-type-ssot.md",
+          "action": "modify",
+          "changes": "구현 중 설계 정정 사항 반영 + 상태 ✅."
+        }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "backlog.md 변경 이력에 typegen-1 기록",
+        "후속 PR 2건(tierD-1, migration-1) 등재"
+      ],
+      "passes": true
+    }
+  ]
+}

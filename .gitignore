@@ -47,5 +47,8 @@ next-env.d.ts
 .omc/
 lint-result.json
 
+# supabase CLI 스크래치 (migrations/는 추적 대상이므로 .temp/만 무시)
+supabase/.temp/
+
 # docs
 docs/blog-drafts

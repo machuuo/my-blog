@@ -6,19 +6,123 @@
   },
   "note": "ratchet baseline — CI fails if warn_total exceeds this value. Decreases only via PRs that also update this file.",
   "decreases": [
-    { "from": 87, "to": 26, "source": "rule-off", "rule": "explicit-function-return-type (.tsx)", "date": "2026-06-24" },
-    { "from": 26, "to": 11, "source": "code-fix + rule-promote", "rule": "explicit-function-return-type (.ts)", "date": "2026-06-25", "files_changed": ["src/app/api/**/route.ts", "src/shared/lib/{auth,utils}.ts", "src/shared/lib/supabase/*.ts"] },
-    { "from": 24, "to": 22, "source": "code-fix + rule-promote", "rule": "jsx-a11y/click-events-have-key-events + jsx-a11y/no-static-element-interactions", "date": "2026-06-25", "files_changed": ["src/views/hobby-detail/ui/HobbyDetailPage.tsx"], "pr": "A-1" },
-    { "from": 22, "to": 20, "source": "code-fix + rule-promote", "rule": "react/no-array-index-key", "date": "2026-06-26", "files_changed": ["src/shared/ui/breadcrumb.tsx", "src/views/tags/ui/TagsPage.tsx"], "pr": "A-2" },
-    { "from": 20, "to": 19, "source": "code-fix + rule-promote", "rule": "react-hooks/set-state-in-effect", "date": "2026-06-26", "files_changed": ["src/widgets/nb-frame/lib/useNbTheme.ts", "src/widgets/nb-frame/lib/useNbTheme.test.ts", "src/widgets/nb-frame/lib/index.ts", "src/widgets/nb-frame/ui/NbFrame.tsx", "src/app/layout.tsx"], "pr": "A-3" },
-    { "from": 19, "to": 13, "source": "code-fix + rule-promote", "rule": "@typescript-eslint/no-non-null-assertion", "date": "2026-06-26", "files_changed": ["src/shared/lib/env.ts", "src/shared/lib/env.test.ts", "src/shared/lib/index.ts", "src/shared/lib/auth.ts", "src/shared/lib/supabase/client.ts", "src/shared/lib/supabase/server.ts", "eslint.config.mjs"], "pr": "A-4" }
+    {
+      "from": 87,
+      "to": 26,
+      "source": "rule-off",
+      "rule": "explicit-function-return-type (.tsx)",
+      "date": "2026-06-24"
+    },
+    {
+      "from": 26,
+      "to": 11,
+      "source": "code-fix + rule-promote",
+      "rule": "explicit-function-return-type (.ts)",
+      "date": "2026-06-25",
+      "files_changed": [
+        "src/app/api/**/route.ts",
+        "src/shared/lib/{auth,utils}.ts",
+        "src/shared/lib/supabase/*.ts"
+      ]
+    },
+    {
+      "from": 24,
+      "to": 22,
+      "source": "code-fix + rule-promote",
+      "rule": "jsx-a11y/click-events-have-key-events + jsx-a11y/no-static-element-interactions",
+      "date": "2026-06-25",
+      "files_changed": [
+        "src/views/hobby-detail/ui/HobbyDetailPage.tsx"
+      ],
+      "pr": "A-1"
+    },
+    {
+      "from": 22,
+      "to": 20,
+      "source": "code-fix + rule-promote",
+      "rule": "react/no-array-index-key",
+      "date": "2026-06-26",
+      "files_changed": [
+        "src/shared/ui/breadcrumb.tsx",
+        "src/views/tags/ui/TagsPage.tsx"
+      ],
+      "pr": "A-2"
+    },
+    {
+      "from": 20,
+      "to": 19,
+      "source": "code-fix + rule-promote",
+      "rule": "react-hooks/set-state-in-effect",
+      "date": "2026-06-26",
+      "files_changed": [
+        "src/widgets/nb-frame/lib/useNbTheme.ts",
+        "src/widgets/nb-frame/lib/useNbTheme.test.ts",
+        "src/widgets/nb-frame/lib/index.ts",
+        "src/widgets/nb-frame/ui/NbFrame.tsx",
+        "src/app/layout.tsx"
+      ],
+      "pr": "A-3"
+    },
+    {
+      "from": 19,
+      "to": 13,
+      "source": "code-fix + rule-promote",
+      "rule": "@typescript-eslint/no-non-null-assertion",
+      "date": "2026-06-26",
+      "files_changed": [
+        "src/shared/lib/env.ts",
+        "src/shared/lib/env.test.ts",
+        "src/shared/lib/index.ts",
+        "src/shared/lib/auth.ts",
+        "src/shared/lib/supabase/client.ts",
+        "src/shared/lib/supabase/server.ts",
+        "eslint.config.mjs"
+      ],
+      "pr": "A-4"
+    }
   ],
   "increases": [
-    { "from": 11, "to": 24, "source": "new-rule", "rule": "max-lines-per-function", "date": "2026-06-25", "note": "intentional policy strengthening — component bloat detection per CLAUDE.md orchestrator principle" }
+    {
+      "from": 11,
+      "to": 24,
+      "source": "new-rule",
+      "rule": "max-lines-per-function",
+      "date": "2026-06-25",
+      "note": "intentional policy strengthening — component bloat detection per CLAUDE.md orchestrator principle"
+    }
   ],
   "neutral": [
-    { "warn_total": 13, "source": "new-rule-as-error", "rule": "@typescript-eslint/prefer-nullish-coalescing + prefer-optional-chain", "date": "2026-06-30", "pr": "C-2", "note": "type-aware 룰 2종을 처음부터 error로 등록 → warn 미증가. 전제로 parserOptions.projectService 도입. nullish 위반 5건은 빈 문자열 폴백 의도라 line-level eslint-disable로 처리(동작 보존), optional-chain 위반 0." },
-    { "warn_total": 13, "source": "new-rule-as-error", "rule": "@typescript-eslint/no-floating-promises + no-misused-promises + await-thenable + require-await", "date": "2026-06-30", "pr": "S-1", "note": "async 안전성 4룰을 처음부터 error로 등록 → warn 미증가. no-misused-promises 위반 4건은 async 핸들러를 JSX void 위치에 전달한 케이스로 인라인 void 래핑으로 해소(핸들러 내부 try/catch 완비, 동작 보존). 나머지 3룰 위반 0. no-unnecessary-condition(17건)은 Tier D로 분리." },
-    { "warn_total": 13, "source": "new-rule-as-error", "rule": "boundaries/dependencies (진입점 internalPath 통합)", "date": "2026-07-09", "pr": "barrel-1", "note": "FSD 배럴 진입점 강제를 기존 레이어 boundaries/dependencies에 internalPath로 통합(error, warn 미증가). shared 딥 import 69건 → 배럴 경유 교체, dead 세그먼트 배럴 8개 제거. boundaries/entry-point는 v6 deprecated라 미채택, dependencies+internalPath로 마이그레이션. import/no-internal-modules 백스톱은 완전 중복이라 드롭." }
+    {
+      "warn_total": 13,
+      "source": "new-rule-as-error",
+      "rule": "@typescript-eslint/prefer-nullish-coalescing + prefer-optional-chain",
+      "date": "2026-06-30",
+      "pr": "C-2",
+      "note": "type-aware 룰 2종을 처음부터 error로 등록 → warn 미증가. 전제로 parserOptions.projectService 도입. nullish 위반 5건은 빈 문자열 폴백 의도라 line-level eslint-disable로 처리(동작 보존), optional-chain 위반 0."
+    },
+    {
+      "warn_total": 13,
+      "source": "new-rule-as-error",
+      "rule": "@typescript-eslint/no-floating-promises + no-misused-promises + await-thenable + require-await",
+      "date": "2026-06-30",
+      "pr": "S-1",
+      "note": "async 안전성 4룰을 처음부터 error로 등록 → warn 미증가. no-misused-promises 위반 4건은 async 핸들러를 JSX void 위치에 전달한 케이스로 인라인 void 래핑으로 해소(핸들러 내부 try/catch 완비, 동작 보존). 나머지 3룰 위반 0. no-unnecessary-condition(17건)은 Tier D로 분리."
+    },
+    {
+      "warn_total": 13,
+      "source": "new-rule-as-error",
+      "rule": "boundaries/dependencies (진입점 internalPath 통합)",
+      "date": "2026-07-09",
+      "pr": "barrel-1",
+      "note": "FSD 배럴 진입점 강제를 기존 레이어 boundaries/dependencies에 internalPath로 통합(error, warn 미증가). shared 딥 import 69건 → 배럴 경유 교체, dead 세그먼트 배럴 8개 제거. boundaries/entry-point는 v6 deprecated라 미채택, dependencies+internalPath로 마이그레이션. import/no-internal-modules 백스톱은 완전 중복이라 드롭."
+    },
+    {
+      "warn_total": 13,
+      "source": "no-new-rule",
+      "rule": "(없음) typegen-1은 룰 변경 없음",
+      "date": "2026-07-10",
+      "pr": "typegen-1",
+      "note": "eslint.config.mjs 변경은 ignores에 생성물(database.types.ts) 추가뿐. 신규 룰 미도입이라 warn_total 13 불변. Tier D 룰 재평가는 tierD-1로 이연."
+    }
   ]
 }
