@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
 
+import { toSeries, toSeriesWithCount } from "../model/mappers";
 import type { Series, SeriesWithCount } from "../model/types";
 
 export async function getAllPublishedSeries(): Promise<SeriesWithCount[]> {
@@ -10,7 +11,7 @@ export async function getAllPublishedSeries(): Promise<SeriesWithCount[]> {
 
   if (error || !data) return [];
 
-  return data as SeriesWithCount[];
+  return data.map(toSeriesWithCount);
 }
 
 export async function getSeriesBySlug(slug: string): Promise<Series | null> {
@@ -24,7 +25,7 @@ export async function getSeriesBySlug(slug: string): Promise<Series | null> {
 
   if (error || !data) return null;
 
-  return data as Series;
+  return toSeries(data);
 }
 
 export async function getSeriesByCategory(categoryId: string): Promise<SeriesWithCount[]> {
@@ -36,5 +37,5 @@ export async function getSeriesByCategory(categoryId: string): Promise<SeriesWit
 
   if (error || !data) return [];
 
-  return data as SeriesWithCount[];
+  return data.map(toSeriesWithCount);
 }

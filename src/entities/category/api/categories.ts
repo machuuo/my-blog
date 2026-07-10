@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
 
+import { toCategory } from "../model/mappers";
 import type { Category } from "../model/types";
 
 export async function getAllCategories(): Promise<Category[]> {
@@ -12,5 +13,5 @@ export async function getAllCategories(): Promise<Category[]> {
 
   if (error || !data) return [];
 
-  return data as Category[];
+  return data.map(toCategory);
 }

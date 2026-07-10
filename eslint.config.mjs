@@ -49,6 +49,8 @@ export default [
       "scripts/**",
       "*.config.{js,mjs,ts}",
       "tsconfig.tsbuildinfo",
+      // supabase gen types 산출물. 손으로 수정하지 않으므로 스타일 룰 대상에서 제외.
+      "src/shared/lib/supabase/database.types.ts",
     ],
   },
 

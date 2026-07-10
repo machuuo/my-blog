@@ -1,35 +1,35 @@
 import readingTime from "reading-time";
 
-import type { Post, PostWithSeries } from "./types";
+import type { Post, PostRow, PostWithSeries, PostWithSeriesRow } from "./types";
 
-export function toPost(row: Record<string, unknown>): Post {
-  const content = (row.content as string) ?? "";
+export function toPost(row: PostRow): Post {
+  const content = row.content ?? "";
 
   return {
-    post_id: row.post_id as string,
-    slug: row.slug as string,
-    title: row.title as string,
-    description: (row.description as string) ?? "",
-    date: row.created_at as string,
-    tags: (row.tags as string[]) ?? [],
-    published: row.published as boolean,
+    post_id: row.post_id,
+    slug: row.slug,
+    title: row.title,
+    description: row.description ?? "",
+    date: row.created_at,
+    tags: row.tags ?? [],
+    published: row.published,
     content,
     readingTime: readingTime(content).text,
-    updated_at: row.updated_at as string,
-    series_id: (row.series_id as string) ?? null,
-    display_order: (row.display_order as number) ?? null,
+    updated_at: row.updated_at,
+    series_id: row.series_id,
+    display_order: row.display_order,
   };
 }
 
-export function toPostWithSeries(row: Record<string, unknown>): PostWithSeries {
-  const series = row.series as Record<string, unknown> | null;
-  const category = series?.categories as Record<string, unknown> | null;
+export function toPostWithSeries(row: PostWithSeriesRow): PostWithSeries {
+  const { series } = row;
+  const category = series?.categories ?? null;
 
   return {
     ...toPost(row),
-    series_title: (series?.title as string) ?? null,
-    series_slug: (series?.slug as string) ?? null,
-    category_name: (category?.name as string) ?? null,
-    category_slug: (category?.slug as string) ?? null,
+    series_title: series?.title ?? null,
+    series_slug: series?.slug ?? null,
+    category_name: category?.name ?? null,
+    category_slug: category?.slug ?? null,
   };
 }

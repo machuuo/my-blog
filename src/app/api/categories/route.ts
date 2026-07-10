@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 import { isAuthenticated } from "@/shared/lib/auth";
+import type { TablesInsert, TablesUpdate } from "@/shared/lib/supabase/database.types";
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -15,9 +16,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const supabase = createServerSupabaseClient();
 
+    // 명시 타입 변수에 담아야 초과 속성 검사가 걸린다 (인라인 리터럴은 EPC를 건너뜀)
+    const payload: TablesInsert<"categories"> = { name, slug, display_order: display_order ?? 0 };
+
     const { data, error } = await supabase
       .from("categories")
-      .insert({ name, slug, display_order: display_order ?? 0 })
+      .insert(payload)
       .select()
       .single();
 
@@ -43,9 +47,12 @@ export async function PUT(request: NextRequest): Promise<NextResponse> {
 
     const supabase = createServerSupabaseClient();
 
+    // 명시 타입 변수에 담아야 초과 속성 검사가 걸린다 (인라인 리터럴은 EPC를 건너뜀)
+    const patch: TablesUpdate<"categories"> = { name, slug, display_order };
+
     const { data, error } = await supabase
       .from("categories")
-      .update({ name, slug, display_order })
+      .update(patch)
       .eq("category_id", category_id)
       .select()
       .single();
