@@ -98,7 +98,7 @@
     {
       "id": 5,
       "layer": "entities/post",
-      "title": "post 매퍼 as 제거 + 조인 쿼리 QueryData",
+      "title": "post 매퍼 as 제거 + 조인 타입 Pick 파생 (설계의 QueryData는 결정 7에서 기각)",
       "files": [
         {
           "path": "src/entities/post/model/mappers.ts",
@@ -108,7 +108,7 @@
         {
           "path": "src/entities/post/api/posts.ts",
           "action": "modify",
-          "changes": "getPostBySlug/getPublishedPostBySlug가 중복 보유한 select(\"*, series(title, slug, categories(name, slug))\")를 한 곳에 선언하고 QueryData<typeof q>로 타입 역추출. 런타임 가드 if(error||!data) 유지."
+          "changes": "getPostBySlug/getPublishedPostBySlug가 중복 보유한 select(\"*, series(title, slug, categories(name, slug))\")를 POST_WITH_SERIES_SELECT 상수로 통합. 조인 타입은 model/types.ts의 PostWithSeriesRow(Pick<Tables<...>> 파생)로 받고 toPostWithSeries(data) 호출부의 대입 검사로 검증한다. QueryData는 api→model→api 순환(import/no-cycle)이라 기각. 런타임 가드 if(error||!data) 유지."
         },
         {
           "path": "src/entities/post/model/types.ts",
@@ -123,9 +123,10 @@
       ],
       "tests": true,
       "acceptanceCriteria": [
-        "step 1a의 5케이스 GREEN 유지 (동작 보존 증명)",
+        "step 1a의 테스트 GREEN 유지 (동작 보존 증명)",
         "mappers.ts 본문에 as 0개",
-        "select 문자열 중복 제거",
+        "select 문자열 중복 제거 (POST_WITH_SERIES_SELECT)",
+        "select에서 조인 컬럼을 빼면 toPostWithSeries(data) 호출부가 TS2345로 실패",
         "if (error || !data) 가드 삭제되지 않음"
       ],
       "passes": true

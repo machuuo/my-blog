@@ -11,7 +11,7 @@
     "lint:report": "eslint . --format json -o lint-result.json",
     "test": "vitest run",
     "test:watch": "vitest",
-    "db:types": "supabase gen types typescript --project-id spbgcnyqdgxhsouofeno --schema public > src/shared/lib/supabase/database.types.ts"
+    "db:types": "supabase gen types typescript --project-id spbgcnyqdgxhsouofeno --schema public > src/shared/lib/supabase/database.types.ts.tmp && mv src/shared/lib/supabase/database.types.ts.tmp src/shared/lib/supabase/database.types.ts || (rm -f src/shared/lib/supabase/database.types.ts.tmp; exit 1)"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
