@@ -1,1 +1,0 @@
-export { HobbyDetailPage } from "./HobbyDetailPage";

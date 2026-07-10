@@ -1,4 +1,4 @@
-import { NB_HAND, NB_HAND2 } from "@/shared/lib/design-data";
+import { NB_HAND, NB_HAND2 } from "@/shared/lib";
 
 interface SectionHeaderProps {
   title: string;

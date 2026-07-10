@@ -7,9 +7,8 @@ import {
   NB_BODY,
   NB_HAND,
   NB_HAND2,
-} from "@/shared/lib/design-data";
-import { SectionHeader } from "@/shared/ui/notebook/SectionHeader";
-import { StickyNote } from "@/shared/ui/notebook/StickyNote";
+} from "@/shared/lib";
+import { SectionHeader, StickyNote } from "@/shared/ui";
 
 const ARCHIVE = [
   {

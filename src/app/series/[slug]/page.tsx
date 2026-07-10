@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 import { getPostsBySeries } from "@/entities/post/server";
 import { getSeriesBySlug } from "@/entities/series/server";
-import { BLOG_NAME } from "@/shared/lib/constants";
+import { BLOG_NAME } from "@/shared/lib";
 import { SeriesDetailPage } from "@/views/series-detail";
 
 export const revalidate = 60;

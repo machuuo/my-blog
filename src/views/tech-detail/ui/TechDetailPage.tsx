@@ -12,14 +12,16 @@ import {
   NB_MONO,
   accentTint,
   type NbPost,
-} from "@/shared/lib/design-data";
-import { HandArrow } from "@/shared/ui/notebook/HandArrow";
-import { HandCircle } from "@/shared/ui/notebook/HandCircle";
-import { Polaroid } from "@/shared/ui/notebook/Polaroid";
-import { SectionHeader } from "@/shared/ui/notebook/SectionHeader";
-import { StickyNote } from "@/shared/ui/notebook/StickyNote";
-import { StripePlaceholder } from "@/shared/ui/notebook/StripePlaceholder";
-import { WashiTape } from "@/shared/ui/notebook/WashiTape";
+} from "@/shared/lib";
+import {
+  HandArrow,
+  HandCircle,
+  Polaroid,
+  SectionHeader,
+  StickyNote,
+  StripePlaceholder,
+  WashiTape,
+} from "@/shared/ui";
 
 const CODE_SNIPPET = `function Profile({ userPromise }) {
   // use()는 promise를 unwrap합니다

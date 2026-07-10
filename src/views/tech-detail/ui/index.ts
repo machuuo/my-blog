@@ -1,1 +1,0 @@
-export { TechDetailPage } from "./TechDetailPage";

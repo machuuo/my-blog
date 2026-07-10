@@ -2,9 +2,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 
 import { PostMeta } from "@/entities/post";
 import type { PostWithSeries } from "@/entities/post";
-import { Badge } from "@/shared/ui/badge";
-import { Breadcrumb, type BreadcrumbItem } from "@/shared/ui/breadcrumb";
-import { Separator } from "@/shared/ui/separator";
+import { Badge, Breadcrumb, type BreadcrumbItem, Separator } from "@/shared/ui";
 
 interface PostDetailPageProps {
   post: PostWithSeries;

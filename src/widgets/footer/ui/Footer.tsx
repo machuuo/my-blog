@@ -1,4 +1,4 @@
-import { BLOG_AUTHOR } from "@/shared/lib/constants";
+import { BLOG_AUTHOR } from "@/shared/lib";
 
 interface FooterProps {
   className?: string;

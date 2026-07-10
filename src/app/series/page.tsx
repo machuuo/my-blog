@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { getAllCategories } from "@/entities/category/server";
 import type { CategoryWithSeries } from "@/entities/series";
 import { getAllPublishedSeries } from "@/entities/series/server";
-import { BLOG_NAME } from "@/shared/lib/constants";
+import { BLOG_NAME } from "@/shared/lib";
 import { SeriesListPage } from "@/views/series-list";
 
 export const revalidate = 60;

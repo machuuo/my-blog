@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { ChevronRight } from "lucide-react";
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/lib";
 
 export interface BreadcrumbItem {
   label: string;

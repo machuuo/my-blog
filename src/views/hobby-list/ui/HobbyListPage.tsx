@@ -11,10 +11,8 @@ import {
   NB_HAND2,
   accentVar,
   accentTint,
-} from "@/shared/lib/design-data";
-import { NbChip } from "@/shared/ui/notebook/NbChip";
-import { Polaroid } from "@/shared/ui/notebook/Polaroid";
-import { StickyNote } from "@/shared/ui/notebook/StickyNote";
+} from "@/shared/lib";
+import { NbChip, Polaroid, StickyNote } from "@/shared/ui";
 
 export function HobbyListPage() {
   const [activeCat, setActiveCat] = useState<string>("all");

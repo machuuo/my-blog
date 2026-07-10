@@ -1,8 +1,5 @@
-import { NB_BODY, NB_HAND, NB_HAND2 } from "@/shared/lib/design-data";
-import { Polaroid } from "@/shared/ui/notebook/Polaroid";
-import { SectionHeader } from "@/shared/ui/notebook/SectionHeader";
-import { StickyNote } from "@/shared/ui/notebook/StickyNote";
-import { WashiTape } from "@/shared/ui/notebook/WashiTape";
+import { NB_BODY, NB_HAND, NB_HAND2 } from "@/shared/lib";
+import { Polaroid, SectionHeader, StickyNote, WashiTape } from "@/shared/ui";
 
 const colophon = [
   { k: "글씨체", v: "Caveat & Lora & Gowun" },

@@ -1,8 +1,8 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
+import { MissingEnvError } from "@/shared/lib";
 import { isAuthenticated } from "@/shared/lib/auth";
-import { MissingEnvError } from "@/shared/lib/env";
 import { createServerSupabaseClient } from "@/shared/lib/supabase/server";
 
 function handleRouteError(scope: string, error: unknown): NextResponse {

@@ -3,7 +3,7 @@
 import type { Category } from "@/entities/category";
 import type { Post } from "@/entities/post";
 import type { SeriesWithCount } from "@/entities/series";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui";
 
 import { usePostForm } from "../lib/usePostForm";
 

@@ -1,0 +1,129 @@
+{
+  "designDoc": "barrel-1_barrel-consumption-enforcement.md",
+  "branch": "chore/lint/barrel-entry-point",
+  "steps": [
+    {
+      "id": 1,
+      "layer": "shared",
+      "title": "shared/ui/index.ts 배럴 신설",
+      "files": [
+        {
+          "path": "src/shared/ui/index.ts",
+          "action": "create",
+          "changes": "shadcn primitive 6종(badge/breadcrumb/button/card/dialog/separator) 개별 re-export + export * from './notebook'. 이름 충돌 없음 확인."
+        }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "shadcn primitive 6종 + notebook 컴포넌트 전부 @/shared/ui로 노출",
+        "export 이름 충돌 없음 (tsc green)"
+      ],
+      "passes": true
+    },
+    {
+      "id": 2,
+      "layer": "cross-cutting",
+      "title": "shared 딥 import 69건 배럴 경유로 교체",
+      "files": [
+        { "path": "src/app/api/auth/route.ts", "action": "modify", "changes": "@/shared/lib/env → @/shared/lib (배럴 경유). @/shared/lib/auth는 server-only 예외라 불변." },
+        { "path": "src/app/api/posts/route.ts", "action": "modify", "changes": "@/shared/lib/env → @/shared/lib. auth/supabase/server는 불변." },
+        { "path": "src/app/layout.tsx", "action": "modify", "changes": "@/shared/lib/constants → @/shared/lib." },
+        { "path": "src/app/posts/[slug]/page.tsx", "action": "modify", "changes": "@/shared/lib/constants → @/shared/lib." },
+        { "path": "src/app/series/[slug]/page.tsx", "action": "modify", "changes": "@/shared/lib/constants → @/shared/lib." },
+        { "path": "src/app/series/page.tsx", "action": "modify", "changes": "@/shared/lib/constants → @/shared/lib." },
+        { "path": "src/entities/post/ui/PostCard.tsx", "action": "modify", "changes": "@/shared/ui/{badge,card} → @/shared/ui (병합)." },
+        { "path": "src/entities/series/ui/SeriesCard.tsx", "action": "modify", "changes": "@/shared/ui/card → @/shared/ui." },
+        { "path": "src/features/auth/ui/LoginForm.tsx", "action": "modify", "changes": "@/shared/ui/button → @/shared/ui." },
+        { "path": "src/features/write-post/lib/usePostForm.ts", "action": "modify", "changes": "@/shared/lib/slugify → @/shared/lib." },
+        { "path": "src/features/write-post/ui/PostForm.tsx", "action": "modify", "changes": "@/shared/ui/button → @/shared/ui." },
+        { "path": "src/shared/ui/badge.tsx", "action": "modify", "changes": "@/shared/lib/utils(cn) → @/shared/lib (cross-segment 배럴)." },
+        { "path": "src/shared/ui/breadcrumb.tsx", "action": "modify", "changes": "@/shared/lib/utils → @/shared/lib." },
+        { "path": "src/shared/ui/button.tsx", "action": "modify", "changes": "@/shared/lib/utils → @/shared/lib." },
+        { "path": "src/shared/ui/card.tsx", "action": "modify", "changes": "@/shared/lib/utils → @/shared/lib." },
+        { "path": "src/shared/ui/dialog.tsx", "action": "modify", "changes": "@/shared/lib/utils → @/shared/lib. @/shared/ui/button → relative ./button (same-segment 순환 회피)." },
+        { "path": "src/shared/ui/separator.tsx", "action": "modify", "changes": "@/shared/lib/utils → @/shared/lib." },
+        { "path": "src/shared/ui/notebook/NbChip.tsx", "action": "modify", "changes": "@/shared/lib/design-data → @/shared/lib." },
+        { "path": "src/shared/ui/notebook/Polaroid.tsx", "action": "modify", "changes": "@/shared/lib/design-data → @/shared/lib." },
+        { "path": "src/shared/ui/notebook/SectionHeader.tsx", "action": "modify", "changes": "@/shared/lib/design-data → @/shared/lib." },
+        { "path": "src/shared/ui/notebook/StickyNote.tsx", "action": "modify", "changes": "@/shared/lib/design-data → @/shared/lib." },
+        { "path": "src/views/about/ui/AboutPage.tsx", "action": "modify", "changes": "design-data → @/shared/lib, notebook 4종 → @/shared/ui 병합." },
+        { "path": "src/views/hobby-detail/ui/HobbyDetailPage.tsx", "action": "modify", "changes": "design-data → @/shared/lib, dialog+notebook → @/shared/ui 병합." },
+        { "path": "src/views/hobby-list/ui/HobbyListPage.tsx", "action": "modify", "changes": "design-data → @/shared/lib, notebook 3종 → @/shared/ui 병합." },
+        { "path": "src/views/home/ui/HomePage.tsx", "action": "modify", "changes": "design-data → @/shared/lib, notebook 4종 → @/shared/ui 병합." },
+        { "path": "src/views/post-detail/ui/PostDetailPage.tsx", "action": "modify", "changes": "@/shared/ui/{badge,breadcrumb,separator} → @/shared/ui 병합(type 포함)." },
+        { "path": "src/views/series-detail/ui/SeriesDetailPage.tsx", "action": "modify", "changes": "@/shared/ui/breadcrumb → @/shared/ui." },
+        { "path": "src/views/series-list/ui/SeriesListPage.tsx", "action": "modify", "changes": "@/shared/ui/breadcrumb → @/shared/ui." },
+        { "path": "src/views/tags/ui/TagsPage.tsx", "action": "modify", "changes": "design-data → @/shared/lib, notebook 2종 → @/shared/ui 병합." },
+        { "path": "src/views/tech-detail/ui/TechDetailPage.tsx", "action": "modify", "changes": "design-data → @/shared/lib, notebook 7종 → @/shared/ui 병합." },
+        { "path": "src/views/tech-list/ui/TechListPage.tsx", "action": "modify", "changes": "design-data → @/shared/lib, notebook 3종 → @/shared/ui 병합." },
+        { "path": "src/widgets/footer/ui/Footer.tsx", "action": "modify", "changes": "@/shared/lib/constants → @/shared/lib." },
+        { "path": "src/widgets/header/ui/Header.tsx", "action": "modify", "changes": "@/shared/lib/constants → @/shared/lib." },
+        { "path": "src/widgets/nb-frame/ui/NbFrame.tsx", "action": "modify", "changes": "design-data → @/shared/lib, notebook 2종 → @/shared/ui 병합. ../lib(useNbTheme)는 슬라이스 내부 relative라 불변." }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "@/shared/ui/* 딥 import 0건",
+        "@/shared/lib client-safe 딥 import 0건",
+        "server-only 진입점(auth/supabase/*, entities/*/server) 직접 import 유지",
+        "tsc + test green"
+      ]
+    },
+    {
+      "id": 3,
+      "layer": "config",
+      "title": "boundaries/dependencies + internalPath 진입점 통합 (entry-point deprecated 대체)",
+      "files": [
+        {
+          "path": "eslint.config.mjs",
+          "action": "modify",
+          "changes": "기존 boundaries/dependencies(레이어 상→하)를 modern selector로 재작성해 진입점(internalPath)을 통합. ENTRY_POINTS 상수: slice=index.ts, entities=[index.ts,server.ts], shared=[*/index.ts, lib/auth.ts, lib/supabase/*.ts]. default:disallow + from별 allow:[{to:{type,internalPath}}]. boundaries/entry-point는 v6.0.2 deprecated라 미채택. import/no-internal-modules 백스톱은 완전 중복이라 드롭."
+        }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "통합 룰 error 등록, pnpm lint 위반 0(deprecation/legacy 경고 0)",
+        "회귀 검증: 슬라이스 내부 딥 import + 레이어 위반 임의 추가 → lint 실패 확인 후 되돌림",
+        "server-only(entities/*/server, shared/lib/auth, supabase/*) 통과 + app router 미영향"
+      ],
+      "passes": true
+    },
+    {
+      "id": 4,
+      "layer": "cleanup",
+      "title": "dead 세그먼트 배럴 8개 제거 (설계 9개 중 nb-frame/lib 정정 제외)",
+      "files": [
+        { "path": "src/views/about/ui/index.ts", "action": "delete", "changes": "소비 0 확인 후 삭제." },
+        { "path": "src/views/home/ui/index.ts", "action": "delete", "changes": "소비 0 확인 후 삭제." },
+        { "path": "src/views/hobby-detail/ui/index.ts", "action": "delete", "changes": "소비 0 확인 후 삭제." },
+        { "path": "src/views/hobby-list/ui/index.ts", "action": "delete", "changes": "소비 0 확인 후 삭제." },
+        { "path": "src/views/tags/ui/index.ts", "action": "delete", "changes": "소비 0 확인 후 삭제." },
+        { "path": "src/views/tech-detail/ui/index.ts", "action": "delete", "changes": "소비 0 확인 후 삭제." },
+        { "path": "src/views/tech-list/ui/index.ts", "action": "delete", "changes": "소비 0 확인 후 삭제." },
+        { "path": "src/widgets/nb-frame/ui/index.ts", "action": "delete", "changes": "소비 0 확인 후 삭제. lib/index.ts는 ../lib 소비 中이라 유지." }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "제거 전 grep으로 각 배럴 소비 0건 확인",
+        "8개 삭제 후 tsc + lint + test green (nb-frame/lib 유지)"
+      ]
+    },
+    {
+      "id": 5,
+      "layer": "docs",
+      "title": "baseline/문서 갱신",
+      "files": [
+        { "path": "docs/개발계획서/harness/eslint-migration.md", "action": "modify", "changes": "barrel-1 Decisions 4행 추가." },
+        { "path": "docs/개발계획서/harness/backlog.md", "action": "modify", "changes": "배럴 소비 강제 항목 ✅ 변경 이력 기록." },
+        { "path": "docs/개발계획서/harness/lint-baseline.json", "action": "modify", "changes": "neutral 항목 추가(warn_total 13 불변)." },
+        { "path": "docs/개발계획서/harness/barrel-1_barrel-consumption-enforcement.md", "action": "modify", "changes": "구현 정정 반영(룰 마이그레이션·9→8·dialog relative)·전수 파일 목록." },
+        { "path": "docs/개발계획서/harness/barrel-1_barrel-consumption-enforcement-flow.json", "action": "modify", "changes": "구현 결과 반영(step3 룰·step2/4/5 파일 전수 등재)." }
+      ],
+      "tests": false,
+      "acceptanceCriteria": [
+        "lint-baseline.json warn_total 13 불변(신규 룰 error라 warn 미발생)",
+        "eslint-migration.md / backlog.md 갱신"
+      ],
+      "passes": true
+    }
+  ]
+}

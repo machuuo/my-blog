@@ -10,10 +10,8 @@ import {
   NB_HAND,
   NB_HAND2,
   type NbPost,
-} from "@/shared/lib/design-data";
-import { NbChip } from "@/shared/ui/notebook/NbChip";
-import { StickyNote } from "@/shared/ui/notebook/StickyNote";
-import { WashiTape } from "@/shared/ui/notebook/WashiTape";
+} from "@/shared/lib";
+import { NbChip, StickyNote, WashiTape } from "@/shared/ui";
 
 function NbIndexCard({ p, index }: { p: NbPost; index: number }) {
   const tapeColor = ["var(--nb-memo)", "var(--nb-tape)", "var(--sky-1)", "var(--nb-note)"][

@@ -1,1 +1,0 @@
-export { TechListPage } from "./TechListPage";

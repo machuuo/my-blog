@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { MissingEnvError } from "@/shared/lib";
 import { createSessionToken, getSessionCookieConfig } from "@/shared/lib/auth";
-import { MissingEnvError } from "@/shared/lib/env";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {

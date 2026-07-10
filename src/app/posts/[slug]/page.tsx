@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { getPublishedPostBySlug } from "@/entities/post/server";
-import { BLOG_NAME } from "@/shared/lib/constants";
+import { BLOG_NAME } from "@/shared/lib";
 import { PostDetailPage } from "@/views/post-detail";
 
 export const revalidate = 60;
