@@ -9,7 +9,7 @@ export async function getAllPublishedSeries(): Promise<SeriesWithCount[]> {
   const { data, error } = await supabase
     .rpc("get_published_series_with_count");
 
-  if (error || !data) return [];
+  if (error) return [];
 
   return data.map(toSeriesWithCount);
 }
@@ -23,7 +23,7 @@ export async function getSeriesBySlug(slug: string): Promise<Series | null> {
     .eq("slug", slug)
     .single();
 
-  if (error || !data) return null;
+  if (error) return null;
 
   return toSeries(data);
 }
@@ -35,7 +35,7 @@ export async function getSeriesByCategory(categoryId: string): Promise<SeriesWit
     .rpc("get_published_series_with_count")
     .eq("category_id", categoryId);
 
-  if (error || !data) return [];
+  if (error) return [];
 
   return data.map(toSeriesWithCount);
 }

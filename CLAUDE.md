@@ -61,4 +61,20 @@ const color = COLOR[tone];
 
 Enforced by `no-nested-ternary`. JSX conditional rendering must use the ternary strategy (`react/jsx-no-leaked-render`), never bare `&&` (which can leak `0`/`""`).
 
+### Type-aware rule exceptions: disable the line, not the rule
+
+Type-aware rules (`no-unnecessary-condition`, `prefer-nullish-coalescing`, …) sometimes fire on an **intentional** exception. Never turn the rule off globally. Add a line-level disable **with a reason** after `--`. Keep the directive on **one line** — it applies to the next line only, so a wrapped two-line `//` comment breaks (the directive lands on the comment line and ESLint reports it as an unused directive):
+
+```ts
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- navigator.clipboard is undefined in insecure/legacy contexts (the DOM type lies: declared non-null). Keep the guard.
+navigator.clipboard?.writeText(text).catch(() => {});
+```
+
+Two recurring exception categories:
+
+1. **The type lies about runtime nullability** — DOM/external types declared non-null but `undefined` at runtime (`navigator.clipboard`, feature-detected APIs). Keep the defensive `?.`.
+2. **Empty string / 0 / false is a real fallback target** — `x || fallback` where `""`/`0`/`false` must fall through. `??` would change behavior. Keep `||`.
+
+The reason comment is mandatory — it tells the reviewer the exception is deliberate. In JSX use the single-line `{/* eslint-disable-next-line … -- reason */}` form.
+
 > Every code fence must declare a language identifier (see global `~/.claude/CLAUDE.md` §9).

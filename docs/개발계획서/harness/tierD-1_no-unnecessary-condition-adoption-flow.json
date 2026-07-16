@@ -1,0 +1,105 @@
+{
+  "design": "tierD-1_no-unnecessary-condition-adoption.md",
+  "task": "tierD-1 — no-unnecessary-condition 채택 + 11건 단순화 + clipboard disable + prefer-nullish 5건 재확인",
+  "type": "refactor-behavior-preserving",
+  "steps": [
+    {
+      "id": "1",
+      "layer": "code",
+      "title": "entities/*/api — if(error || !data) → if(error) 단순화 (10건)",
+      "files": [
+        "src/entities/post/api/posts.ts",
+        "src/entities/series/api/series.ts",
+        "src/entities/category/api/categories.ts"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "posts.ts :18,:32,:47,:62,:77,:90 → if(error) 6건",
+        "series.ts :12,:26,:38 → if(error) 3건",
+        "categories.ts :14 → if(error) 1건",
+        "매퍼 특성화 테스트 GREEN 유지 (동작 보존)"
+      ]
+    },
+    {
+      "id": "2",
+      "layer": "code",
+      "title": "mappers.ts — Number(post_count ?? 0) → Number(post_count)",
+      "files": ["src/entities/series/model/mappers.ts"],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        ":23 ?? 0 제거, Number() 래핑 + bigint 주석 유지",
+        "post_count 관련 테스트 GREEN 유지"
+      ]
+    },
+    {
+      "id": "3",
+      "layer": "code",
+      "title": "TechDetailPage — clipboard?. 유지 + eslint-disable + 사유",
+      "files": ["src/views/tech-detail/ui/TechDetailPage.tsx"],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        ":102 navigator.clipboard?. 유지 (DOM 타입 거짓)",
+        "eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- 사유 추가",
+        "렌더 동작 불변"
+      ]
+    },
+    {
+      "id": "4",
+      "layer": "config",
+      "title": "eslint.config.mjs — no-unnecessary-condition: error 등록",
+      "files": ["eslint.config.mjs"],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "type-aware 블록에 no-unnecessary-condition: error 추가",
+        "npx tsc --noEmit 통과 (if(error) 만으로 data non-null 좁힘)",
+        "pnpm lint 위반 0 (0 errors, 13 warnings)",
+        "prefer-nullish disable 5건 그대로 통과 (변경 0)"
+      ]
+    },
+    {
+      "id": "5",
+      "layer": "verify",
+      "title": "회귀 차단 검증 — dead 조건 복원 시 error 확인 후 되돌림",
+      "files": [],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "if(error || !data) 복원 시 no-unnecessary-condition error 발생 확인",
+        "되돌린 후 lint 위반 0 복귀"
+      ]
+    },
+    {
+      "id": "6",
+      "layer": "docs",
+      "title": "CLAUDE.md — Type-aware rule exceptions 컨벤션 절 추가",
+      "files": ["CLAUDE.md"],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "Control Flow & Conditionals 절 아래 하위 절 추가",
+        "설계서 §6 제안 텍스트 그대로 반영 (메타 패턴 + 2범주 예시)"
+      ]
+    },
+    {
+      "id": "7",
+      "layer": "docs",
+      "title": "문서 3종 갱신 (baseline / migration / backlog)",
+      "files": [
+        "docs/개발계획서/harness/lint-baseline.json",
+        "docs/개발계획서/harness/eslint-migration.md",
+        "docs/개발계획서/harness/backlog.md"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "lint-baseline.json warn_total 13 유지 + new-rule-as-error 기록",
+        "eslint-migration.md Changelog 갱신",
+        "backlog.md tierD-1 ✅ + 변경 이력"
+      ]
+    }
+  ]
+}
