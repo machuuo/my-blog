@@ -100,9 +100,12 @@ export function TechDetailPage({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false);
   const copy = () => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- navigator.clipboard는 비-HTTPS/구형 브라우저에서 undefined (DOM 타입이 non-null로 거짓 선언). ?. 방어 유지
-    navigator.clipboard?.writeText(CODE_SNIPPET).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1400);
+    navigator.clipboard?.writeText(CODE_SNIPPET)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1400);
+      })
+      .catch(() => {});
   };
   const related = TECH_POSTS.filter((p) => p.slug !== post.slug).slice(0, 3);
 
