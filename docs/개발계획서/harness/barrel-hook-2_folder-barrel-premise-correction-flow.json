@@ -1,0 +1,55 @@
+{
+  "design": "barrel-hook-2_folder-barrel-premise-correction.md",
+  "task": "전역 배럴 하네스 폴더-마다-배럴 전제 정정 — post-barrel.sh 완화(B) + 마커 가드 무력화 + impl-review #16 재작성",
+  "type": "refactor-harness",
+  "steps": [
+    {
+      "id": "1",
+      "layer": "hook",
+      "title": "post-barrel.sh — 마커 가드 추가 + write 모드 배럴 생성 강제(30-33행) 제거",
+      "files": [
+        "~/.claude/hooks/post-barrel.sh"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "최상단 마커 가드: 프로젝트 루트 .claude/no-barrel-hook 존재 시 exit 0",
+        "루트 탐색: $CLAUDE_PROJECT_DIR 우선 + FILE_PATH에서 .claude/ 상향 탐색 폴백",
+        "write 모드 30-33행(index.ts 없으면 차단) 제거 → 배럴 없으면 exit 0 통과",
+        "write 모드 34-36행(배럴 있는데 심볼 미노출 차단) 유지",
+        "edit 모드 전체 불변"
+      ]
+    },
+    {
+      "id": "2",
+      "layer": "marker",
+      "title": "이 프로젝트 .claude/no-barrel-hook sentinel 생성",
+      "files": [
+        "/Users/lee/dev/my-blog/.claude/no-barrel-hook"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "빈 파일 생성",
+        "마커 존재 시 이 프로젝트에서 훅이 개입하지 않음(가드 실증)",
+        "마커 임시 제거 시 완화 로직대로 동작(독립 검증)"
+      ]
+    },
+    {
+      "id": "3",
+      "layer": "checklist",
+      "title": "impl-review SKILL.md #16 진입점 계약 프레이밍으로 재작성",
+      "files": [
+        "~/.claude/skills/impl-review/SKILL.md"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "(a)폴더에 index.ts 없으면 FAIL, (b)배럴이 모든 public API 노출 안하면 PARTIAL 삭제",
+        "(c)를 진입점 계약 위반(배럴 우회 딥 import = FAIL)으로 재프레이밍",
+        "lint(boundaries/entry-point) error 강제 프로젝트는 N/A (lint-enforced) 보고 명시",
+        "기존 exempt 조항(app 진입점/페이지 컴포넌트/단일 파일 모듈) 의미 보존"
+      ]
+    }
+  ]
+}
