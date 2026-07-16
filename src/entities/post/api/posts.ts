@@ -15,7 +15,7 @@ export async function getAllPosts(): Promise<Post[]> {
     .eq("published", true)
     .order("display_order", { ascending: false });
 
-  if (error || !data) return [];
+  if (error) return [];
 
   return data.map(toPost);
 }
@@ -29,7 +29,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithSeries | null
     .eq("slug", slug)
     .single();
 
-  if (error || !data) return null;
+  if (error) return null;
 
   return toPostWithSeries(data);
 }
@@ -44,7 +44,7 @@ export async function getPublishedPostBySlug(slug: string): Promise<PostWithSeri
     .eq("published", true)
     .single();
 
-  if (error || !data) return null;
+  if (error) return null;
 
   return toPostWithSeries(data);
 }
@@ -59,7 +59,7 @@ export async function getPostsBySeries(seriesId: string): Promise<Post[]> {
     .eq("published", true)
     .order("display_order", { ascending: true });
 
-  if (error || !data) return [];
+  if (error) return [];
 
   return data.map(toPost);
 }
@@ -74,7 +74,7 @@ export async function getUncategorizedPosts(): Promise<Post[]> {
     .eq("published", true)
     .order("created_at", { ascending: false });
 
-  if (error || !data) return [];
+  if (error) return [];
 
   return data.map(toPost);
 }
@@ -87,7 +87,7 @@ export async function getAllSlugs(): Promise<string[]> {
     .select("slug")
     .eq("published", true);
 
-  if (error || !data) return [];
+  if (error) return [];
 
   return data.map((row) => row.slug);
 }

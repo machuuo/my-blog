@@ -19,7 +19,6 @@ export function toSeriesWithCount(row: SeriesWithCountRow): SeriesWithCount {
   return {
     ...toSeries(row),
     // Number(): Postgres count()는 bigint라 드라이버가 문자열로 줄 수 있어 강제 변환을 유지한다.
-    // ?? 0: 생성 타입상 post_count는 non-null이라 도달 불가한 분기. tierD-1의 재판정 전까지 보존한다.
-    post_count: Number(row.post_count ?? 0),
+    post_count: Number(row.post_count),
   };
 }

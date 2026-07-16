@@ -11,7 +11,7 @@ export async function getAllCategories(): Promise<Category[]> {
     .select("*")
     .order("display_order", { ascending: true });
 
-  if (error || !data) return [];
+  if (error) return [];
 
   return data.map(toCategory);
 }

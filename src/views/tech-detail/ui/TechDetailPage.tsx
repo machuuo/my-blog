@@ -99,6 +99,7 @@ export function TechDetailPage({ slug }: { slug: string }) {
   const post = TECH_POSTS.find((p) => p.slug === slug) ?? TECH_POSTS[0];
   const [copied, setCopied] = useState(false);
   const copy = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- navigator.clipboard는 비-HTTPS/구형 브라우저에서 undefined (DOM 타입이 non-null로 거짓 선언). ?. 방어 유지
     navigator.clipboard?.writeText(CODE_SNIPPET).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1400);

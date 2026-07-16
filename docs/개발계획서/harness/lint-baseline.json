@@ -123,6 +123,14 @@
       "date": "2026-07-10",
       "pr": "typegen-1",
       "note": "eslint.config.mjs 변경은 ignores에 생성물(database.types.ts) 추가뿐. 신규 룰 미도입이라 warn_total 13 불변. Tier D 룰 재평가는 tierD-1로 이연."
+    },
+    {
+      "warn_total": 13,
+      "source": "new-rule-as-error",
+      "rule": "@typescript-eslint/no-unnecessary-condition",
+      "date": "2026-07-16",
+      "pr": "tierD-1",
+      "note": "Tier D가 기각했던 룰을 typegen-1로 타입이 정직해진 뒤 재판정해 error로 채택 → warn 미증가. 위반 12건 중 11건은 진짜 dead가 되어 단순화(if(error||!data)→if(error) 10건, Number(post_count ?? 0)→Number(post_count) 1건), 1건은 navigator.clipboard(DOM 타입 거짓)라 line-level eslint-disable로 예외(동작 보존). prefer-nullish disable 5건은 빈 문자열 폴백 의도로 재확인, 변경 없음."
     }
   ]
 }

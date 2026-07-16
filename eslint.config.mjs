@@ -230,6 +230,12 @@ export default [
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
 
+      // ── type-aware (tierD-1) ──
+      // 타입상 항상 참/거짓인 dead 조건 차단. typegen-1로 타입이 정직해져 채택.
+      // DOM/외부 타입이 non-null로 거짓 선언한 값(navigator.clipboard 등)의 방어 ?. 는
+      // line-level eslint-disable + 사유로 예외 명시(룰을 끄지 않음).
+      "@typescript-eslint/no-unnecessary-condition": "error",
+
       // ── async 안전성 (s-1, type-aware) ──
       // unhandled rejection / void 위치 Promise 전달 / 잘못된 await 차단.
       // async 핸들러를 JSX void 위치에 넘길 땐 (e) => void fn(e) 로 명시적 무시.
