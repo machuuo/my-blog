@@ -74,7 +74,7 @@ N/A — UI/화면 변경 없음. 컴포넌트 트리 변경 없음. 접근성: N
 |---|---|---|
 | `src/shared/types/index.ts` | 삭제 | 소비처 0. 정본은 `entities/post/model/types.ts` |
 | `src/shared/types/` (디렉토리) | 삭제 | 위 파일 삭제 후 빈 디렉토리 |
-| `src/entities/post/index.ts` | 수정(1줄 삭제) | 죽은 `toPost` re-export 제거. 나머지 4개 export 유지 |
+| `src/entities/post/index.ts` | 수정(1줄 삭제) | 죽은 `toPost` re-export 제거. 나머지 5개 공개 심볼 유지 |
 | `docs/개발계획서/harness/backlog.md` | 수정 | 트랙 완료 처리 + 변경 이력 |
 
 테스트 파일: 신규 `hooks/*`·`utils/*` 없음 → 추가 테스트 대상 없음. 기존 `mappers.test.ts`는 `../mappers` 직접 import라 영향 없음.
