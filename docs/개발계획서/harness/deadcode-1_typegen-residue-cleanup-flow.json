@@ -1,0 +1,66 @@
+{
+  "design": "deadcode-1_typegen-residue-cleanup.md",
+  "task": "typegen-1 잔재 dead code 정리 — shared/types 삭제 + 배럴 toPost re-export 제거 + backlog 갱신 (스코프 A)",
+  "type": "refactor-cleanup",
+  "steps": [
+    {
+      "id": "1",
+      "layer": "types",
+      "title": "src/shared/types/index.ts 삭제 (+ 빈 디렉토리 제거)",
+      "files": [
+        "src/shared/types/index.ts"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "삭제 전 shared/types 소비처 grep 0건 재확인",
+        "index.ts 삭제",
+        "빈 shared/types/ 디렉토리 제거",
+        "정본 entities/post/model/types.ts는 불변"
+      ]
+    },
+    {
+      "id": "2",
+      "layer": "barrel",
+      "title": "entities/post/index.ts에서 toPost re-export 라인 삭제",
+      "files": [
+        "src/entities/post/index.ts"
+      ],
+      "barrel": "src/entities/post/index.ts",
+      "passes": true,
+      "acceptanceCriteria": [
+        "배럴 경유 toPost 외부 소비처 0건 재확인",
+        "export { toPost } from \"./model/mappers\"; 라인 삭제",
+        "PostCard·PostMeta·Post·PostFrontmatter·PostWithSeries export 유지",
+        "api/posts.ts의 ../model/mappers 직접 import 정상 동작"
+      ]
+    },
+    {
+      "id": "3",
+      "layer": "docs",
+      "title": "backlog.md 트랙 완료 처리 + 변경 이력",
+      "files": [
+        "docs/개발계획서/harness/backlog.md"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "dead code 3건 트랙 ✅ 완료 처리",
+        "① shared/types 삭제 / ② 배럴 toPost 삭제 / ③ worktrees 실효 기록",
+        "변경 이력에 2026-07-22 deadcode-1 엔트리 추가"
+      ]
+    },
+    {
+      "id": "verify",
+      "layer": "verify",
+      "title": "tsc --noEmit + pnpm lint 신규 위반 0 검증",
+      "files": [],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "npx tsc --noEmit 타입 에러 0 (소비처 0 실증)",
+        "pnpm lint 신규 위반 0"
+      ]
+    }
+  ]
+}
