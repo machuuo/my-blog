@@ -25,6 +25,7 @@ COMMENT ON SCHEMA "public" IS 'standard public schema';
 
 CREATE OR REPLACE FUNCTION "public"."get_published_series_with_count"() RETURNS TABLE("series_id" "uuid", "category_id" "uuid", "title" "text", "description" "text", "thumbnail_url" "text", "slug" "text", "display_order" integer, "published" boolean, "created_at" timestamp with time zone, "updated_at" timestamp with time zone, "post_count" bigint)
     LANGUAGE "sql" STABLE SECURITY DEFINER
+    SET "search_path" TO 'public'
     AS $$
   SELECT
     s.series_id,

@@ -27,6 +27,8 @@ concurrency:
 jobs:
   drift:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read  # checkout + 로컬 타입 생성/비교만 — 쓰기 권한 불필요(최소 권한)
     steps:
       - uses: actions/checkout@v4
         with:

@@ -41,16 +41,17 @@ typegen-1으로 `database.types.ts`(DB 파생 타입 SSOT)를 도입했지만, �
 
 ## 3. 완료 조건 (Acceptance Criteria)
 
-- [ ] `supabase/config.toml`이 생성·커밋되었다
-- [ ] `supabase/migrations/<timestamp>_baseline_schema.sql`이 원격 스키마를 반영해 커밋되었다
-- [ ] `supabase/.temp/`는 `.gitignore`로 계속 무시되고, `migrations/`·`config.toml`은 추적된다
-- [ ] `package.json`에 `db:types:local`(--local) 스크립트가 추가되고, 기존 `db:types`(원격)는 그대로 유지된다
-- [ ] `.github/workflows/db-types.yml`이 추가되어 `supabase start` → `gen types --local` → 커밋 타입과 diff를 수행한다
-- [ ] 커밋된 `database.types.ts`와 마이그레이션 재생성 타입이 일치할 때 게이트가 **통과**한다
-- [ ] 마이그레이션과 타입을 일부러 어긋나게 하면 게이트가 **실패(exit 1)**한다 (회귀 검증)
-- [ ] CI 게이트는 Supabase 토큰 없이 동작한다(러너 도커 + 커밋된 마이그레이션만 사용)
-- [ ] db-types 워크플로우는 스키마 관련 경로 변경 시에만 트리거된다(불필요한 실행 방지)
-- [ ] `backlog.md`의 migration-1 트랙이 완료 처리되고 변경 이력 엔트리(2026-07-29)가 추가된다
+- [x] `supabase/config.toml`이 생성·커밋되었다
+- [x] `supabase/migrations/<timestamp>_baseline_schema.sql`이 원격 스키마를 반영해 커밋되었다
+- [x] `supabase/.temp/`는 `.gitignore`로 계속 무시되고, `migrations/`·`config.toml`은 추적된다
+- [x] `package.json`에 `db:types:local`(--local) 스크립트가 추가되고, 기존 `db:types`(원격)는 그대로 유지된다
+- [x] `.github/workflows/db-types.yml`이 추가되어 `supabase start` → `gen types --local` → 커밋 타입과 diff를 수행한다
+- [x] 커밋된 `database.types.ts`와 마이그레이션 재생성 타입이 일치할 때 게이트가 **통과**한다 (로컬 실증: 정규화 후 drift 0)
+- [x] 마이그레이션과 타입을 일부러 어긋나게 하면 게이트가 **실패(exit 1)**한다 (로컬 실증: 변조 시 exit 1)
+- [x] CI 게이트는 Supabase 토큰 없이 동작한다(러너 도커 + 커밋된 마이그레이션만 사용) (로컬 실증: `-x` start exit 0, 토큰 미사용)
+- [x] db-types 워크플로우는 스키마 관련 경로 변경 시에만 트리거된다(불필요한 실행 방지)
+- [x] `backlog.md`의 migration-1 트랙이 완료 처리되고 변경 이력 엔트리(2026-07-29)가 추가된다
+- [ ] **(대기)** 실제 GitHub 러너에서 db-types 게이트가 처음 실행되어 통과한다 — push/PR 후 확인 (로컬은 동일 명령으로 검증했으나 러너 실행은 별도)
 
 **Edge cases**
 
@@ -125,7 +126,7 @@ db:types:local  : supabase gen types typescript --local --schema public         
 
 - 트리거: `supabase/migrations/**`, `src/shared/lib/supabase/database.types.ts`, `package.json`, 워크플로우 자신 변경 시(`paths` 필터). `deploy.yml`/`lint.yml`의 pnpm 셋업 패턴 재사용(`pnpm/action-setup@v4` + `setup-node@v4` node 20, `pnpm install --frozen-lockfile`).
 - 러너: `ubuntu-latest`(도커 내장). supabase CLI는 devDep이므로 `pnpm exec supabase` 사용(별도 setup-cli 액션 불요).
-- 단계: `supabase start`(필요 시 `-x`로 불필요 서비스 제외) → `pnpm exec supabase gen types typescript --local --schema public > /tmp/fresh.types.ts` → `diff /tmp/fresh.types.ts src/shared/lib/supabase/database.types.ts`(불일치 시 diff 출력 후 exit 1).
+- 단계: `supabase start`(`-x`로 불필요 서비스 제외) → `pnpm exec supabase gen types typescript --local --schema public > /tmp/fresh.types.ts` → **정규화 비교**: `fresh.types.ts`와 커밋된 `database.types.ts` 양쪽에서 `__InternalSupabase` 메타데이터 블록과 관련 주석 2줄을 `sed`로 제거한 뒤 `diff -B`(빈 줄 차이 무시)로 비교(불일치 시 diff 출력 후 exit 1). `__InternalSupabase`는 PostgREST 버전 메타라 스키마와 무관해 제외하며, 이로써 원격(`db:types`)/로컬(`db:types:local`) 어느 스크립트로 재생성해도 본문이 같으면 통과한다.
 - 토큰: **사용 안 함.** 커밋된 마이그레이션만으로 로컬 스키마를 재현하므로 secret 불필요.
 
 **상태 관리 / API 연동**: 해당 없음 — 인프라 작업.
