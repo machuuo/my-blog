@@ -93,6 +93,8 @@ export default [
       },
       "boundaries/elements": [
         { type: "app", pattern: "src/app", mode: "folder" },
+        // Next 16 proxy: app 폴더(src/app) 밖의 Next 규약 파일이라 app 층과 같은 규칙을 받게 한다.
+        { type: "app", pattern: "src/proxy.ts", mode: "file" },
         { type: "views", pattern: "src/views/*", mode: "folder", capture: ["view"] },
         { type: "widgets", pattern: "src/widgets/*", mode: "folder", capture: ["widget"] },
         { type: "features", pattern: "src/features/*", mode: "folder", capture: ["feature"] },

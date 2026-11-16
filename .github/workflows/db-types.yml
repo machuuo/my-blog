@@ -10,6 +10,7 @@ on:
       - 'src/shared/lib/supabase/database.types.ts'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - '.nvmrc'
       - '.github/workflows/db-types.yml'
   pull_request:
     paths:
@@ -18,6 +19,7 @@ on:
       - 'src/shared/lib/supabase/database.types.ts'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - '.nvmrc'
       - '.github/workflows/db-types.yml'
 
 concurrency:
@@ -39,7 +41,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
