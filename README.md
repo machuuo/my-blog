@@ -25,7 +25,10 @@ Next.js 16 + React 19 + Supabase 기반 개인 개발 블로그
 
 ## 로컬 개발
 
+Node 24 (`.nvmrc`) 를 쓴다. 다른 버전이면 `pnpm install` 이 `Unsupported engine` 경고를 낸다.
+
 ```bash
+nvm use
 pnpm install
 pnpm dev
 ```
@@ -40,9 +43,14 @@ pnpm dev
 
 ### 환경변수 (.env.local)
 
+`.env.example` 을 `.env.local` 로 복사한 뒤 값을 채운다.
+
+```bash
+cp .env.example .env.local
+```
+
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ADMIN_PASSWORD=
 SESSION_SECRET=

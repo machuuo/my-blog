@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const SESSION_COOKIE_NAME = "blog_session";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
 
   // /write 경로만 보호
@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
 
-    // 토큰 검증 (middleware에서는 간단하게 존재 여부만 확인)
+    // 토큰 검증 (proxy에서는 간단하게 존재 여부만 확인)
     // 실제 검증은 API Route에서 수행
   }
 

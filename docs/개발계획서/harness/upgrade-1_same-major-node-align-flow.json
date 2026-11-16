@@ -1,0 +1,124 @@
+{
+  "design": "upgrade-1_same-major-node-align.md",
+  "task": "같은 메이저 안 의존성 갱신 · Node 24 정렬 · Next 16 잔재 정리 (업그레이드 ① 단계)",
+  "type": "refactor",
+  "steps": [
+    {
+      "id": "1",
+      "layer": "env",
+      "title": "Node 24 정렬 — .nvmrc · engines · @types/node · CI 워크플로",
+      "files": [
+        ".nvmrc",
+        "package.json",
+        "pnpm-lock.yaml",
+        ".github/workflows/lint.yml",
+        ".github/workflows/db-types.yml"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        ".nvmrc 가 24",
+        "package.json engines.node 가 24.x",
+        "@types/node 가 ^24 범위",
+        "lint.yml · db-types.yml 이 node-version-file: .nvmrc"
+      ],
+      "tests": ["TC-10"],
+      "mutation": { "TC-10": "skip: 설정 값 — 명령 확인으로 검증" }
+    },
+    {
+      "id": "2",
+      "layer": "config",
+      "title": "정리 — package-lock.json · deploy.yml 삭제, next.config eslint 제거, .env.example, README",
+      "files": [
+        "package-lock.json",
+        ".github/workflows/deploy.yml",
+        "next.config.mjs",
+        ".env.example",
+        "README.md"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "package-lock.json · deploy.yml 이 없다",
+        "next.config.mjs 에 eslint 키가 없다",
+        ".env.example 에 키 4개가 값 없이 있고 git 이 무시하지 않는다",
+        "README 환경변수 안내가 .env.example 과 같은 키 4개 + 복사 안내"
+      ],
+      "tests": ["TC-15", "TC-16", "TC-18"],
+      "mutation": {
+        "TC-15": "skip: 설정 값 — 명령 확인으로 검증 (build 는 3 · 4단계)",
+        "TC-16": "skip: 파일 내용 — 코드가 읽는 키 목록과 diff 로 검증",
+        "TC-18": "skip: 문서 — 파일 확인으로 검증"
+      }
+    },
+    {
+      "id": "3",
+      "layer": "proxy",
+      "title": "middleware.ts → src/proxy.ts (테스트 먼저)",
+      "files": [
+        "src/proxy.test.ts",
+        "middleware.ts",
+        "src/proxy.ts",
+        "eslint.config.mjs"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "proxy 함수와 옛 값 그대로의 config.matcher 를 내보낸다, middleware.ts 는 없다",
+        "쿠키 없이 /write 이하 → /login?redirect=<원래 경로>, 쿠키 있으면 통과",
+        "pnpm build 출력에 middleware 사용 중단 경고가 없고 ƒ Proxy (Middleware) 가 찍히며 functions-config-manifest 에 /_middleware 가 등록된다",
+        "src/proxy.ts 가 진입점 린트 검사를 app 층과 같게 받는다"
+      ],
+      "tests": ["TC-1", "TC-2", "TC-3", "TC-4", "TC-5", "TC-6", "TC-7", "TC-19"],
+      "mutation": {
+        "TC-1": "ok",
+        "TC-2": "ok",
+        "TC-3": "ok",
+        "TC-4": "ok",
+        "TC-5": "ok",
+        "TC-6": "ok",
+        "TC-7": "ok — 저장소 루트에 둔 빌드에서 functions-config-manifest 가 비어 있음(실패) 확인, src/ 로 옮긴 빌드에서 /_middleware 등록 · ƒ Proxy (Middleware) 확인",
+        "TC-19": "ok — 원소 줄이 없을 때 깊은 경로 위반 0건(실패) 확인, 줄을 넣은 뒤 1건 · 진입점 경로 0건 확인"
+      }
+    },
+    {
+      "id": "4",
+      "layer": "deps",
+      "title": "같은 메이저 안 의존성 갱신 (직접 의존성만) + 검사 4종 + 기준선",
+      "files": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "docs/개발계획서/harness/lint-baseline.json"
+      ],
+      "barrel": null,
+      "passes": true,
+      "acceptanceCriteria": [
+        "§6 갱신 대상 표의 패키지가 목표 버전 이상",
+        "supabase CLI · packageManager · dotenv 는 지금 버전 그대로",
+        "tsc 0 · lint error 0 · 경고 ≤ 13 · test 통과 · build 통과",
+        "경고가 줄면 lint-baseline.json 갱신"
+      ],
+      "tests": ["TC-9", "TC-17"],
+      "mutation": {
+        "TC-9": "skip: 명령 확인 — pnpm outdated 에 메이저가 다른 것만 남음",
+        "TC-17": "skip: 명령 확인 — tsc 0 · lint 0 error/13 warn(규칙별 기준과 같음) · test 43/43 · build 통과"
+      }
+    },
+    {
+      "id": "5",
+      "layer": "verify",
+      "title": "PR · 배포 확인 — CI · Vercel preview · 머지 뒤",
+      "files": [],
+      "barrel": null,
+      "passes": false,
+      "acceptanceCriteria": [
+        "lint.yml · db-types.yml 이 Node 24 로 통과",
+        "Vercel preview · 운영 배포가 Node 24.x · pnpm 으로 빌드되고 성공",
+        "머지 뒤 Pages 실행이 생기지 않음",
+        "preview 에서 /write 보호 동작"
+      ],
+      "tests": ["TC-8", "TC-11", "TC-12", "TC-13", "TC-14"],
+      "mutation": {}
+    }
+  ]
+}
