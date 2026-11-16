@@ -26,5 +26,5 @@
 
 ## 덧붙임
 
-- 진입점 위반은 ESLint 가 판단한다 — `eslint.config.mjs` 의 `ENTRY_POINTS` 와 `boundaries/dependencies`(error). 세그먼트 파일을 슬라이스 밖에서 바로 가져오면 빌드가 막힌다.
+- 진입점 위반은 ESLint 가 판단한다 — `eslint.config.mjs` 의 `ENTRY_POINTS` 와 `boundaries/dependencies`(error). 세그먼트 파일을 슬라이스 밖에서 바로 가져오면 `pnpm lint` 가 error 를 내고 린트 CI 가 실패한다(`next build` 는 ESLint 를 돌리지 않는다).
 - 배럴 훅(`post-barrel.sh`)은 `.claude/no-barrel-hook` 으로 꺼 두었다 — ESLint 가 이미 막으므로 중복이고, 세그먼트에 배럴이 없는 구조에서 잘못 막은 적이 있다(barrel-hook-2).

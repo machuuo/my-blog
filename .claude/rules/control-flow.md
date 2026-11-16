@@ -3,7 +3,7 @@
 - 성격: ESLint 가 강제하는 제어 흐름 · 조건문 규칙 — 코드를 쓰거나 고칠 때
 - 출처: 2026-11-16 `CLAUDE.md` 에서 옮김 (처음 만든 작업: `docs/개발계획서/harness/b-1_tier-b-style-standards.md`)
 
-These rules are **enforced by ESLint** (build fails on violation). Follow them when writing or editing code.
+These rules are **enforced by ESLint** — `pnpm lint` reports violations and the lint CI (`.github/workflows/lint.yml`) fails on any error. `next build` does not run ESLint. Follow them when writing or editing code.
 
 ## Early returns and ternaries
 
