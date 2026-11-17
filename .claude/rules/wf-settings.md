@@ -31,9 +31,11 @@
 - 설계서 · 계획(`docs/개발계획서/**/*.md` · `*-flow.json`)은 `.gitignore` 로 git 에서 빼고 로컬에서만 관리한다(2026-11-16). 그전에 커밋된 것은 추적만 끊었다.
   - 자리: 메인 작업 트리의 `docs/개발계획서/` 에 읽고 쓴다(글로벌 CLAUDE.md §13 — 찾기 · 검사 방법은 하네스 `wf-settings.md` § Design doc location).
   - 예외: `harness/lint-baseline.json` 은 CI 가 읽으므로 추적한다 — 지금 작업 트리에서 고치고 PR 에 싣는다.
-  - 설계서가 사라지면: 추적하던 커밋에서 추적을 끊은 커밋 뒤로 옮기면(pull · checkout) git 이 그 폴더의 설계서를 지운다. 이력에서 되살린다:
+  - 옛 브랜치 · 커밋으로 옮길 때: 설계서를 추적하던 브랜치 · 커밋으로는 `git checkout --no-overwrite-ignore <대상>` 으로 옮긴다. 그냥 옮기면 로컬 설계서가 그 커밋의 옛 내용으로 조용히 덮어써지고, 돌아오면 지워진다.
+  - 설계서가 사라지면: 추적하던 커밋에서 추적을 끊은 커밋 뒤로 옮기면(pull · checkout) git 이 그 폴더의 설계서를 지운다. 이력에서 없는 파일만 되살린다(남아 있는 파일의 로컬 수정본은 건드리지 않는다):
 
     ```bash
     src=$(git log -1 --format=%H --diff-filter=D -- 'docs/개발계획서/')
-    git restore --source="$src^" -- ':(glob)docs/개발계획서/**/*.md' ':(glob)docs/개발계획서/**/*-flow.json'
+    git -c core.quotepath=false ls-tree -r --name-only "$src^" -- docs/개발계획서/ | grep -E '\.md$|-flow\.json$' \
+      | while IFS= read -r f; do [ -e "$f" ] || git restore --source="$src^" -- "$f"; done
     ```
