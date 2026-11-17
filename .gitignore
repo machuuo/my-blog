@@ -52,3 +52,8 @@ supabase/.temp/
 
 # docs
 docs/blog-drafts
+
+# 설계서 · 계획 — 로컬(메인 작업 트리)에서만 관리한다 (.claude/rules/wf-settings.md)
+# lint-baseline.json 은 CI 가 읽으므로 이 규칙에 걸리지 않게 둔다(확장자 기준)
+/docs/개발계획서/**/*.md
+/docs/개발계획서/**/*-flow.json
