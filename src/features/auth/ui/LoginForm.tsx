@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { HttpError, postJson } from "@/shared/api";
 import { Button } from "@/shared/ui";
 
+import { toSafeRedirectPath } from "../lib/safeRedirectPath";
+
 interface LoginFormProps {
   redirectTo?: string;
 }
@@ -24,7 +26,7 @@ export function LoginForm({ redirectTo = "/write" }: LoginFormProps) {
 
     try {
       await postJson("/api/auth", { password });
-      router.push(redirectTo);
+      router.push(toSafeRedirectPath(redirectTo, window.location.origin));
       router.refresh();
     } catch (err) {
       if (err instanceof HttpError && err.status === 401) {
